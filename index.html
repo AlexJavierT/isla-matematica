@@ -1,0 +1,1581 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>ISLA MATEMÁTICA | El Tesoro de las Multiplicaciones</title>
+  <meta name="description" content="Aventura educativa interactiva de multiplicaciones con tienda pirata, barcos y sombreros desbloqueables.">
+  <meta name="theme-color" content="#0b2a43">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap');
+
+    :root {
+      --cream: #fff5d6;
+      --parchment: #fdf0c7;
+      --parchment-dark: #edd196;
+      --wood-light: #9e6234;
+      --wood: #683b24;
+      --wood-dark: #432316;
+      --gold: #ffd25a;
+      --gold-deep: #d98a26;
+      --ocean: #0c4d69;
+      --teal: #1c7c91;
+      --ink: #3c2618;
+      --ok: #26874e;
+      --bad: #c0392b;
+    }
+
+    * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      background: #072238;
+      color: var(--cream);
+      font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+    /* ESCENARIO DINÁMICO */
+    .world {
+      position: relative;
+      min-height: 100svh;
+      isolation: isolate;
+      overflow: hidden;
+      background: linear-gradient(180deg, #1d6fa3 0%, #3aa3ad 55%, #0a4d68 100%);
+    }
+
+    .landscape {
+      position: absolute;
+      inset: 0;
+      z-index: -4;
+      background-size: cover;
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      transition: opacity 0.6s ease;
+    }
+
+    .world::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: radial-gradient(circle at 75% 20%, rgba(255, 245, 190, 0.18), transparent 45%),
+                  linear-gradient(180deg, rgba(6, 28, 48, 0.35) 0%, rgba(6, 28, 48, 0.1) 50%, rgba(5, 24, 41, 0.65) 100%);
+      pointer-events: none;
+    }
+
+    .world::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: -5%;
+      width: 110%;
+      height: 16%;
+      z-index: -1;
+      pointer-events: none;
+      background: repeating-radial-gradient(ellipse at 50% 100%, transparent 0 38px, rgba(210, 255, 245, 0.16) 40px 43px, transparent 45px 88px);
+      animation: waves 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes waves { to { transform: translateX(30px) translateY(-6px); } }
+
+    .cloud {
+      position: absolute;
+      z-index: -3;
+      top: 9%;
+      left: -25%;
+      width: 260px;
+      height: 50px;
+      opacity: 0.55;
+      background: #fff8e3;
+      border-radius: 80px;
+      filter: blur(6px);
+      animation: drift 55s linear infinite;
+      pointer-events: none;
+    }
+    .cloud::before, .cloud::after { content: ''; position: absolute; background: inherit; border-radius: 50%; }
+    .cloud::before { width: 110px; height: 100px; left: 45px; bottom: 5px; }
+    .cloud::after { width: 85px; height: 85px; right: 35px; bottom: 5px; }
+    .cloud.b { top: 21%; animation-duration: 78s; animation-delay: -32s; transform: scale(0.62); opacity: 0.4; }
+    @keyframes drift { to { left: 115%; } }
+
+    .ship-bg {
+      position: absolute;
+      bottom: 9%;
+      left: 3%;
+      width: clamp(130px, 17vw, 245px);
+      filter: drop-shadow(0 16px 8px rgba(5, 28, 44, 0.45));
+      z-index: -1;
+      pointer-events: none;
+      animation: sailing 5.2s ease-in-out infinite;
+    }
+    @keyframes sailing { 50% { transform: translateY(-12px) rotate(1.5deg); } }
+
+    /* CONTENEDOR DE PANTALLAS */
+    .page {
+      display: none;
+      position: relative;
+      z-index: 2;
+      min-height: 100svh;
+      width: min(1320px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 20px 0 30px;
+    }
+    .page.active { display: flex; flex-direction: column; animation: fadeIn 0.35s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* BARRA SUPERIOR */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .emblem {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(11, 38, 58, 0.78);
+      border: 2px solid rgba(255, 221, 148, 0.55);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .compass-icon {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #ffe2a2;
+      border-radius: 50%;
+      background: conic-gradient(from 45deg, #d9534f 0 25%, #f0ad4e 0 50%, #2b7a8c 0 75%, #f0ad4e 0);
+      animation: spinSlow 18s linear infinite;
+    }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+
+    .top-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    .pill-btn {
+      background: rgba(14, 46, 68, 0.85);
+      border: 2px solid #d9b16c;
+      border-radius: 999px;
+      padding: 8px 15px;
+      color: #fff3cb;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      transition: transform 0.15s, background 0.15s;
+      backdrop-filter: blur(6px);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill-btn:hover { transform: translateY(-2px); background: rgba(24, 72, 102, 0.95); }
+    .pill-btn.gold-pill { background: linear-gradient(180deg, #9c5b25, #683b24); border-color: #ffd25a; color: #ffe9a3; }
+
+    /* BOTONES ESTILO ARCADE MADERA/ORO */
+    .action {
+      border: 3px solid #ffe4a3;
+      border-radius: 16px;
+      padding: 13px 22px;
+      min-height: 52px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      box-shadow: 0 6px 0 var(--wood-dark), 0 12px 20px rgba(4, 22, 36, 0.45);
+      transition: transform 0.16s, filter 0.16s, box-shadow 0.16s;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .action:hover:not(:disabled) { transform: translateY(-4px); filter: brightness(1.06); }
+    .action:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--wood-dark); }
+    .action:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(0.4); }
+
+    .action.primary { color: #472811; background: linear-gradient(180deg, #fff3b0 0%, #f5b942 55%, #df9226 100%); }
+    .action.secondary { color: #fff8e2; background: linear-gradient(180deg, #2b9eb3 0%, #166982 60%, #0d4b61 100%); }
+    .action.wood { color: #ffefd1; background: linear-gradient(180deg, #a66a3e 0%, #754325 60%, #542d18 100%); }
+    .action.shop-cta { color: #fff; background: linear-gradient(180deg, #e06d53 0%, #b53d28 60%, #822515 100%); }
+    .action.equipped { color: #fff; background: linear-gradient(180deg, #3db86c 0%, #227a44 100%); border-color: #b8ffd2; cursor: default; }
+
+    /* PANTALLA MENÚ PRINCIPAL */
+    .menu-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+      align-items: center;
+      flex: 1;
+      gap: 24px;
+      padding: 10px 0;
+    }
+
+    .kicker {
+      display: inline-block;
+      background: rgba(255, 210, 90, 0.2);
+      border: 1px solid rgba(255, 225, 130, 0.5);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      font-size: 0.78rem;
+      color: #ffe89e;
+    }
+
+    .main-title {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: clamp(3.3rem, 7.4vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      margin: 14px 0 12px;
+      color: #ffe28a;
+      -webkit-text-stroke: 2px #6b3b18;
+      text-shadow: 0 5px 0 #9c5b25, 0 11px 0 #3f2212, 0 22px 24px rgba(5, 22, 38, 0.65);
+    }
+    .main-title span { display: block; color: #fff8de; }
+
+    .tagline {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.15rem, 2.1vw, 1.7rem);
+      color: #fff6d6;
+      text-shadow: 0 3px 6px rgba(8, 32, 48, 0.8);
+      margin: 0 0 16px;
+    }
+
+    .captain-box {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: rgba(10, 36, 56, 0.72);
+      border: 2px solid rgba(244, 201, 121, 0.6);
+      padding: 12px 16px;
+      border-radius: 16px;
+      max-width: 560px;
+      backdrop-filter: blur(6px);
+      margin-bottom: 18px;
+    }
+    .captain-box label { font-size: 0.82rem; font-weight: 900; letter-spacing: 0.08em; color: #ffd97d; }
+    .captain-box input {
+      flex: 1;
+      min-width: 170px;
+      background: #fff8e2;
+      border: 2px solid #9e6234;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #fff3cb;
+      cursor: pointer;
+    }
+    .mode-toggle input { width: 18px; height: 18px; accent-color: #f5b942; }
+
+    .menu-actions { display: flex; gap: 11px; flex-wrap: wrap; }
+
+    .menu-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .stat-badge {
+      border: 1px solid rgba(255, 230, 177, 0.65);
+      background: rgba(11, 35, 54, 0.82);
+      border-radius: 999px;
+      padding: 7px 15px;
+      font-weight: 900;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+    .stat-badge b { color: var(--gold); }
+
+    .hero-illustration {
+      position: relative;
+      justify-self: center;
+      width: clamp(220px, 26vw, 380px);
+      animation: floatHero 4.4s ease-in-out infinite;
+      filter: drop-shadow(0 24px 18px rgba(6, 24, 38, 0.55));
+    }
+    @keyframes floatHero { 50% { transform: translateY(-14px); } }
+
+    /* PANELES DE MADERA Y PERGAMINO */
+    .subpage { width: min(1060px, 100%); margin: auto; }
+    .section-title {
+      text-align: center;
+      text-transform: uppercase;
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: #ffe396;
+      -webkit-text-stroke: 1.5px #5e3316;
+      text-shadow: 0 5px 0 #4d2812, 0 12px 18px rgba(5, 24, 40, 0.6);
+      margin: 10px 0 20px;
+    }
+
+    .wood-panel {
+      border: 10px solid var(--wood);
+      border-radius: 26px;
+      background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+      box-shadow: 0 0 0 4px #e0ad5c, 0 14px 0 var(--wood-dark), 0 26px 40px rgba(4, 18, 32, 0.6);
+      color: var(--ink);
+      padding: 24px 28px;
+      position: relative;
+    }
+
+    .instructions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 18px; }
+    .instruction {
+      border-top: 5px solid var(--gold-deep);
+      background: #fffdf5;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 4px 10px rgba(67, 35, 22, 0.08);
+      line-height: 1.45;
+    }
+    .instruction b { display: block; color: #8c4d19; font-family: 'Fredoka', sans-serif; font-size: 1.12rem; margin-bottom: 6px; }
+
+    .level-guide-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .level-pill {
+      background: rgba(104, 59, 36, 0.1);
+      border: 2px solid rgba(104, 59, 36, 0.25);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.92rem;
+    }
+
+    /* TIENDA PIRATA */
+    .shop-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .shop-tab {
+      background: #e5c687;
+      border: 3px solid var(--wood);
+      color: var(--ink);
+      padding: 10px 22px;
+      border-radius: 14px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .shop-tab.active {
+      background: linear-gradient(180deg, #ffe28a, #f0ae35);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 0 var(--wood-dark);
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .shop-item {
+      background: #fffdf5;
+      border: 3px solid #d4a65a;
+      border-radius: 18px;
+      padding: 14px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 6px 0 rgba(104, 59, 36, 0.2);
+      transition: transform 0.2s;
+    }
+    .shop-item:hover { transform: translateY(-4px); }
+    .shop-item.is-equipped { border-color: #26874e; background: #f2fff7; }
+    .shop-preview {
+      height: 115px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(255, 226, 138, 0.35), transparent 70%);
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    .shop-preview svg { width: 105px; height: 95px; filter: drop-shadow(0 6px 6px rgba(0,0,0,0.2)); }
+    .shop-item h4 { font-family: 'Fredoka', sans-serif; font-size: 1.12rem; margin: 0 0 4px; color: #542d16; }
+    .shop-item p { font-size: 0.82rem; color: #754c29; margin: 0 0 12px; font-weight: 700; line-height: 1.3; }
+    .shop-item .action { width: 100%; min-height: 44px; padding: 8px 12px; font-size: 0.88rem; }
+
+    /* MAPA DE ISLAS */
+    .islands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .island-card {
+      background: linear-gradient(180deg, #fff6d9, #ebd096);
+      border: 6px solid #e5b25d;
+      border-radius: 22px;
+      box-shadow: 0 10px 0 var(--wood-dark), 0 20px 28px rgba(4, 20, 35, 0.55);
+      color: var(--ink);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s;
+    }
+    .island-card:not(.locked):hover { transform: translateY(-6px); }
+    .island-thumbnail { height: 155px; background-size: cover; background-position: center; position: relative; }
+    .island-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(12, 42, 62, 0.88);
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--gold);
+    }
+    .island-card h3 { font-family: 'Fredoka', sans-serif; font-size: 1.45rem; margin: 14px 16px 4px; color: #542d16; }
+    .island-card p { margin: 0 16px 14px; font-weight: 800; font-size: 0.95rem; color: #6e4526; flex: 1; }
+    .island-card .action { margin: 0 16px 16px; width: calc(100% - 32px); font-size: 0.9rem; }
+    .island-card.locked { filter: grayscale(0.8) brightness(0.82); }
+
+    /* TABLA DE RÉCORDS */
+    .records-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+    .records-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fffdf5;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border-left: 5px solid var(--gold-deep);
+      font-weight: 800;
+    }
+
+    /* PANTALLA DE JUEGO */
+    .hud {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .hud-chip {
+      background: rgba(12, 40, 60, 0.88);
+      border: 2px solid #d9b16c;
+      border-radius: 999px;
+      padding: 7px 14px;
+      color: #fff6dc;
+      font-weight: 900;
+      font-size: 0.86rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hud-chip b { color: var(--gold); }
+    .hearts { letter-spacing: 2px; font-size: 1rem; }
+
+    .quest-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 230px;
+      gap: 26px;
+      align-items: center;
+      flex: 1;
+      padding: 12px 0 24px;
+    }
+
+    .quest-main { max-width: 860px; width: 100%; margin: auto; }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Fredoka', sans-serif;
+      color: #ffe49c;
+      text-shadow: 0 3px 0 #472512;
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      height: 20px;
+      border: 3px solid #ffe4a3;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #0d3247;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 0 var(--wood-dark);
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: repeating-linear-gradient(115deg, #e0962b 0 14px, #ffe17d 14px 28px);
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .quest-board {
+      background: linear-gradient(180deg, #fff5d4 0%, #efd298 100%);
+      border: 10px solid var(--wood);
+      box-shadow: 0 0 0 4px #e5b466, 0 16px 0 var(--wood-dark), 0 30px 45px rgba(4, 20, 35, 0.65);
+      color: var(--ink);
+      border-radius: 26px;
+      overflow: hidden;
+    }
+
+    .quest-head {
+      background: linear-gradient(180deg, #7c4927 0%, #542e18 100%);
+      border-bottom: 4px solid #d4a159;
+      color: #ffeaad;
+      padding: 14px 24px;
+      font-weight: 900;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 0.08em;
+      font-size: 0.85rem;
+    }
+
+    .timer-bar-wrap { height: 6px; background: rgba(0, 0, 0, 0.25); width: 100%; }
+    .timer-bar { height: 100%; width: 100%; background: #4cd137; transition: width 0.2s linear, background 0.3s; }
+
+    .quest-body { text-align: center; padding: 26px 24px 30px; }
+    .story { font-size: 1.12rem; line-height: 1.5; font-weight: 800; margin: 0 0 10px; color: #54351e; }
+
+    .equation {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      color: #0e4a5e;
+      margin: 8px 0 22px;
+      text-shadow: 0 3px 0 #fff9e6;
+      background: rgba(255, 255, 255, 0.55);
+      display: inline-block;
+      padding: 8px 32px;
+      border-radius: 20px;
+      border: 3px dashed rgba(104, 59, 36, 0.3);
+    }
+
+    .answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .answer {
+      min-height: 96px;
+      border: 4px solid #fff2c6;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #278da3 0%, #104e69 100%);
+      color: #fff9e2;
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+      box-shadow: 0 7px 0 var(--wood-dark);
+      transition: transform 0.15s, background 0.15s;
+      position: relative;
+    }
+    .answer:hover:not(:disabled) { transform: translateY(-4px); background: linear-gradient(180deg, #35a4bc 0%, #156282 100%); }
+    .answer:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--wood-dark); }
+    .answer:disabled { cursor: default; opacity: 0.78; }
+    .answer.correct { background: linear-gradient(180deg, #4cd172 0%, #217a43 100%); opacity: 1; transform: scale(1.03); }
+    .answer.wrong { background: linear-gradient(180deg, #e05a4f 0%, #962d22 100%); opacity: 1; animation: shake 0.35s; }
+    .answer small { display: block; font-family: 'Nunito', sans-serif; font-size: 0.72rem; letter-spacing: 0.2em; opacity: 0.85; margin-bottom: 2px; }
+
+    @keyframes shake {
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-4px); }
+    }
+
+    .feedback { min-height: 30px; margin: 18px 0 0; font-weight: 900; font-size: 1rem; color: #7a491d; }
+
+    .side-explorer { text-align: center; animation: floatHero 4.8s infinite ease-in-out; }
+    .speech {
+      background: #fff8e2;
+      border: 3px solid #965c2e;
+      border-radius: 16px;
+      color: #5c3719;
+      padding: 12px 14px;
+      font-weight: 800;
+      font-size: 0.92rem;
+      box-shadow: 0 6px 0 var(--wood-dark);
+      position: relative;
+      margin-top: 6px;
+    }
+
+    /* RESULTADOS Y MODALES */
+    .result-wrap {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 24px;
+      margin: auto;
+      width: min(1020px, 100%);
+    }
+    .result-wrap .wood-panel { text-align: center; }
+    .result-wrap h2 { font-family: 'Fredoka', sans-serif; font-size: clamp(2rem, 3.6vw, 3rem); margin: 0 0 10px; color: #5c3114; }
+    .result-art { width: 100%; max-height: 320px; object-fit: contain; animation: floatHero 4s infinite ease-in-out; filter: drop-shadow(0 20px 22px rgba(4, 20, 35, 0.6)); }
+    .scoreline { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; font-family: 'Fredoka', sans-serif; font-size: 1.15rem; margin: 16px 0; }
+    .scoreline span { background: rgba(104, 59, 36, 0.12); padding: 8px 16px; border-radius: 12px; }
+    .result-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      background: rgba(4, 18, 32, 0.82);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.open { display: flex; animation: fadeIn 0.2s ease-out; }
+    .modal .wood-panel { width: min(520px, 100%); text-align: center; }
+
+    .celebrate { position: fixed; z-index: 25; inset: 0; pointer-events: none; overflow: hidden; }
+    .celebrate b {
+      position: absolute;
+      top: -25px;
+      width: 11px;
+      height: 20px;
+      border-radius: 3px;
+      animation: fall var(--time) ease-in forwards;
+    }
+    @keyframes fall { to { top: 115%; transform: translateX(var(--dx)) rotate(720deg); } }
+
+    .footer-note { font-size: 0.74rem; letter-spacing: 0.16em; font-weight: 900; color: rgba(255, 240, 200, 0.75); text-align: center; margin-top: auto; padding-top: 12px; }
+
+    @media (max-width: 920px) {
+      .menu-layout, .result-wrap { grid-template-columns: 1fr; text-align: center; }
+      .captain-box, .menu-actions, .menu-stats { justify-content: center; margin-left: auto; margin-right: auto; }
+      .hero-illustration { width: 220px; order: -1; }
+      .quest-layout { grid-template-columns: 1fr; }
+      .side-explorer { display: none; }
+      .instructions, .level-guide-grid, .islands { grid-template-columns: 1fr; }
+      .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .page { width: calc(100% - 24px); padding: 14px 0 20px; }
+      .answers { grid-template-columns: 1fr; gap: 10px; }
+      .answer { min-height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+      .wood-panel { padding: 18px 16px; border-width: 7px; }
+      .shop-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="world" id="world">
+    <div class="landscape" id="landscape"></div>
+    <div class="cloud"></div>
+    <div class="cloud b"></div>
+
+    <!-- BARCO DINÁMICO DEL JUGADOR -->
+    <div class="ship-bg" id="bgShipContainer" aria-hidden="true"></div>
+
+    <!-- 1. MENÚ PRINCIPAL -->
+    <section class="page active" id="menu">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> ACADEMIA DE EXPLORADORES</span>
+        <div class="top-controls">
+          <span class="pill-btn gold-pill">🪙 BOTÍN: <b id="bankMenuLabel">0</b></span>
+          <button class="pill-btn" id="recordsBtn">🏆 RÉCORDS</button>
+          <button class="pill-btn" id="soundBtn">🔊 SONIDO: SÍ</button>
+        </div>
+      </header>
+
+      <div class="menu-layout">
+        <div>
+          <span class="kicker">EDICIÓN INTERACTIVA · AVENTURA EDUCATIVA</span>
+          <h1 class="main-title">ISLA <span>MATEMÁTICA</span></h1>
+          <p class="tagline">El tesoro legendario de las multiplicaciones</p>
+
+          <div class="captain-box">
+            <label for="playerName">CAPITÁN/A:</label>
+            <input type="text" id="playerName" maxlength="18" placeholder="Escribe tu nombre..." value="Explorador">
+            <label class="mode-toggle">
+              <input type="checkbox" id="timerMode" checked>
+              <span>⏱️ Contrarreloj (25s)</span>
+            </label>
+          </div>
+
+          <div class="menu-actions">
+            <button class="action primary" id="startBtn">⚔️ AVENTURA</button>
+            <button class="action shop-cta" id="shopBtn">🏴‍☠️ TIENDA PIRATA</button>
+            <button class="action secondary" id="mapBtn">🗺️ MAPA</button>
+            <button class="action wood" id="howBtn">📜 MANUAL</button>
+          </div>
+
+          <div class="menu-stats">
+            <span class="stat-badge">ISLAS DESBLOQUEADAS: <b id="unlockLabel">1/3</b></span>
+            <span class="stat-badge">RÉCORD PERSONAL: <b id="recordLabel">0 PTS</b></span>
+          </div>
+        </div>
+
+        <div class="hero-illustration" id="heroCaptainContainer"></div>
+      </div>
+      <footer class="footer-note">ISLA MATEMÁTICA · APRENDE MULTIPLICANDO Y PERSONALIZA TU TRIPULACIÓN</footer>
+    </section>
+
+    <!-- 2. TIENDA PIRATA (BARCOS Y SOMBREROS) -->
+    <section class="page" id="shop">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> ASTILLEROS Y SASTRERÍA PIRATA</span>
+        <div class="top-controls">
+          <span class="pill-btn gold-pill">🪙 TUS MONEDAS: <b id="bankShopLabel">0</b></span>
+          <button class="action wood back">⬅ PUERTO</button>
+        </div>
+      </header>
+      <div class="subpage">
+        <h2 class="section-title">TIENDA PIRATA</h2>
+        <div class="wood-panel">
+          <div class="shop-tabs">
+            <button class="shop-tab active" data-tab="hats">🎩 SOMBREROS</button>
+            <button class="shop-tab" data-tab="ships">⛵ BARCOS</button>
+          </div>
+          <p id="shopFeedback" style="text-align:center;font-weight:900;margin:0 0 16px;color:#7a491d">Canjea tus monedas por sombreros legendarios y navíos veloces.</p>
+          <div class="shop-grid" id="shopGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. MANUAL DEL EXPLORADOR -->
+    <section class="page" id="how">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> MANUAL DEL EXPLORADOR</span>
+        <button class="action wood back">⬅ VOLVER</button>
+      </header>
+      <div class="subpage">
+        <h2 class="section-title">REGLAS DE LA EXPEDICIÓN</h2>
+        <div class="wood-panel">
+          <div class="instructions">
+            <div class="instruction"><b>01 · Calcula y Elige</b>Resuelve cada operación eligiendo entre 3 opciones. En PC también puedes pulsar las teclas <b>1, 2 o 3</b>.</div>
+            <div class="instruction"><b>02 · Rachas y Vidas</b>Tienes <b>3 corazones</b> por isla. Encadenar aciertos seguidos activa un multiplicador de puntos extra.</div>
+            <div class="instruction"><b>03 · Tienda Pirata</b>Todas las monedas que ganes se guardan en tu cofre para comprar <b>barcos y sombreros</b>.</div>
+          </div>
+          <div class="level-guide-grid">
+            <div class="level-pill"><b>🌴 Isla Verde (Fácil)</b><br>2 cifras × 1 cifra<br>10 pts + 5 monedas por acierto</div>
+            <div class="level-pill"><b>🌅 Isla Dorada (Medio)</b><br>2 cifras × 2 cifras<br>20 pts + 10 monedas por acierto</div>
+            <div class="level-pill"><b>🏴‍☠️ Isla del Tesoro (Difícil)</b><br>3 cifras × 2 cifras<br>30 pts + 15 monedas por acierto</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MAPA DE ISLAS -->
+    <section class="page" id="map">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> CARTA DE NAVEGACIÓN</span>
+        <button class="action wood back">⬅ VOLVER</button>
+      </header>
+      <div class="subpage">
+        <h2 class="section-title">ELIGE TU DESTINO</h2>
+        <div class="islands">
+          <article class="island-card" data-level="1">
+            <div class="island-thumbnail" id="thumb1"><span class="island-badge">NIVEL 1 · FÁCIL</span></div>
+            <h3>ISLA VERDE</h3>
+            <p>Bahía de iniciación. Multiplicaciones de 2 cifras × 1 cifra.</p>
+            <button class="action primary level-btn" data-level="1">ZARPAR AHORA</button>
+          </article>
+          <article class="island-card" data-level="2">
+            <div class="island-thumbnail" id="thumb2"><span class="island-badge">NIVEL 2 · MEDIO</span></div>
+            <h3>ISLA DORADA</h3>
+            <p>Atardecer pirata. Multiplicaciones de 2 cifras × 2 cifras.</p>
+            <button class="action primary level-btn" data-level="2">BLOQUEADA</button>
+          </article>
+          <article class="island-card" data-level="3">
+            <div class="island-thumbnail" id="thumb3"><span class="island-badge">NIVEL 3 · DIFÍCIL</span></div>
+            <h3>ISLA DEL TESORO</h3>
+            <p>El desafío final. Multiplicaciones de 3 cifras × 2 cifras.</p>
+            <button class="action primary level-btn" data-level="3">BLOQUEADA</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. TABLA DE RÉCORDS -->
+    <section class="page" id="records">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> SALÓN DE LA FAMA</span>
+        <button class="action wood back">⬅ VOLVER</button>
+      </header>
+      <div class="subpage">
+        <h2 class="section-title">MEJORES CAPITANES</h2>
+        <div class="wood-panel">
+          <p style="margin-top:0;font-weight:800">Clasificación histórica guardada en este dispositivo:</p>
+          <ul class="records-list" id="recordsList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PANTALLA DE JUEGO -->
+    <section class="page" id="play">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> <span id="islandName">ISLA VERDE</span></span>
+        <div class="hud">
+          <span class="hud-chip">VIDAS <b class="hearts" id="livesDisplay">❤️❤️❤️</b></span>
+          <span class="hud-chip">RACHA <b id="streakNum">x1</b></span>
+          <span class="hud-chip">PUNTOS <b id="scoreNum">0</b></span>
+          <span class="hud-chip">BOTÍN <b id="coinNum">0</b></span>
+          <span class="hud-chip">BONUS <b id="bonusNum">1</b></span>
+        </div>
+        <button class="pill-btn" id="menuDuring">✖ SALIR</button>
+      </header>
+
+      <div class="quest-layout">
+        <div class="quest-main">
+          <div class="progress-header">
+            <span id="missionName">MISIÓN 1 DE 5</span>
+            <span id="timerText">⏱️ 25s</span>
+          </div>
+          <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+          <article class="quest-board">
+            <div class="quest-head">
+              <span>DESAFÍO DE NAVEGACIÓN</span>
+              <span id="captainBadge">CAPITÁN: EXPLORADOR</span>
+            </div>
+            <div class="timer-bar-wrap" id="timerWrap"><div class="timer-bar" id="timerBar"></div></div>
+            <div class="quest-body">
+              <p class="story" id="story">Calcula el resultado para avanzar.</p>
+              <div class="equation" id="equation">24 × 3 = ?</div>
+              <div class="answers">
+                <button class="answer" data-choice="0"><small>TECLA 1 · OPCIÓN A</small><strong>72</strong></button>
+                <button class="answer" data-choice="1"><small>TECLA 2 · OPCIÓN B</small><strong>69</strong></button>
+                <button class="answer" data-choice="2"><small>TECLA 3 · OPCIÓN C</small><strong>78</strong></button>
+              </div>
+              <div class="feedback" id="feedback" aria-live="polite">SELECCIONA LA RESPUESTA CORRECTA</div>
+            </div>
+          </article>
+        </div>
+
+        <aside class="side-explorer">
+          <div id="sideCaptainContainer" style="width:185px;margin:0 auto;filter:drop-shadow(0 14px 12px rgba(0,0,0,.45))"></div>
+          <div class="speech" id="guide">¡Cada cálculo exacto nos acerca al cofre!</div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 7. ISLA COMPLETADA / GAME OVER -->
+    <section class="page" id="complete">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> BITÁCORA DE VIAJE</span>
+        <button class="action wood back">MENÚ</button>
+      </header>
+      <div class="result-wrap">
+        <div class="wood-panel">
+          <h2 id="completeTitle">¡ISLA CONQUISTADA!</h2>
+          <p id="completeText" style="font-weight:800;font-size:1.08rem">Una nueva ruta se ha abierto en el mapa.</p>
+          <div class="scoreline">
+            <span>PUNTOS: <b id="levelScore">0</b></span>
+            <span>MONEDAS GANADAS: <b id="levelCoins">0</b></span>
+          </div>
+          <div class="result-actions">
+            <button class="action primary" id="nextBtn">SIGUIENTE ISLA ➡</button>
+            <button class="action shop-cta" id="completeShop">🏴‍☠️ TIENDA PIRATA</button>
+            <button class="action secondary" id="completeMap">🗺️ VER MAPA</button>
+          </div>
+        </div>
+        <div class="result-art" id="completeShipContainer"></div>
+      </div>
+    </section>
+
+    <!-- 8. VICTORIA FINAL -->
+    <section class="page" id="victory">
+      <header class="topbar">
+        <span class="emblem"><i class="compass-icon"></i> TESORO CONQUISTADO</span>
+        <button class="action wood back">MENÚ</button>
+      </header>
+      <div class="result-wrap">
+        <div class="wood-panel">
+          <h2>¡LEYENDA DE LOS MARES!</h2>
+          <p id="victorySub" style="font-weight:800;font-size:1.08rem">Has conquistado las tres islas y abierto el gran cofre.</p>
+          <div class="scoreline">
+            <span>PUNTOS TOTALES: <b id="finalScore">0</b></span>
+            <span>MONEDAS GANADAS: <b id="finalCoins">0</b></span>
+          </div>
+          <p id="victoryText" style="font-weight:900;color:#8c4d19"></p>
+          <div class="result-actions">
+            <button class="action primary" id="againBtn">🔄 JUGAR DE NUEVO</button>
+            <button class="action shop-cta" id="victoryShop">🏴‍☠️ TIENDA PIRATA</button>
+            <button class="action secondary" id="victoryMap">🗺️ MAPA</button>
+          </div>
+        </div>
+        <svg class="result-art" viewBox="0 0 500 380" aria-hidden="true">
+          <ellipse cx="250" cy="333" rx="216" ry="31" fill="#072238" opacity=".35"/>
+          <path d="M68 161Q95 45 247 48Q398 50 427 165L412 197Q250 212 80 196Z" fill="#a86232" stroke="#482821" stroke-width="14"/>
+          <path d="M92 146Q127 77 247 72Q362 74 404 151" fill="none" stroke="#ffd25a" stroke-width="20"/>
+          <path d="M58 185Q249 207 442 185L413 318Q240 362 91 313Z" fill="#8c4e24" stroke="#482821" stroke-width="14"/>
+          <path d="M67 191Q245 219 437 191M79 287Q248 321 426 286" fill="none" stroke="#ffd25a" stroke-width="18"/>
+          <rect x="217" y="216" width="67" height="75" rx="10" fill="#ffd25a" stroke="#694520" stroke-width="9"/>
+          <circle cx="250" cy="251" r="11" fill="#482821"/>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL BONUS -->
+  <div class="modal" id="bonusDialog" role="dialog" aria-modal="true">
+    <div class="wood-panel">
+      <h2 style="font-family:'Fredoka',sans-serif;margin-top:0">🧭 ¡BRÚJULA DE SEGUNDA OPORTUNIDAD!</h2>
+      <p style="font-weight:800">Puedes usar tu único bonus de esta isla para reintentar <b>esta misma multiplicación</b> y conservar tus vidas.</p>
+      <div class="result-actions">
+        <button class="action primary" id="repeatBtn">USAR BONUS</button>
+        <button class="action wood" id="skipBtn">CONTINUAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SALIR -->
+  <div class="modal" id="exitDialog" role="dialog" aria-modal="true">
+    <div class="wood-panel">
+      <h2 style="font-family:'Fredoka',sans-serif;margin-top:0">⚓ ¿ABANDONAR LA EXPEDICIÓN?</h2>
+      <p style="font-weight:800">Regresarás al puerto principal. Tus monedas y artículos comprados están a salvo.</p>
+      <div class="result-actions">
+        <button class="action wood" id="exitYes">IR AL PUERTO</button>
+        <button class="action secondary" id="exitNo">SEGUIR JUGANDO</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="celebrate" id="celebrate"></div>
+
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const pick = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+
+    // CATÁLOGO DE LA TIENDA PIRATA
+    const CATALOG = {
+      hats: [
+        { id: 'explorer', name: 'Sombrero Explorador', price: 0, desc: 'Clásico sombrero de lona para iniciar la aventura.' },
+        { id: 'tricorn', name: 'Tricornio Capitán', price: 40, desc: 'Sombrero pirata oscuro con ribete de oro puro.' },
+        { id: 'bandana', name: 'Pañuelo Bucanero', price: 75, desc: 'Pañuelo carmesí de los mares del sur.' },
+        { id: 'crown', name: 'Corona Rey Pirata', price: 150, desc: 'Forjada con el oro de las tres islas.' }
+      ],
+      ships: [
+        { id: 'sloop', name: 'Balandra Madera', price: 0, desc: 'Velero ágil ideal para explorar bahías.' },
+        { id: 'caravel', name: 'Carabela Real', price: 60, desc: 'Velas blancas con emblema solar dorado.' },
+        { id: 'ghost', name: 'Galeón Espectral', price: 110, desc: 'Casco azul marino y velas esmeralda.' },
+        { id: 'golden', name: 'Navío Dorado', price: 200, desc: 'El buque insignia más veloz del océano.' }
+      ]
+    };
+
+    function getHatSVG(hatId) {
+      if (hatId === 'tricorn') {
+        return `<path d="M52 94Q180 28 310 94Q265 118 180 106Q95 118 52 94Z" fill="#232936" stroke="#11151c" stroke-width="7"/>
+                <path d="M105 84Q122 14 182 18Q242 14 258 84Z" fill="#2f3747" stroke="#11151c" stroke-width="7"/>
+                <path d="M62 92Q180 42 300 92" fill="none" stroke="#ffd25a" stroke-width="7"/>
+                <circle cx="181" cy="56" r="13" fill="#ffd25a"/>`;
+      }
+      if (hatId === 'bandana') {
+        return `<path d="M96 95Q102 28 181 26Q260 28 266 95Q181 82 96 95Z" fill="#c93636" stroke="#6e1919" stroke-width="7"/>
+                <path d="M94 84Q181 74 268 84L266 102Q181 90 96 102Z" fill="#ffd25a"/>
+                <path d="M262 88L298 72L288 96L302 114L262 98Z" fill="#c93636" stroke="#6e1919" stroke-width="5"/>`;
+      }
+      if (hatId === 'crown') {
+        return `<path d="M106 94L98 34L144 62L181 20L218 62L264 34L256 94Z" fill="#ffd25a" stroke="#8a5614" stroke-width="7" stroke-linejoin="round"/>
+                <rect x="104" y="82" width="154" height="18" rx="6" fill="#e09422" stroke="#8a5614" stroke-width="6"/>
+                <circle cx="181" cy="64" r="9" fill="#e63946"/>
+                <circle cx="136" cy="70" r="7" fill="#2a9d8f"/>
+                <circle cx="226" cy="70" r="7" fill="#2a9d8f"/>`;
+      }
+      // Default: explorer
+      return `<path d="M62 86Q174 14 299 86L293 107Q182 88 68 108Z" fill="#6b4b30" stroke="#422c1a" stroke-width="7"/>
+              <path d="M108 82Q110 2 183 9Q251 9 259 81Z" fill="#7d5636" stroke="#422c1a" stroke-width="7"/>
+              <path d="M114 64Q185 76 258 63" stroke="#ffd25a" stroke-width="14" fill="none"/>`;
+    }
+
+    function renderCaptainSVG(hatId, fullBody = true) {
+      const vb = fullBody ? '0 0 360 510' : '0 0 360 390';
+      const legs = fullBody ? `
+        <ellipse cx="185" cy="490" rx="110" ry="14" fill="#052136" opacity=".35"/>
+        <path d="M104 312L94 471Q100 490 135 488L166 357H193L218 490Q262 502 273 473L253 305Z" fill="#2c4a52" stroke="#1e3338" stroke-width="8"/>
+        <path d="M86 463L145 467L153 493Q124 505 85 493Z" fill="#593a2b"/>
+        <path d="M217 470L269 464L280 496Q255 508 211 493Z" fill="#593a2b"/>` : '';
+      return `<svg viewBox="${vb}" aria-hidden="true">
+        ${legs}
+        <path d="M117 210Q174 181 251 210Q268 265 260 348Q183 372 104 347Z" fill="#d99343" stroke="#754830" stroke-width="8"/>
+        <path d="M114 301Q186 316 259 297" fill="none" stroke="#4f2d1d" stroke-width="22"/>
+        <rect x="171" y="286" width="38" height="32" rx="6" fill="#ffd25a" stroke="#7b5b27" stroke-width="5"/>
+        <ellipse cx="181" cy="134" rx="82" ry="94" fill="#f5b882" stroke="#b87f57" stroke-width="5"/>
+        <ellipse cx="147" cy="148" rx="7" ry="11" fill="#232d36"/>
+        <ellipse cx="221" cy="148" rx="7" ry="11" fill="#232d36"/>
+        <path d="M153 188Q179 208 213 185" fill="none" stroke="#8c4239" stroke-width="7" stroke-linecap="round"/>
+        ${getHatSVG(hatId)}
+      </svg>`;
+    }
+
+    function renderShipSVG(shipId) {
+      const themes = {
+        sloop:   { hull: '#7a4422', trim: '#e8b46f', sail1: '#fff5cb', sail2: '#e9d3a4', flag: '#c93b36', emblem: '' },
+        caravel: { hull: '#8f4722', trim: '#ffd25a', sail1: '#ffffff', sail2: '#f2e8cf', flag: '#e63946', emblem: '<circle cx="155" cy="120" r="22" fill="#f5b942"/>' },
+        ghost:   { hull: '#1d3557', trim: '#48cae4', sail1: '#a8dadc', sail2: '#72efdd', flag: '#560bad', emblem: '<path d="M145 108L165 108L155 135Z" fill="#1d3557"/>' },
+        golden:  { hull: '#d98a26', trim: '#fff3b0', sail1: '#fff8d6', sail2: '#ffe169', flag: '#d90429', emblem: '<polygon points="155,95 162,113 180,113 166,124 171,142 155,131 139,142 144,124 130,113 148,113" fill="#d98a26"/>' }
+      };
+      const t = themes[shipId] || themes.sloop;
+      return `<svg viewBox="0 0 420 310" aria-hidden="true">
+        <ellipse cx="209" cy="276" rx="164" ry="12" fill="#082e42" opacity=".4"/>
+        <path d="M55 208Q173 242 362 209L318 267Q198 308 101 258Z" fill="${t.hull}" stroke="#2b1d19" stroke-width="7"/>
+        <path d="M81 221Q220 245 341 221" fill="none" stroke="${t.trim}" stroke-width="8"/>
+        <path d="M197 21V225" stroke="#4a3121" stroke-width="13"/>
+        <path d="M195 27Q93 93 103 193Q135 180 196 176Z" fill="${t.sail1}" stroke="#7a6248" stroke-width="4"/>
+        ${t.emblem}
+        <path d="M203 50Q298 95 316 183L207 174Z" fill="${t.sail2}" stroke="#7a6248" stroke-width="4"/>
+        <path d="M207 25L271 45L207 66Z" fill="${t.flag}"/>
+      </svg>`;
+    }
+
+    // Fondos SVG dinámicos por isla
+    const landSVG = {
+      green: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x2='0' y2='1'%3E%3Cstop stop-color='%23257cb8'/%3E%3Cstop offset='.7' stop-color='%2388d4e3'/%3E%3Cstop offset='1' stop-color='%23ffe6aa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1600' height='900' fill='url(%23g)'/%3E%3Ccircle cx='1220' cy='170' r='85' fill='%23fff6c9' opacity='.9'/%3E%3Cpath d='M0 560Q400 520 800 555T1600 545V900H0Z' fill='%2316879c'/%3E%3Cpath d='M0 730Q350 650 750 710T1600 720V900H0Z' fill='%23edd18c'/%3E%3Cpath d='M250 720Q480 560 720 715Z' fill='%232e8b57'/%3E%3Cpath d='M980 735Q1220 550 1480 730Z' fill='%23226e44'/%3E%3C/svg%3E")`,
+      gold: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x2='0' y2='1'%3E%3Cstop stop-color='%239c4668'/%3E%3Cstop offset='.65' stop-color='%23f29f67'/%3E%3Cstop offset='1' stop-color='%23ffe299'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1600' height='900' fill='url(%23g)'/%3E%3Ccircle cx='800' cy='260' r='110' fill='%23ffefb5' opacity='.92'/%3E%3Cpath d='M0 560Q400 530 800 555T1600 550V900H0Z' fill='%231b6d85'/%3E%3Cpath d='M0 735Q420 660 850 720T1600 715V900H0Z' fill='%23e3b86b'/%3E%3Cpath d='M180 730Q440 530 710 725Z' fill='%23b5792a'/%3E%3Cpath d='M1020 730Q1260 540 1510 725Z' fill='%238f5b1a'/%3E%3C/svg%3E")`,
+      treasure: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x2='0' y2='1'%3E%3Cstop stop-color='%230c2242'/%3E%3Cstop offset='.65' stop-color='%232e588a'/%3E%3Cstop offset='1' stop-color='%23d49b6a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1600' height='900' fill='url(%23g)'/%3E%3Ccircle cx='1180' cy='160' r='75' fill='%23fff8d6' opacity='.95'/%3E%3Ccircle cx='300' cy='120' r='3' fill='%23fff'/%3E%3Ccircle cx='620' cy='90' r='4' fill='%23fff'/%3E%3Ccircle cx='910' cy='180' r='3' fill='%23fff'/%3E%3Cpath d='M0 560Q400 530 800 555T1600 550V900H0Z' fill='%230e4863'/%3E%3Cpath d='M0 735Q420 660 850 720T1600 715V900H0Z' fill='%23c99e5b'/%3E%3Cpath d='M520 730L800 450L1090 730Z' fill='%233d3852'/%3E%3C/svg%3E")`
+    };
+
+    const screens = ['menu', 'shop', 'how', 'map', 'records', 'play', 'complete', 'victory'];
+    const levels = [
+      null,
+      {
+        label: 'ISLA VERDE', land: 'green', points: 10, coins: 5,
+        story: [
+          'En la bahía hallamos {a} cofres con {b} gemas cada uno. ¿Cuántas gemas hay en total?',
+          'La tripulación cargó {a} barriles con {b} monedas cada uno. ¿Cuántas monedas llevamos?'
+        ]
+      },
+      {
+        label: 'ISLA DORADA', land: 'gold', points: 20, coins: 10,
+        story: [
+          'Entre las dunas hay {a} cofres y cada uno guarda {b} doblones de oro. ¿Cuál es el total?',
+          'Descubrimos {a} mapas antiguos con {b} pistas en cada pergamino. ¿Cuántas pistas son?'
+        ]
+      },
+      {
+        label: 'ISLA DEL TESORO', land: 'treasure', points: 30, coins: 15,
+        story: [
+          'La bóveda real contiene {a} sacos con {b} monedas de platino cada uno. ¿Cuántas monedas son?',
+          'En la cueva del volcán hay {a} estatuas decoradas con {b} rubíes cada una. ¿Cuántos rubíes brillan?'
+        ]
+      }
+    ];
+
+    const state = {
+      screen: 'menu',
+      level: 1,
+      unlocked: 1,
+      question: 0,
+      score: 0,
+      runCoins: 0,
+      bankCoins: 0,
+      ownedHats: ['explorer'],
+      ownedShips: ['sloop'],
+      equippedHat: 'explorer',
+      equippedShip: 'sloop',
+      shopTab: 'hats',
+      lives: 3,
+      streak: 0,
+      bonus: 1,
+      answer: 0,
+      choices: [],
+      locked: false,
+      sound: true,
+      useTimer: true,
+      timeLeft: 25,
+      timerInterval: null,
+      nextTimer: null,
+      records: []
+    };
+
+    // Cargar progreso e inventario guardado
+    try {
+      state.unlocked = Math.max(1, Number(localStorage.getItem('im_unlocked') || 1));
+      state.bankCoins = Math.max(0, Number(localStorage.getItem('im_bank_coins') || 0));
+      state.ownedHats = JSON.parse(localStorage.getItem('im_owned_hats') || '["explorer"]');
+      state.ownedShips = JSON.parse(localStorage.getItem('im_owned_ships') || '["sloop"]');
+      state.equippedHat = localStorage.getItem('im_eq_hat') || 'explorer';
+      state.equippedShip = localStorage.getItem('im_eq_ship') || 'sloop';
+      state.records = JSON.parse(localStorage.getItem('im_records') || '[]');
+      const savedName = localStorage.getItem('im_captain');
+      if (savedName) $('playerName').value = savedName;
+    } catch (e) {}
+
+    function persistInventory() {
+      try {
+        localStorage.setItem('im_bank_coins', String(state.bankCoins));
+        localStorage.setItem('im_owned_hats', JSON.stringify(state.ownedHats));
+        localStorage.setItem('im_owned_ships', JSON.stringify(state.ownedShips));
+        localStorage.setItem('im_eq_hat', state.equippedHat);
+        localStorage.setItem('im_eq_ship', state.equippedShip);
+      } catch (e) {}
+    }
+
+    function applyCosmetics() {
+      $('heroCaptainContainer').innerHTML = renderCaptainSVG(state.equippedHat, true);
+      $('sideCaptainContainer').innerHTML = renderCaptainSVG(state.equippedHat, false);
+      $('bgShipContainer').innerHTML = renderShipSVG(state.equippedShip);
+      $('completeShipContainer').innerHTML = renderShipSVG(state.equippedShip);
+      $('bankMenuLabel').textContent = state.bankCoins;
+      $('bankShopLabel').textContent = state.bankCoins;
+    }
+
+    // Inicializar miniaturas del mapa y cosméticos
+    $('thumb1').style.backgroundImage = landSVG.green;
+    $('thumb2').style.backgroundImage = landSVG.gold;
+    $('thumb3').style.backgroundImage = landSVG.treasure;
+    applyCosmetics();
+
+    // Sintetizador Web Audio
+    let audioCtx = null;
+    function playTone(kind) {
+      if (!state.sound) return;
+      try {
+        audioCtx ??= new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const seq = kind === 'win' ? [392, 523, 659, 784, 1046]
+                  : kind === 'buy' ? [587, 784, 1046]
+                  : kind === 'good' ? [523, 659, 880]
+                  : kind === 'bad' ? [310, 220]
+                  : [480];
+        seq.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const t = audioCtx.currentTime + idx * 0.08;
+          osc.type = kind === 'bad' ? 'sawtooth' : 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.001, t);
+          gain.gain.exponentialRampToValueAtTime(0.07, t + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+          osc.connect(gain).connect(audioCtx.destination);
+          osc.start(t);
+          osc.stop(t + 0.24);
+        });
+      } catch (e) {}
+    }
+
+    function stopTimers() {
+      clearInterval(state.timerInterval);
+      clearTimeout(state.nextTimer);
+      state.timerInterval = null;
+      state.nextTimer = null;
+    }
+
+    function show(screen) {
+      stopTimers();
+      state.screen = screen;
+      screens.forEach(id => $(id).classList.toggle('active', id === screen));
+      $('landscape').style.backgroundImage = landSVG[levels[state.level].land];
+      $('bonusDialog').classList.remove('open');
+      $('exitDialog').classList.remove('open');
+      applyCosmetics();
+
+      if (screen === 'menu') {
+        const best = state.records.length ? state.records[0].score : 0;
+        $('unlockLabel').textContent = `${state.unlocked}/3`;
+        $('recordLabel').textContent = `${best} PTS`;
+      } else if (screen === 'map') {
+        refreshMap();
+      } else if (screen === 'records') {
+        renderRecords();
+      } else if (screen === 'shop') {
+        renderShop();
+      }
+      window.scrollTo(0, 0);
+    }
+
+    // LÓGICA DE TIENDA PIRATA
+    function renderShop() {
+      const isHats = state.shopTab === 'hats';
+      const items = isHats ? CATALOG.hats : CATALOG.ships;
+      const owned = isHats ? state.ownedHats : state.ownedShips;
+      const equipped = isHats ? state.equippedHat : state.equippedShip;
+
+      $('shopGrid').innerHTML = items.map(item => {
+        const isOwned = owned.includes(item.id);
+        const isEq = equipped === item.id;
+        const preview = isHats
+          ? `<svg viewBox="40 5 280 120">${getHatSVG(item.id)}</svg>`
+          : renderShipSVG(item.id);
+
+        let btnHTML = '';
+        if (isEq) {
+          btnHTML = `<button class="action equipped" disabled>✅ EQUIPADO</button>`;
+        } else if (isOwned) {
+          btnHTML = `<button class="action secondary shop-action" data-id="${item.id}">EQUIPAR</button>`;
+        } else {
+          const canAfford = state.bankCoins >= item.price;
+          btnHTML = `<button class="action primary shop-action" data-id="${item.id}" ${canAfford ? '' : 'disabled'}>🪙 ${item.price}</button>`;
+        }
+
+        return `
+          <div class="shop-item ${isEq ? 'is-equipped' : ''}">
+            <div>
+              <div class="shop-preview">${preview}</div>
+              <h4>${item.name}</h4>
+              <p>${item.desc}</p>
+            </div>
+            ${btnHTML}
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.shop-action').forEach(btn => {
+        btn.onclick = () => handleShopAction(btn.dataset.id);
+      });
+    }
+
+    function handleShopAction(id) {
+      const isHats = state.shopTab === 'hats';
+      const items = isHats ? CATALOG.hats : CATALOG.ships;
+      const owned = isHats ? state.ownedHats : state.ownedShips;
+      const item = items.find(x => x.id === id);
+      if (!item) return;
+
+      if (owned.includes(id)) {
+        if (isHats) state.equippedHat = id;
+        else state.equippedShip = id;
+        playTone('click');
+        $('shopFeedback').textContent = `✨ ¡Has equipado: ${item.name}!`;
+      } else if (state.bankCoins >= item.price) {
+        state.bankCoins -= item.price;
+        owned.push(id);
+        if (isHats) state.equippedHat = id;
+        else state.equippedShip = id;
+        playTone('buy');
+        spawnConfetti(25);
+        $('shopFeedback').textContent = `🎉 ¡Compraste y equipaste: ${item.name}!`;
+      }
+
+      persistInventory();
+      applyCosmetics();
+      renderShop();
+    }
+
+    document.querySelectorAll('.shop-tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        state.shopTab = tab.dataset.tab;
+        playTone('click');
+        renderShop();
+      };
+    });
+
+    function refreshMap() {
+      document.querySelectorAll('.island-card').forEach(card => {
+        const lvl = Number(card.dataset.level);
+        const locked = lvl > state.unlocked;
+        card.classList.toggle('locked', locked);
+        const btn = card.querySelector('button');
+        btn.disabled = locked;
+        btn.textContent = locked ? '🔒 BLOQUEADA' : '⛵ ZARPAR AHORA';
+      });
+    }
+
+    function saveRecord() {
+      const name = ($('playerName').value.trim() || 'Explorador').toUpperCase();
+      try { localStorage.setItem('im_captain', name); } catch (e) {}
+      if (state.score <= 0) return;
+      state.records.push({
+        name,
+        score: state.score,
+        coins: state.runCoins,
+        date: new Date().toLocaleDateString('es-EC')
+      });
+      state.records.sort((a, b) => b.score - a.score);
+      state.records = state.records.slice(0, 5);
+      try { localStorage.setItem('im_records', JSON.stringify(state.records)); } catch (e) {}
+    }
+
+    function renderRecords() {
+      const list = $('recordsList');
+      if (!state.records.length) {
+        list.innerHTML = '<li><span>Aún no hay expediciones registradas. ¡Sé el primero!</span></li>';
+        return;
+      }
+      list.innerHTML = state.records.map((r, i) => `
+        <li>
+          <span>#${i + 1} · <b>${r.name}</b> <small style="opacity:.7">(${r.date})</small></span>
+          <span>⭐ ${r.score} PTS · 🪙 ${r.coins}</span>
+        </li>
+      `).join('');
+    }
+
+    function newAdventure() {
+      state.score = 0;
+      state.runCoins = 0;
+      state.streak = 0;
+      startLevel(1);
+    }
+
+    function startLevel(lvl) {
+      if (lvl > state.unlocked) return;
+      state.level = lvl;
+      state.question = 0;
+      state.lives = 3;
+      state.bonus = 1;
+      state.useTimer = $('timerMode').checked;
+      const cap = ($('playerName').value.trim() || 'Explorador').toUpperCase();
+      $('captainBadge').textContent = `CAPITÁN: ${cap}`;
+      show('play');
+      nextQuestion();
+    }
+
+    function generateChoices(correct) {
+      const set = new Set([correct]);
+      const spread = Math.max(10, Math.floor(correct * 0.16));
+      while (set.size < 3) {
+        const offset = Math.random() < 0.4 ? (Math.random() < 0.5 ? 10 : -10) : pick(-spread, spread);
+        const candidate = correct + offset;
+        if (candidate > 0 && candidate !== correct) set.add(candidate);
+      }
+      return [...set].sort(() => Math.random() - 0.5);
+    }
+
+    function startQuestionTimer() {
+      clearInterval(state.timerInterval);
+      if (!state.useTimer) {
+        $('timerText').textContent = '⏱️ SIN LÍMITE';
+        $('timerWrap').style.visibility = 'hidden';
+        return;
+      }
+      $('timerWrap').style.visibility = 'visible';
+      state.timeLeft = 25;
+      updateTimerUI();
+      state.timerInterval = setInterval(() => {
+        if (state.locked) return;
+        state.timeLeft--;
+        updateTimerUI();
+        if (state.timeLeft <= 0) {
+          clearInterval(state.timerInterval);
+          handleTimeout();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      $('timerText').textContent = `⏱️ ${state.timeLeft}s`;
+      const pct = Math.max(0, (state.timeLeft / 25) * 100);
+      const bar = $('timerBar');
+      bar.style.width = `${pct}%`;
+      bar.style.background = state.timeLeft > 12 ? '#4cd137' : state.timeLeft > 6 ? '#fbc531' : '#e84118';
+    }
+
+    function handleTimeout() {
+      state.locked = true;
+      state.streak = 0;
+      state.lives--;
+      playTone('bad');
+      document.querySelectorAll('.answer').forEach(b => b.disabled = true);
+      $('feedback').textContent = `⌛ ¡SE ACABÓ EL TIEMPO! LA RESPUESTA ERA ${state.answer.toLocaleString('es-EC')}`;
+      $('guide').textContent = '¡Más rápido en la próxima ola, capitán!';
+      updateHud();
+      state.nextTimer = setTimeout(advanceAfterTurn, 1300);
+    }
+
+    function nextQuestion() {
+      state.question++;
+      state.locked = false;
+      let a, b;
+      if (state.level === 1) { a = pick(12, 98); b = pick(2, 9); }
+      else if (state.level === 2) { a = pick(12, 95); b = pick(11, 89); }
+      else { a = pick(105, 890); b = pick(12, 75); }
+
+      state.answer = a * b;
+      state.choices = generateChoices(state.answer);
+
+      const cfg = levels[state.level];
+      const template = cfg.story[pick(0, cfg.story.length - 1)];
+      $('story').textContent = template.replaceAll('{a}', a).replaceAll('{b}', b);
+      $('equation').textContent = `${a} × ${b} = ?`;
+      $('feedback').textContent = 'ELIGE LA RESPUESTA CORRECTA';
+      $('guide').textContent = '¡Cada cálculo exacto nos acerca al cofre!';
+
+      document.querySelectorAll('.answer').forEach((btn, idx) => {
+        btn.disabled = false;
+        btn.classList.remove('correct', 'wrong');
+        btn.querySelector('strong').textContent = state.choices[idx].toLocaleString('es-EC');
+      });
+
+      updateHud();
+      startQuestionTimer();
+    }
+
+    function updateHud() {
+      $('islandName').textContent = levels[state.level].label;
+      $('missionName').textContent = `MISIÓN ${state.question} DE 5`;
+      $('livesDisplay').textContent = '❤️'.repeat(Math.max(0, state.lives)) + '🖤'.repeat(Math.max(0, 3 - state.lives));
+      $('streakNum').textContent = `x${Math.max(1, state.streak)}`;
+      $('scoreNum').textContent = state.score;
+      $('coinNum').textContent = state.bankCoins;
+      $('bonusNum').textContent = state.bonus;
+      $('progressBar').style.width = `${((state.question - 1) / 5) * 100}%`;
+    }
+
+    function spawnConfetti(amount) {
+      const box = $('celebrate');
+      const colors = ['#ffe169', '#ff9f43', '#48dbfb', '#1dd1a1', '#ff6b6b'];
+      for (let i = 0; i < amount; i++) {
+        const el = document.createElement('b');
+        el.style.left = `${pick(2, 98)}%`;
+        el.style.background = colors[pick(0, colors.length - 1)];
+        el.style.setProperty('--time', `${pick(16, 32) / 10}s`);
+        el.style.setProperty('--dx', `${pick(-140, 140)}px`);
+        box.append(el);
+        setTimeout(() => el.remove(), 3500);
+      }
+    }
+
+    function choose(idx) {
+      if (state.screen !== 'play' || state.locked) return;
+      state.locked = true;
+      clearInterval(state.timerInterval);
+
+      const isCorrect = state.choices[idx] === state.answer;
+      const buttons = [...document.querySelectorAll('.answer')];
+      buttons.forEach(b => b.disabled = true);
+      buttons[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+
+      if (isCorrect) {
+        state.streak++;
+        const mult = state.streak >= 3 ? 2 : 1;
+        const pts = levels[state.level].points * mult;
+        const cns = levels[state.level].coins;
+        state.score += pts;
+        state.runCoins += cns;
+        state.bankCoins += cns;
+        persistInventory();
+
+        $('feedback').textContent = mult > 1
+          ? `🔥 ¡RACHA x${state.streak}! +${pts} PUNTOS (DOBLE) Y +${cns} MONEDAS`
+          : `✨ ¡CORRECTO! +${pts} PUNTOS Y +${cns} MONEDAS`;
+        $('guide').textContent = mult > 1 ? '¡Imparable! ¡Puntos dobles por racha!' : '¡Monedas guardadas en tu cofre!';
+        playTone('good');
+        spawnConfetti(16);
+        updateHud();
+        state.nextTimer = setTimeout(advanceAfterTurn, 1050);
+      } else {
+        playTone('bad');
+        $('feedback').textContent = '❌ RESPUESTA INCORRECTA';
+        $('guide').textContent = '¡Revisa bien las decenas antes de disparar!';
+        state.nextTimer = setTimeout(() => {
+          if (state.bonus > 0) {
+            $('bonusDialog').classList.add('open');
+            $('repeatBtn').focus();
+          } else {
+            state.streak = 0;
+            state.lives--;
+            updateHud();
+            advanceAfterTurn();
+          }
+        }, 650);
+      }
+    }
+
+    function advanceAfterTurn() {
+      if (state.screen !== 'play') return;
+      if (state.lives <= 0) {
+        saveRecord();
+        $('completeTitle').textContent = '💀 ¡BARCO ENCALLADO!';
+        $('completeText').textContent = 'Te quedaste sin corazones, pero conservas todas tus monedas para la tienda.';
+        $('levelScore').textContent = state.score;
+        $('levelCoins').textContent = state.runCoins;
+        $('nextBtn').textContent = '🔄 REINTENTAR ISLA';
+        $('nextBtn').onclick = () => startLevel(state.level);
+        show('complete');
+        return;
+      }
+
+      $('progressBar').style.width = `${(state.question / 5) * 100}%`;
+      state.nextTimer = setTimeout(() => {
+        if (state.question >= 5) finishIsland();
+        else nextQuestion();
+      }, 450);
+    }
+
+    function finishIsland() {
+      if (state.level === 3) {
+        state.unlocked = 3;
+        try { localStorage.setItem('im_unlocked', '3'); } catch (e) {}
+        saveRecord();
+        $('finalScore').textContent = state.score;
+        $('finalCoins').textContent = state.runCoins;
+        $('victoryText').textContent = `¡Felicidades, Capitán ${($('playerName').value.trim() || 'Explorador').toUpperCase()}! Tienes ${state.bankCoins} monedas listas para la Tienda Pirata.`;
+        show('victory');
+        playTone('win');
+        spawnConfetti(85);
+      } else {
+        state.unlocked = Math.max(state.unlocked, state.level + 1);
+        try { localStorage.setItem('im_unlocked', String(state.unlocked)); } catch (e) {}
+        $('completeTitle').textContent = `🏆 ¡${levels[state.level].label} CONQUISTADA!`;
+        $('completeText').textContent = `Has desbloqueado ${levels[state.level + 1].label}. ¡Visita la Tienda Pirata o continúa!`;
+        $('levelScore').textContent = state.score;
+        $('levelCoins').textContent = state.runCoins;
+        $('nextBtn').textContent = 'SIGUIENTE ISLA ➡';
+        $('nextBtn').onclick = () => startLevel(state.level + 1);
+        show('complete');
+        playTone('win');
+        spawnConfetti(45);
+      }
+    }
+
+    // Eventos UI
+    $('soundBtn').onclick = () => {
+      state.sound = !state.sound;
+      $('soundBtn').textContent = state.sound ? '🔊 SONIDO: SÍ' : '🔇 SONIDO: NO';
+      playTone('click');
+    };
+    $('startBtn').onclick = () => { playTone('click'); newAdventure(); };
+    $('shopBtn').onclick = () => { playTone('click'); show('shop'); };
+    $('howBtn').onclick = () => { playTone('click'); show('how'); };
+    $('mapBtn').onclick = () => { playTone('click'); show('map'); };
+    $('recordsBtn').onclick = () => { playTone('click'); show('records'); };
+    document.querySelectorAll('.back').forEach(b => b.onclick = () => { playTone('click'); show('menu'); });
+    document.querySelectorAll('.level-btn').forEach(b => b.onclick = () => { playTone('click'); startLevel(Number(b.dataset.level)); });
+    document.querySelectorAll('.answer').forEach(b => b.onclick = () => choose(Number(b.dataset.choice)));
+
+    $('completeMap').onclick = () => show('map');
+    $('completeShop').onclick = () => show('shop');
+    $('againBtn').onclick = newAdventure;
+    $('victoryMap').onclick = () => show('map');
+    $('victoryShop').onclick = () => show('shop');
+    $('menuDuring').onclick = () => $('exitDialog').classList.add('open');
+    $('exitYes').onclick = () => { saveRecord(); show('menu'); };
+    $('exitNo').onclick = () => $('exitDialog').classList.remove('open');
+
+    $('repeatBtn').onclick = () => {
+      if (state.bonus <= 0) return;
+      state.bonus = 0;
+      state.locked = false;
+      $('bonusDialog').classList.remove('open');
+      $('feedback').textContent = '🧭 ¡SEGUNDA OPORTUNIDAD ACTIVADA!';
+      $('guide').textContent = '¡Concéntrate, esta es la buena!';
+      document.querySelectorAll('.answer').forEach(b => {
+        b.disabled = false;
+        b.classList.remove('wrong', 'correct');
+      });
+      updateHud();
+      startQuestionTimer();
+      playTone('click');
+    };
+
+    $('skipBtn').onclick = () => {
+      $('bonusDialog').classList.remove('open');
+      state.streak = 0;
+      state.lives--;
+      updateHud();
+      advanceAfterTurn();
+    };
+
+    // Atajos de teclado (1, 2, 3) para jugar rápido en PC
+    window.addEventListener('keydown', e => {
+      if (state.screen !== 'play' || state.locked) return;
+      if (e.key === '1' || e.key.toLowerCase() === 'a') choose(0);
+      if (e.key === '2' || e.key.toLowerCase() === 'b') choose(1);
+      if (e.key === '3' || e.key.toLowerCase() === 'c') choose(2);
+    });
+
+    show('menu');
+  </script>
+</body>
+</html>
