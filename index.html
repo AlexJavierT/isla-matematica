@@ -729,6 +729,110 @@
     @media(prefers-reduced-motion:reduce){.jake-motion.jake-spin,.island-thumbnail::after{animation:none!important}}
 
   </style>
+<style>
+/* ===== ISLA MATEMÁTICA · MEJORAS VISUALES ===== */
+
+/* Fondo vivo */
+.landscape{animation:skyPan 30s ease-in-out infinite alternate}
+@keyframes skyPan{to{transform:scale(1.07)}}
+.fx-layer{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.fx-layer span{position:absolute;bottom:-50px;opacity:0;animation:floatUp linear infinite}
+@keyframes floatUp{0%{translate:0 0;opacity:0}10%{opacity:.9}90%{opacity:.9}100%{translate:40px -108vh;opacity:0}}
+
+/* Animaciones base */
+@keyframes bob{50%{translate:0 -9px}}
+@keyframes pulseBtn{50%{scale:1.06}}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
+@keyframes popIn{0%{transform:scale(.4) rotate(-6deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes starPop{0%{transform:scale(0) rotate(-120deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes titlePulse{50%{scale:1.05}}
+@keyframes titleBob{50%{translate:0 -8px}}
+@keyframes glowBoard{to{box-shadow:0 0 0 4px #ffd25a,0 0 40px 8px rgba(255,214,90,.55),0 16px 0 #432316,0 24px 36px rgba(4,20,35,.6)}}
+@keyframes hurry{to{scale:1.18;color:#ff5a4a}}
+@keyframes chestShake{0%,100%{rotate:0deg}25%{rotate:-10deg}75%{rotate:10deg}}
+@keyframes pop{50%{scale:1.12}}
+
+/* Título y botones del menú con brillo */
+.main-title{animation:titleBob 4s ease-in-out infinite}
+.action{position:relative;overflow:hidden}
+.action::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 3.6s infinite}
+.action:disabled::after{display:none}
+#startBtn,#guideStart{animation:pulseBtn 1.8s ease-in-out infinite}
+
+/* HUD más colorido */
+.hud-chip{border-width:3px;font-size:.95rem;box-shadow:0 4px 0 rgba(0,0,0,.3)}
+.hud-chip:nth-child(1){border-color:#ff7b8a}
+.hud-chip:nth-child(2){border-color:#ff9f43}
+.hud-chip:nth-child(3){border-color:#48dbfb}
+.hud-chip:nth-child(4){border-color:#ffd25a}
+.hud-chip:nth-child(5){border-color:#a78bfa}
+#timerText.hurry{display:inline-block;animation:hurry .5s infinite alternate;color:#ff6b5e}
+
+/* Tablero de pregunta */
+.quest-board{animation:glowBoard 2.6s ease-in-out infinite alternate}
+.story{font-size:1.25rem}
+.equation{font-size:clamp(3.2rem,7vw,5.6rem);background:linear-gradient(180deg,#fff,#fff0c0);border:4px solid #ffcf5a;
+  box-shadow:0 8px 0 rgba(104,59,36,.25);animation:bob 3.5s ease-in-out infinite}
+.progress-bar{box-shadow:0 0 14px #ffd25a}
+.timer-bar-wrap{height:10px}
+
+/* ===== BOTONES DE RESPUESTA: solo números, flotantes, de colores ===== */
+.answer small{display:none}
+.answers{gap:22px}
+.answers .answer,.chest-opt{
+  position:relative;overflow:hidden;min-height:112px;border:5px solid #fff;border-radius:26px;
+  font-family:'Fredoka',sans-serif;font-size:clamp(2rem,4.2vw,3.2rem);color:#fff;cursor:pointer;
+  text-shadow:0 3px 0 rgba(0,0,0,.28);
+  background:linear-gradient(180deg,var(--c1),var(--c2));
+  box-shadow:0 10px 0 var(--sh),0 22px 28px rgba(0,0,0,.4);
+  animation:bob 3s ease-in-out infinite;transition:transform .15s,filter .15s}
+.answers .answer::before,.chest-opt::before{content:'';position:absolute;inset:6px 12px auto;height:38%;border-radius:18px;
+  background:linear-gradient(180deg,rgba(255,255,255,.42),transparent);pointer-events:none}
+.answers .answer strong,.chest-opt{position:relative}
+.answers .answer:nth-child(1),.chest-opt:nth-child(1){--c1:#ff8a5b;--c2:#e8452c;--sh:#8f2414}
+.answers .answer:nth-child(2),.chest-opt:nth-child(2){--c1:#3ddc97;--c2:#13946a;--sh:#0a5a40;animation-delay:-1s}
+.answers .answer:nth-child(3),.chest-opt:nth-child(3){--c1:#a78bfa;--c2:#6d3fd6;--sh:#3b1f86;animation-delay:-2s}
+.answers .answer:hover:not(:disabled),.chest-opt:hover:not(:disabled){
+  background:linear-gradient(180deg,var(--c1),var(--c2));filter:brightness(1.12);transform:translateY(-6px) scale(1.05)}
+.answers .answer:active:not(:disabled),.chest-opt:active:not(:disabled){transform:translateY(4px) scale(.97)}
+.answers .answer:disabled,.chest-opt:disabled{animation:none;opacity:.7}
+.answers .answer.correct,.chest-opt.correct{background:linear-gradient(180deg,#6bff95,#1c9a49)!important;opacity:1;animation:pop .5s 2;box-shadow:0 0 0 6px #fff59a,0 0 35px 10px rgba(110,255,150,.8)}
+.answers .answer.wrong,.chest-opt.wrong{background:linear-gradient(180deg,#ff6b5e,#a8281c)!important;opacity:1;animation:shake .35s}
+@media(max-width:520px){.answers .answer{justify-content:center!important;min-height:84px}}
+
+/* ===== Mapa: islas flotantes ===== */
+.island-card:not(.locked){animation:bob 4.5s ease-in-out infinite}
+.island-card:nth-child(2){animation-delay:-1.5s!important}
+.island-card:nth-child(3){animation-delay:-3s!important}
+.island-card:not(.locked):hover{box-shadow:0 0 0 4px #ffd25a,0 0 36px 8px rgba(255,214,90,.6),0 12px 0 #3f2417}
+
+/* ===== Isla completada / victoria ===== */
+#complete .wood-panel,#victory .wood-panel{
+  animation:popIn .7s cubic-bezier(.2,1.4,.4,1) both;
+  background:radial-gradient(circle at 50% 0,#fff8d0,#f3d58f 70%);
+  box-shadow:0 0 0 5px #ffd25a,0 0 50px 12px rgba(255,214,90,.65),0 14px 0 var(--wood-dark),0 30px 50px rgba(0,0,0,.55)}
+#complete .wood-panel.lose{box-shadow:0 0 0 5px #b85c4a,0 0 40px 8px rgba(200,70,60,.4),0 14px 0 var(--wood-dark),0 30px 50px rgba(0,0,0,.55)}
+#complete h2,#victory h2{font-size:clamp(2.2rem,4.5vw,3.6rem);color:#e4521b;text-shadow:0 4px 0 #5c3114,0 0 22px rgba(255,200,60,.8);animation:titlePulse 1.6s ease-in-out infinite}
+#starsRow{display:flex;justify-content:center;gap:10px;font-size:clamp(3rem,7vw,4.6rem);margin:6px 0}
+#starsRow span{display:inline-block;animation:starPop .8s cubic-bezier(.2,1.8,.4,1) both;filter:drop-shadow(0 5px 6px rgba(120,60,0,.5))}
+#starsRow span.off{filter:grayscale(1) brightness(.8);opacity:.45}
+#starsRow .sad{animation:chestShake 1s infinite}
+.scoreline span{font-size:1.3rem;background:rgba(255,255,255,.55);border:3px solid #e5b25d}
+.result-art{max-height:380px}
+
+/* ===== Cofre de la vida ===== */
+.chest-panel{animation:popIn .5s cubic-bezier(.2,1.5,.4,1)}
+.chest-panel h2{font-family:'Fredoka',sans-serif;margin:0 0 6px;color:#8c4d19}
+.chest-icon{font-size:4.6rem;display:inline-block;animation:chestShake 1s infinite}
+.chest-eq{font:700 clamp(2.6rem,8vw,3.8rem) Fredoka,sans-serif;color:#0e4a5e;margin:6px 0 16px}
+.chest-answers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.chest-opt{min-height:84px;font-size:2.2rem}
+.chest-msg{font-weight:900;min-height:26px;color:#7a491d;margin:14px 0 0}
+
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+</style>
 </head>
 <body>
   <main class="world" id="world">
@@ -1654,5 +1758,154 @@
 
     show('menu');
   </script>
+<script>
+/* ===== ISLA MATEMÁTICA · MEJORAS (se carga DESPUÉS del script principal) ===== */
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+
+  /* 1) TIEMPOS POR ISLA (segundos): Verde, Dorada, Tesoro  -> cámbialos aquí */
+  const LIMITS = [0, 30, 50, 60];
+
+  window.startQuestionTimer = function () {
+    clearInterval(state.timerInterval);
+    if (!state.useTimer) {
+      $('timerText').textContent = '⏱️ SIN LÍMITE';
+      $('timerWrap').style.visibility = 'hidden';
+      return;
+    }
+    $('timerWrap').style.visibility = 'visible';
+    state.limit = LIMITS[state.level];
+    state.timeLeft = state.limit;
+    updateTimerUI();
+    state.timerInterval = setInterval(() => {
+      if (state.locked) return;
+      state.timeLeft--;
+      updateTimerUI();
+      if (state.timeLeft <= 0) { clearInterval(state.timerInterval); handleTimeout(); }
+    }, 1000);
+  };
+
+  window.updateTimerUI = function () {
+    const pct = Math.max(0, (state.timeLeft / (state.limit || 60)) * 100);
+    const bar = $('timerBar');
+    $('timerText').textContent = `⏱️ ${state.timeLeft}s`;
+    $('timerText').classList.toggle('hurry', pct <= 20);
+    bar.style.width = pct + '%';
+    bar.style.background = pct > 45 ? '#4cd137' : pct > 20 ? '#fbc531' : '#e84118';
+  };
+
+  // Textos del menú y del manual con los nuevos tiempos
+  const tm = $('timerMode');
+  if (tm && tm.nextElementSibling) tm.nextElementSibling.textContent = '⏱️ Contrarreloj (30s · 50s · 60s)';
+  document.querySelectorAll('.guide-stage p').forEach(p => {
+    if (p.textContent.includes('60 segundos'))
+      p.innerHTML = 'Comienzas con <b>3 corazones</b>. Tiempo por pregunta: <b>30s</b>, <b>50s</b> y <b>60s</b> según la isla. ¡Con <b>3 aciertos seguidos</b> aparece el cofre de vida!';
+  });
+
+  /* 2) PARTÍCULAS DE FONDO */
+  const fx = document.createElement('div');
+  fx.className = 'fx-layer';
+  ['✨', '⭐', '🪙', '💎', '🫧', '✨', '🪙', '⭐', '💎', '🫧'].forEach((e, i) => {
+    const s = document.createElement('span');
+    s.textContent = e;
+    s.style.left = (5 + i * 10) + '%';
+    s.style.fontSize = (18 + (i % 3) * 10) + 'px';
+    s.style.animationDuration = (9 + (i % 4) * 3) + 's';
+    s.style.animationDelay = (-i * 1.7) + 's';
+    fx.append(s);
+  });
+  $('world').prepend(fx);
+
+  /* 3) COFRE DE LA VIDA: con racha de 3, si te falta algún corazón, responde y recupera 1 */
+  const chest = document.createElement('div');
+  chest.className = 'modal';
+  chest.innerHTML = `<div class="wood-panel chest-panel">
+    <div class="chest-icon" id="chestIcon">🎁</div>
+    <h2>¡COFRE DE LA VIDA!</h2>
+    <p style="font-weight:800;margin:0">¡Gran racha! Resuelve este reto y recupera <b>1 corazón</b> ❤️</p>
+    <div class="chest-eq" id="chestEq"></div>
+    <div class="chest-answers" id="chestAnswers"></div>
+    <p class="chest-msg" id="chestMsg"></p></div>`;
+  document.body.append(chest);
+
+  const _adv = window.advanceAfterTurn;
+  window.advanceAfterTurn = function () {
+    if (state.streak === 0) state.chestStreak = 0;
+    if (state.screen === 'play' && state.lives > 0 && state.lives < 3 &&
+        state.streak > 0 && state.streak % 3 === 0 && state.question < 5 &&
+        state.chestStreak !== state.streak) {
+      state.chestStreak = state.streak;
+      openChest();
+      return;
+    }
+    _adv();
+  };
+
+  function openChest() {
+    const a = pick(3, 9), b = pick(3, 9), ans = a * b;
+    const set = new Set([ans]);
+    while (set.size < 3) { const c = ans + pick(-9, 9); if (c > 0) set.add(c); }
+    const opts = [...set].sort(() => Math.random() - .5);
+    $('chestIcon').textContent = '🎁';
+    $('chestMsg').textContent = '';
+    $('chestEq').textContent = `${a} × ${b} = ?`;
+    $('chestAnswers').innerHTML = opts.map(o => `<button class="chest-opt" data-v="${o}">${o}</button>`).join('');
+    chest.classList.add('open');
+    playTone('buy');
+    let done = false;
+    $('chestAnswers').querySelectorAll('.chest-opt').forEach(btn => btn.onclick = () => {
+      if (done) return;
+      done = true;
+      const ok = Number(btn.dataset.v) === ans;
+      $('chestAnswers').querySelectorAll('.chest-opt').forEach(x => {
+        x.disabled = true;
+        if (Number(x.dataset.v) === ans) x.classList.add('correct');
+      });
+      if (ok) {
+        state.lives = Math.min(3, state.lives + 1);
+        $('chestIcon').textContent = '💖';
+        $('chestMsg').textContent = '¡Recuperaste un corazón! ❤️';
+        playTone('win'); spawnConfetti(40); updateHud();
+      } else {
+        btn.classList.add('wrong');
+        $('chestIcon').textContent = '💨';
+        $('chestMsg').textContent = `El cofre se cerró... la respuesta era ${ans}. ¡Sigue así!`;
+        playTone('bad');
+      }
+      setTimeout(() => { chest.classList.remove('open'); if (state.screen === 'play') _adv(); }, 1500);
+    });
+  }
+
+  /* 4) PANTALLAS DE ISLA COMPLETADA / VICTORIA MÁS LLAMATIVAS */
+  const _show = window.show;
+  window.show = function (s) {
+    chest.classList.remove('open');
+    _show(s);
+    if (s === 'complete') celebrate();
+    if (s === 'victory') [0, 600, 1300, 2200].forEach(t => setTimeout(() => { if (state.screen === 'victory') spawnConfetti(60); }, t));
+  };
+
+  function celebrate() {
+    const panel = document.querySelector('#complete .wood-panel');
+    let row = $('starsRow');
+    if (!row) {
+      row = document.createElement('div');
+      row.id = 'starsRow';
+      panel.insertBefore(row, panel.querySelector('.scoreline'));
+    }
+    const win = state.lives > 0;
+    panel.classList.toggle('lose', !win);
+    if (win) {
+      row.innerHTML = [1, 2, 3].map(i =>
+        `<span class="${i <= state.lives ? 'on' : 'off'}" style="animation-delay:${i * .35}s">⭐</span>`).join('');
+      [0, 500, 1100, 1800].forEach(t => setTimeout(() => { if (state.screen === 'complete') spawnConfetti(50); }, t));
+    } else {
+      row.innerHTML = '<span class="sad">💀</span>';
+    }
+  }
+})();
+
+</script>
 </body>
 </html>
