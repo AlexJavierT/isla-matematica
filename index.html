@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>ISLA MATEMÁTICA | El Tesoro de las Multiplicaciones</title>
+  <title>ISLA MATEMÁTICA | La aventura de los dos tesoros</title>
   <meta name="description" content="Aventura educativa interactiva de multiplicaciones con tienda pirata, barcos y sombreros desbloqueables.">
   <meta name="theme-color" content="#0b2a43">
   <style>
@@ -833,7 +833,9 @@
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 
 </style>
-</head>
+<style>
+.dual-map{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:12px 0}.route-island{background:linear-gradient(#fff4c8,#e9c37e);color:#59371d;border:5px solid #f6cf76;border-radius:24px;overflow:hidden;box-shadow:0 9px 0 #683b24,0 18px 32px #05283f99;text-align:center}.route-island.div{border-color:#64e0db;background:linear-gradient(#e3ffef,#a5dcd2)}.island-scene{height:230px;position:relative;background-size:cover;background-position:center;overflow:hidden}.island-scene video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}.island-scene video.ready{display:block}.island-symbol{position:absolute;top:12px;left:15px;border-radius:50%;width:64px;height:64px;background:#fff4bd;color:#87521e;border:4px solid #e5a63e;font:700 48px Fredoka,sans-serif;z-index:2}.trail{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 4px 3px #0008)}.map-treasure{position:absolute;right:12%;top:10%;font-size:42px;animation:bob 2s infinite}.route-island h3{font:700 clamp(1.1rem,2.3vw,1.65rem) Fredoka,sans-serif;margin:16px 5px}.route-levels{display:grid;gap:10px;padding:0 18px}.route-btn{display:grid;grid-template-columns:1fr auto;text-align:left;gap:2px 12px}.route-btn small{grid-row:2;font:700 .8rem Nunito,sans-serif;text-transform:none}.route-btn strong{grid-column:2;grid-row:1/3;font-size:.8rem}.div .route-btn{background:linear-gradient(#a6f9e5,#35b9a7);color:#164b46}.route-status{font-weight:900}.island-scene:not(:has(video.ready)){animation:seaScene 7s ease-in-out infinite alternate}@keyframes seaScene{to{background-position:60% 65%}}@media(max-width:700px){.dual-map{grid-template-columns:1fr}.island-scene{height:190px}}
+</style></head>
 <body>
   <main class="world" id="world">
     <div class="landscape" id="landscape"></div>
@@ -858,7 +860,7 @@
         <div>
           <span class="kicker">EDICIÓN INTERACTIVA · AVENTURA EDUCATIVA</span>
           <h1 class="main-title">ISLA <span>MATEMÁTICA</span></h1>
-          <p class="tagline">¡Aventura pirata con Jake y las multiplicaciones!</p>
+          <p class="tagline">¡Dos islas, dos operaciones, una gran aventura!</p>
 
           <div class="captain-box">
             <label for="playerName">CAPITÁN/A:</label>
@@ -877,14 +879,14 @@
           </div>
 
           <div class="menu-stats">
-            <span class="stat-badge">ISLAS DESBLOQUEADAS: <b id="unlockLabel">1/3</b></span>
+            <span class="stat-badge">NIVELES DESBLOQUEADOS: <b id="unlockLabel">2/6</b></span>
             <span class="stat-badge">RÉCORD PERSONAL: <b id="recordLabel">0 PTS</b></span>
           </div>
         </div>
 
         <div class="hero-stage"><div class="hero-glow"></div><div class="hero-illustration" id="heroCaptainContainer" title="Haz clic en Jake para verlo girar"></div><div class="hero-banner">🏴‍☠️ ¡AL ABORDAJE, CAPITÁN!</div></div>
       </div>
-      <footer class="footer-note">ISLA MATEMÁTICA · APRENDE MULTIPLICANDO Y PERSONALIZA TU TRIPULACIÓN</footer>
+      <footer class="footer-note">ISLA MATEMÁTICA · MULTIPLICA, DIVIDE Y CONQUISTA LOS MARES</footer>
     </section>
 
     <!-- 2. TIENDA PIRATA (BARCOS Y SOMBREROS) -->
@@ -918,14 +920,14 @@
       <div class="subpage guide-page">
         <span class="guide-kicker">✦ TU PRIMERA MISIÓN COMIENZA AQUÍ ✦</span>
         <h2 class="section-title">¡APRENDE A NAVEGAR!</h2>
-        <p class="guide-intro">Jake te acompañará a descubrir las tres islas. ¡Cada multiplicación correcta te acerca al gran tesoro!</p>
+        <p class="guide-intro">Jake te acompañará a descubrir las dos islas. ¡Cada operación correcta te acerca al gran tesoro!</p>
         <div class="guide-stages">
-          <article class="guide-stage"><div class="guide-art">🧮<span>01</span></div><h3>RESUELVE EL RETO</h3><p>Lee la misión y calcula la multiplicación. Elige una de las <b>tres respuestas</b>.</p><div class="mini-answer">A <b>·</b> B <b>·</b> C</div></article>
+          <article class="guide-stage"><div class="guide-art">🧮<span>01</span></div><h3>RESUELVE EL RETO</h3><p>Lee la misión y calcula la operación. Elige una de las <b>tres respuestas</b>.</p><div class="mini-answer">A <b>·</b> B <b>·</b> C</div></article>
           <article class="guide-stage"><div class="guide-art">❤️<span>02</span></div><h3>PROTEGE TUS VIDAS</h3><p>Comienzas cada isla con <b>3 corazones</b>. Tienes <b>60 segundos</b> por pregunta si activas el reloj.</p><div class="mini-answer">❤️ ❤️ ❤️</div></article>
           <article class="guide-stage"><div class="guide-art">🪙<span>03</span></div><h3>GANA TU BOTÍN</h3><p>Acumula monedas y puntos, consigue rachas de aciertos y compra nuevos barcos en la tienda.</p><div class="mini-answer">⭐ + 🪙 = 🏆</div></article>
-          <article class="guide-stage"><div class="guide-art">🧭<span>04</span></div><h3>USA TU BONUS</h3><p>Si fallas, puedes repetir <b>una pregunta por isla</b> con la brújula de segunda oportunidad.</p><div class="mini-answer">↻ 1 REINTENTO</div></article>
+          <article class="guide-stage"><div class="guide-art">🧭<span>04</span></div><h3>USA TU BONUS</h3><p>Si fallas, puedes repetir <b>una pregunta por nivel</b> con la brújula de segunda oportunidad.</p><div class="mini-answer">↻ 1 REINTENTO</div></article>
         </div>
-        <div class="guide-route"><h3>🗺️ TU RUTA HACIA EL TESORO</h3><div class="route-items"><span>🌴 <b>ISLA VERDE</b><small>2 cifras × 1 cifra</small></span><span class="route-arrow">➜</span><span>🌅 <b>ISLA DORADA</b><small>2 cifras × 2 cifras</small></span><span class="route-arrow">➜</span><span>🏴‍☠️ <b>ISLA DEL TESORO</b><small>3 cifras × 2 cifras</small></span></div></div>
+        <div class="guide-route"><h3>🗺️ DOS RUTAS HACIA EL TESORO</h3><p>Multiplicación: 2 × 1, 2 × 2 y 3 × 2 cifras. División: 2 ÷ 1, 3 ÷ 1 y 3 ÷ 2 cifras. Todas las divisiones son exactas. Completa los tres niveles de cada isla.</p></div>
         <div class="guide-bottom"><p>⌨️ En computadora también puedes responder con las teclas <b>1, 2 y 3</b>.</p><button class="action primary" id="guideStart">⚔️ ¡EMPEZAR LA AVENTURA!</button></div>
       </div>
     </section>
@@ -937,27 +939,8 @@
         <button class="action wood back">⬅ VOLVER</button>
       </header>
       <div class="subpage">
-        <span class="guide-kicker">✦ EL MAPA DEL TESORO ✦</span><h2 class="section-title">¡ELIGE TU DESTINO!</h2><p class="map-subtitle">Supera cinco misiones en cada isla para desbloquear tu próximo viaje.</p>
-        <div class="islands">
-          <article class="island-card" data-level="1">
-            <div class="island-thumbnail" id="thumb1"><span class="island-badge">NIVEL 1 · FÁCIL</span></div>
-            <h3>🌴 ISLA VERDE</h3>
-            <p>¡Comienza la aventura! Resuelve multiplicaciones de 2 cifras × 1 cifra.</p>
-            <button class="action primary level-btn" data-level="1">ZARPAR AHORA</button>
-          </article>
-          <article class="island-card" data-level="2">
-            <div class="island-thumbnail" id="thumb2"><span class="island-badge">NIVEL 2 · MEDIO</span></div>
-            <h3>🌅 ISLA DORADA</h3>
-            <p>Sigue las pistas del mapa. Multiplicaciones de 2 cifras × 2 cifras.</p>
-            <button class="action primary level-btn" data-level="2">BLOQUEADA</button>
-          </article>
-          <article class="island-card" data-level="3">
-            <div class="island-thumbnail" id="thumb3"><span class="island-badge">NIVEL 3 · DIFÍCIL</span></div>
-            <h3>🏴‍☠️ ISLA DEL TESORO</h3>
-            <p>¡El gran tesoro te espera! Multiplicaciones de 3 cifras × 2 cifras.</p>
-            <button class="action primary level-btn" data-level="3">BLOQUEADA</button>
-          </article>
-        </div>
+        <span class="guide-kicker">✦ EL MAPA DEL TESORO ✦</span><h2 class="section-title">¡ELIGE TU DESTINO!</h2><p class="map-subtitle">Elige una isla y supera cinco misiones por nivel para avanzar.</p>
+<div class="dual-map"><article class="route-island mul"><div class="island-scene" id="scene-mul"><video id="video-mul" muted loop playsinline autoplay preload="metadata" src="isla_mul.mp4"></video><div class="island-symbol">×</div><svg viewBox="0 0 400 220" class="trail" aria-hidden="true"><path d="M55 185 Q20 105 140 135 T235 75 T345 35" fill="none" stroke="#704321" stroke-width="22" stroke-linecap="round"/><path d="M55 185 Q20 105 140 135 T235 75 T345 35" fill="none" stroke="#ffe19a" stroke-width="15" stroke-dasharray="12 5" stroke-linecap="round"/></svg><span class="map-treasure">🪙</span></div><h3>ISLA DE MULTIPLICACIÓN</h3><div class="route-levels"><button class="action primary route-btn" data-op="mul" data-level="1"><span>1 · FÁCIL</span><small>2 cifras × 1 cifra</small><strong></strong></button><button class="action primary route-btn" data-op="mul" data-level="2"><span>2 · MEDIO</span><small>2 cifras × 2 cifras</small><strong></strong></button><button class="action primary route-btn" data-op="mul" data-level="3"><span>3 · DIFÍCIL</span><small>3 cifras × 2 cifras</small><strong></strong></button></div><p class="route-status" id="status-mul"></p></article><article class="route-island div"><div class="island-scene" id="scene-div"><video id="video-div" muted loop playsinline autoplay preload="metadata" src="isla_div.mp4"></video><div class="island-symbol">÷</div><svg viewBox="0 0 400 220" class="trail" aria-hidden="true"><path d="M55 185 Q20 105 140 135 T235 75 T345 35" fill="none" stroke="#704321" stroke-width="22" stroke-linecap="round"/><path d="M55 185 Q20 105 140 135 T235 75 T345 35" fill="none" stroke="#ffe19a" stroke-width="15" stroke-dasharray="12 5" stroke-linecap="round"/></svg><span class="map-treasure">💎</span></div><h3>ISLA DE DIVISIÓN</h3><div class="route-levels"><button class="action primary route-btn" data-op="div" data-level="1"><span>1 · FÁCIL</span><small>2 cifras ÷ 1 cifra</small><strong></strong></button><button class="action primary route-btn" data-op="div" data-level="2"><span>2 · MEDIO</span><small>3 cifras ÷ 1 cifra</small><strong></strong></button><button class="action primary route-btn" data-op="div" data-level="3"><span>3 · DIFÍCIL</span><small>3 cifras ÷ 2 cifras</small><strong></strong></button></div><p class="route-status" id="status-div"></p></article></div><p class="map-subtitle" style="margin-top:22px">⛵ Cada isla tiene su propio progreso. ¡Conquista ambas para abrir el gran tesoro!</p>
       </div>
     </section>
 
@@ -1057,7 +1040,7 @@
       <div class="result-wrap">
         <div class="wood-panel">
           <h2>¡LEYENDA DE LOS MARES!</h2>
-          <p id="victorySub" style="font-weight:800;font-size:1.08rem">Has conquistado las tres islas y abierto el gran cofre.</p>
+          <p id="victorySub" style="font-weight:800;font-size:1.08rem">Has conquistado las dos islas y abierto el gran cofre.</p>
           <div class="scoreline">
             <span>PUNTOS TOTALES: <b id="finalScore">0</b></span>
             <span>MONEDAS GANADAS: <b id="finalCoins">0</b></span>
@@ -1086,7 +1069,7 @@
   <div class="modal" id="bonusDialog" role="dialog" aria-modal="true">
     <div class="wood-panel">
       <h2 style="font-family:'Fredoka',sans-serif;margin-top:0">🧭 ¡BRÚJULA DE SEGUNDA OPORTUNIDAD!</h2>
-      <p style="font-weight:800">Puedes usar tu único bonus de esta isla para reintentar <b>esta misma multiplicación</b> y conservar tus vidas.</p>
+      <p style="font-weight:800">Puedes usar tu único bonus de este nivel para reintentar <b>esta misma operación</b> y conservar tus vidas.</p>
       <div class="result-actions">
         <button class="action primary" id="repeatBtn">USAR BONUS</button>
         <button class="action wood" id="skipBtn">CONTINUAR</button>
@@ -1119,7 +1102,7 @@
         { id: 'explorer', name: 'Sombrero Explorador', price: 0, desc: 'Clásico sombrero de lona para iniciar la aventura.' },
         { id: 'tricorn', name: 'Tricornio Capitán', price: 40, desc: 'Sombrero pirata oscuro con ribete de oro puro.' },
         { id: 'bandana', name: 'Pañuelo Bucanero', price: 75, desc: 'Pañuelo carmesí de los mares del sur.' },
-        { id: 'crown', name: 'Corona Rey Pirata', price: 150, desc: 'Forjada con el oro de las tres islas.' }
+        { id: 'crown', name: 'Corona Rey Pirata', price: 150, desc: 'Forjada con el oro de las dos islas.' }
       ],
       ships: [
         { id: 'sloop', name: 'Balandra Madera', price: 0, desc: 'Velero ágil ideal para explorar bahías.' },
@@ -1218,6 +1201,9 @@
       screen: 'menu',
       level: 1,
       unlocked: 1,
+      operation: 'mul',
+      routes: {mul:1,div:1},
+      conquered: {mul:false,div:false},
       question: 0,
       score: 0,
       runCoins: 0,
@@ -1243,7 +1229,8 @@
 
     // Cargar progreso e inventario guardado
     try {
-      state.unlocked = Math.max(1, Number(localStorage.getItem('im_unlocked') || 1));
+      state.routes = Object.assign(state.routes, JSON.parse(localStorage.getItem('im_routes_v2') || '{}'));
+      state.conquered = Object.assign(state.conquered, JSON.parse(localStorage.getItem('im_conquered_v2') || '{}'));
       state.bankCoins = Math.max(0, Number(localStorage.getItem('im_bank_coins') || 0));
       state.ownedHats = JSON.parse(localStorage.getItem('im_owned_hats') || '["explorer"]');
       state.ownedShips = JSON.parse(localStorage.getItem('im_owned_ships') || '["sloop"]');
@@ -1274,9 +1261,8 @@
     }
 
     // Inicializar miniaturas del mapa y cosméticos
-    $('thumb1').style.backgroundImage = landSVG.green;
-    $('thumb2').style.backgroundImage = landSVG.gold;
-    $('thumb3').style.backgroundImage = landSVG.treasure;
+    $('scene-mul').style.backgroundImage = landSVG.green;
+    $('scene-div').style.backgroundImage = landSVG.treasure;
     applyCosmetics();
 
     // Sintetizador Web Audio
@@ -1318,14 +1304,14 @@
       stopTimers();
       state.screen = screen;
       screens.forEach(id => $(id).classList.toggle('active', id === screen));
-      $('landscape').style.backgroundImage = landSVG[levels[state.level].land];
+      $('landscape').style.backgroundImage = landSVG[state.operation === "div" ? "treasure" : levels[state.level].land];
       $('bonusDialog').classList.remove('open');
       $('exitDialog').classList.remove('open');
       applyCosmetics();
 
       if (screen === 'menu') {
         const best = state.records.length ? state.records[0].score : 0;
-        $('unlockLabel').textContent = `${state.unlocked}/3`;
+        $('unlockLabel').textContent = `${state.routes.mul + state.routes.div}/6`;
         $('recordLabel').textContent = `${best} PTS`;
       } else if (screen === 'map') {
         refreshMap();
@@ -1416,14 +1402,12 @@
     });
 
     function refreshMap() {
-      document.querySelectorAll('.island-card').forEach(card => {
-        const lvl = Number(card.dataset.level);
-        const locked = lvl > state.unlocked;
-        card.classList.toggle('locked', locked);
-        const btn = card.querySelector('button');
-        btn.disabled = locked;
-        btn.textContent = locked ? '🔒 BLOQUEADA' : '⛵ ZARPAR AHORA';
+      document.querySelectorAll('.route-btn').forEach(btn => {
+        const op=btn.dataset.op, lvl=Number(btn.dataset.level);
+        btn.disabled = lvl > state.routes[op];
+        btn.querySelector('strong').textContent = btn.disabled ? '🔒' : '⛵ JUGAR';
       });
+      ['mul','div'].forEach(op => $('status-'+op).textContent = state.conquered[op] ? '🏆 Isla conquistada' : '🧭 '+state.routes[op]+'/3 niveles disponibles');
     }
 
     function saveRecord() {
@@ -1459,12 +1443,13 @@
       state.score = 0;
       state.runCoins = 0;
       state.streak = 0;
-      startLevel(1);
+      show('map');
     }
 
     function startLevel(lvl) {
-      if (lvl > state.unlocked) return;
+      if (lvl > state.routes[state.operation]) return;
       state.level = lvl;
+      state.streak = 0; state.chestStreak = 0;
       state.question = 0;
       state.lives = 3;
       state.bonus = 1;
@@ -1548,13 +1533,18 @@
       else if (state.level === 2) { a = pick(12, 95); b = pick(11, 89); }
       else { a = pick(105, 890); b = pick(12, 75); }
 
-      state.answer = a * b;
+      if (state.operation === 'div') {
+        if (state.level === 1) { b=pick(2,9); a=pick(Math.ceil(10/b),Math.floor(99/b))*b; }
+        else if (state.level === 2) { b=pick(2,9); a=pick(Math.ceil(100/b),Math.floor(999/b))*b; }
+        else { b=pick(10,49); a=pick(Math.ceil(100/b),Math.floor(999/b))*b; }
+      }
+      state.answer = state.operation === 'div' ? a / b : a * b;
       state.choices = generateChoices(state.answer);
 
       const cfg = levels[state.level];
       const template = cfg.story[pick(0, cfg.story.length - 1)];
-      $('story').textContent = template.replaceAll('{a}', a).replaceAll('{b}', b);
-      $('equation').textContent = `${a} × ${b} = ?`;
+      $('story').textContent = state.operation === 'div' ? `Reparte ${a} monedas en ${b} cofres por igual. ¿Cuántas monedas recibe cada cofre?` : template.replaceAll('{a}', a).replaceAll('{b}', b);
+      $('equation').textContent = `${a} ${state.operation === "div" ? "÷" : "×"} ${b} = ?`;
       $('feedback').textContent = 'ELIGE LA RESPUESTA CORRECTA';
       $('guide').textContent = '¡Vamos, pirata! ¡El tesoro está cerca!';
 
@@ -1569,7 +1559,7 @@
     }
 
     function updateHud() {
-      $('islandName').textContent = levels[state.level].label;
+      $('islandName').textContent = (state.operation==='div'?'ISLA DE DIVISIÓN':'ISLA DE MULTIPLICACIÓN')+' · NIVEL '+state.level;
       $('missionName').textContent = `MISIÓN ${state.question} DE 5`;
       $('livesDisplay').textContent = '❤️'.repeat(Math.max(0, state.lives)) + '🖤'.repeat(Math.max(0, 3 - state.lives));
       $('streakNum').textContent = `x${Math.max(1, state.streak)}`;
@@ -1635,7 +1625,7 @@
         playTone('bad');
         animateJake('bad');
         $('feedback').textContent = '❌ RESPUESTA INCORRECTA';
-        $('guide').textContent = '¡Revisa bien las decenas antes de disparar!';
+        $('guide').textContent = '¡Revisa bien la operación, capitán!';
         state.nextTimer = setTimeout(() => {
           if (state.bonus > 0) {
             $('bonusDialog').classList.add('open');
@@ -1672,29 +1662,21 @@
     }
 
     function finishIsland() {
-      if (state.level === 3) {
-        state.unlocked = 3;
-        try { localStorage.setItem('im_unlocked', '3'); } catch (e) {}
-        saveRecord();
-        $('finalScore').textContent = state.score;
-        $('finalCoins').textContent = state.runCoins;
-        $('victoryText').textContent = `¡Felicidades, Capitán ${($('playerName').value.trim() || 'Explorador').toUpperCase()}! Tienes ${state.bankCoins} monedas listas para la Tienda Pirata.`;
-        show('victory');
-        playTone('win');
-        spawnConfetti(85);
-      } else {
-        state.unlocked = Math.max(state.unlocked, state.level + 1);
-        try { localStorage.setItem('im_unlocked', String(state.unlocked)); } catch (e) {}
-        $('completeTitle').textContent = `🏆 ¡${levels[state.level].label} CONQUISTADA!`;
-        $('completeText').textContent = `Has desbloqueado ${levels[state.level + 1].label}. ¡Visita la Tienda Pirata o continúa!`;
-        $('levelScore').textContent = state.score;
-        $('levelCoins').textContent = state.runCoins;
-        $('nextBtn').textContent = 'SIGUIENTE ISLA ➡';
-        $('nextBtn').onclick = () => startLevel(state.level + 1);
-        show('complete');
-        playTone('win');
-        spawnConfetti(45);
+      const op=state.operation, lvl=state.level;
+      if(lvl===3) state.conquered[op]=true;
+      else state.routes[op]=Math.max(state.routes[op],lvl+1);
+      try {localStorage.setItem('im_routes_v2',JSON.stringify(state.routes));localStorage.setItem('im_conquered_v2',JSON.stringify(state.conquered));}catch(e){}
+      if(lvl===3 && state.conquered.mul && state.conquered.div){
+        saveRecord(); $('finalScore').textContent=state.score; $('finalCoins').textContent=state.runCoins;
+        $('victoryText').textContent='¡Los dos tesoros son tuyos!'; show('victory');
+      }else{
+        $('completeTitle').textContent=lvl===3?'🏆 ¡ISLA CONQUISTADA!':'⭐ ¡NIVEL SUPERADO!';
+        $('completeText').textContent=lvl===3?'¡Ya tienes un tesoro! Explora la otra isla.':'Has desbloqueado el siguiente nivel de esta isla.';
+        $('levelScore').textContent=state.score; $('levelCoins').textContent=state.runCoins;
+        $('nextBtn').textContent=lvl===3?'🗺️ ELEGIR ISLA':'SIGUIENTE NIVEL ➡';
+        $('nextBtn').onclick=()=>lvl===3?show('map'):startLevel(lvl+1); show('complete');
       }
+      playTone('win');spawnConfetti(65);
     }
 
     // Eventos UI
@@ -1712,7 +1694,7 @@
     $('mapBtn').onclick = () => { playTone('click'); show('map'); };
     $('recordsBtn').onclick = () => { playTone('click'); show('records'); };
     document.querySelectorAll('.back').forEach(b => b.onclick = () => { playTone('click'); show('menu'); });
-    document.querySelectorAll('.level-btn').forEach(b => b.onclick = () => { playTone('click'); startLevel(Number(b.dataset.level)); });
+    document.querySelectorAll('.route-btn').forEach(b => b.onclick = () => { playTone('click'); state.operation=b.dataset.op; startLevel(Number(b.dataset.level)); });
     document.querySelectorAll('.answer').forEach(b => b.onclick = () => choose(Number(b.dataset.choice)));
 
     $('completeMap').onclick = () => show('map');
@@ -1843,13 +1825,13 @@
   };
 
   function openChest() {
-    const a = pick(3, 9), b = pick(3, 9), ans = a * b;
+    const x = pick(3,9), b=pick(3,9), a=state.operation==='div'?x*b:x, ans=state.operation==='div'?x:a*b;
     const set = new Set([ans]);
     while (set.size < 3) { const c = ans + pick(-9, 9); if (c > 0) set.add(c); }
     const opts = [...set].sort(() => Math.random() - .5);
     $('chestIcon').textContent = '🎁';
     $('chestMsg').textContent = '';
-    $('chestEq').textContent = `${a} × ${b} = ?`;
+    $('chestEq').textContent = `${a} ${state.operation === "div" ? "÷" : "×"} ${b} = ?`;
     $('chestAnswers').innerHTML = opts.map(o => `<button class="chest-opt" data-v="${o}">${o}</button>`).join('');
     chest.classList.add('open');
     playTone('buy');
@@ -1907,5 +1889,5 @@
 })();
 
 </script>
-</body>
+<script>document.querySelectorAll('.island-scene video').forEach(v=>{v.addEventListener('playing',()=>v.classList.add('ready'));v.addEventListener('error',()=>v.classList.remove('ready'));if(v.readyState>=3)v.classList.add('ready');});</script></body>
 </html>
