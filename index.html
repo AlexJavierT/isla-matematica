@@ -4,34 +4,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>La Isla Matemágica | Los dos tesoros</title>
+<title>La Isla Matemágica</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 
-/* ==========================================
-   LA ISLA MATEMÁGICA
-   CONFIGURACIÓN GENERAL
-========================================== */
-
-:root {
-    --oro: #ffd66b;
-    --crema: #fff4ce;
-    --madera: #75421f;
-    --oscuro: #082c42;
-    --turquesa: #42e4df;
-}
-
 * {
     box-sizing: border-box;
 }
 
+:root {
+    --oro: #ffdb77;
+    --madera: #75421f;
+    --crema: #fff3ce;
+    --azul: #08384e;
+}
+
 body {
     margin: 0;
+    background: #087b9b;
     color: white;
-    background: #086b91;
     font-family: 'Nunito', Arial, sans-serif;
     overflow-x: hidden;
 }
@@ -42,17 +35,17 @@ button, input {
 
 button {
     cursor: pointer;
-    transition: transform .2s, filter .2s;
+    transition: transform .25s, filter .25s;
 }
 
 button:hover:not(:disabled) {
     transform: translateY(-4px);
-    filter: brightness(1.13);
+    filter: brightness(1.15);
 }
 
 button:disabled {
-    cursor: not-allowed;
     opacity: .5;
+    cursor: not-allowed;
 }
 
 button:focus-visible {
@@ -60,20 +53,18 @@ button:focus-visible {
     outline-offset: 3px;
 }
 
-/* ==========================================
-   VIDEOS DE FONDO
-========================================== */
+[hidden] {
+    display: none !important;
+}
+
+/* VIDEOS DE FONDO */
 
 #fondos {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
-    background: linear-gradient(
-        #55b8d7,
-        #087c9c,
-        #073953
-    );
+    background: linear-gradient(#64c5df, #087b9b, #06405a);
 }
 
 .video-fondo {
@@ -83,39 +74,86 @@ button:focus-visible {
     height: 100%;
     object-fit: cover;
     opacity: 0;
+    transition: opacity .4s;
     pointer-events: none;
-    transition: opacity .35s;
 }
 
 .video-fondo.visible {
     opacity: 1;
 }
 
-.sombra-fondo {
+.sombra {
     position: fixed;
     inset: 0;
     z-index: 1;
     pointer-events: none;
     background: linear-gradient(
-        180deg,
-        rgba(0, 20, 40, .24),
+        rgba(0,20,35,.23),
         transparent 35%,
         transparent 60%,
-        rgba(0, 20, 40, .45)
+        rgba(0,20,35,.38)
     );
 }
 
-#aplicacion {
+#app {
     position: relative;
     z-index: 2;
 }
 
+/* INTRO DE NUBES */
+
+#transicion {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #e4f5ff;
+    z-index: 99999;
+}
+
+#transicion.activa {
+    display: block;
+}
+
+#videoNubes {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#saltarIntro {
+    position: absolute;
+    bottom: 22px;
+    right: 22px;
+    background: #08384ecc;
+    color: white;
+    border: 2px solid white;
+    border-radius: 30px;
+    padding: 11px 20px;
+    font-weight: 900;
+}
+
+#avisoVideo {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 500;
+    background: #08384e;
+    border: 2px solid gold;
+    border-radius: 12px;
+    padding: 12px;
+    max-width: 90%;
+    font-size: 13px;
+}
+
+/* PANTALLAS */
+
 .pantalla {
     display: none;
     min-height: 100svh;
-    width: min(1400px, 100%);
+    width: min(1500px, 100%);
+    padding: 15px 25px;
     margin: auto;
-    padding: 16px 25px;
 }
 
 .pantalla.activa {
@@ -123,9 +161,7 @@ button:focus-visible {
     flex-direction: column;
 }
 
-/* ==========================================
-   ANIMACIONES
-========================================== */
+/* ANIMACIONES */
 
 @keyframes flotar {
     0%, 100% {
@@ -133,23 +169,7 @@ button:focus-visible {
     }
 
     50% {
-        transform: translateY(-12px);
-    }
-}
-
-@keyframes saltar {
-    50% {
-        transform: translateY(-35px) rotate(8deg);
-    }
-}
-
-@keyframes temblar {
-    25% {
-        transform: translateX(-8px);
-    }
-
-    75% {
-        transform: translateX(8px);
+        transform: translateY(-16px);
     }
 }
 
@@ -165,150 +185,132 @@ button:focus-visible {
     }
 }
 
-@keyframes resplandor {
+@keyframes saltar {
     50% {
-        filter: brightness(1.25);
+        transform: translateY(-30px);
     }
 }
 
-/* ==========================================
-   BARRA SUPERIOR
-========================================== */
+@keyframes temblar {
+    25% {
+        transform: translateX(-7px);
+    }
+
+    75% {
+        transform: translateX(7px);
+    }
+}
+
+@keyframes brillo {
+    50% {
+        filter: brightness(1.22);
+    }
+}
+
+@keyframes caer {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+    }
+}
+
+/* BARRA SUPERIOR */
 
 .barra-superior {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 10px;
-}
-
-.emblema {
-    color: #fff0bc;
-    background: #082c42e8;
-    border: 2px solid #eac16b;
-    padding: 10px 16px;
-    border-radius: 40px;
-    font-weight: 900;
-    font-size: 13px;
-    letter-spacing: 1px;
+    flex-wrap: wrap;
 }
 
 .controles {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
-    justify-content: center;
 }
 
-.chip {
-    color: #fff4d3;
-    background: #082c42e8;
-    border: 2px solid #e9b85a;
+.chip, .emblema {
+    background: #082d43e8;
+    border: 2px solid #ebbd68;
     border-radius: 40px;
-    padding: 8px 14px;
+    padding: 9px 15px;
+    color: #fff0bf;
     font-size: 13px;
     font-weight: 900;
 }
 
 .chip b {
-    color: #ffdb6c;
+    color: #ffdb70;
 }
 
-/* ==========================================
-   BOTONES
-========================================== */
+/* BOTONES */
 
 .boton {
-    position: relative;
-    overflow: hidden;
-    border: 3px solid #ffe5a4;
-    border-radius: 15px;
-    min-height: 45px;
-    padding: 11px 19px;
-    color: #57310f;
+    min-height: 43px;
+    padding: 10px 19px;
+    border: 3px solid #ffe4a0;
+    border-radius: 16px;
+    background: linear-gradient(#fff2ab, #f3bd49, #db9025);
+    color: #593412;
     font-family: 'Fredoka', sans-serif;
-    font-weight: 700;
     font-size: 16px;
-    background: linear-gradient(
-        #fff0a6,
-        #f4bc45,
-        #dc9025
-    );
-    box-shadow: 0 5px #744019,
-                0 10px 20px #0004;
+    font-weight: 700;
+    box-shadow: 0 5px #75421f, 0 9px 18px #0005;
 }
 
 .boton.azul {
+    background: linear-gradient(#4be3e7, #148ca6, #07536d);
     color: white;
-    border-color: #a4fff5;
-    background: linear-gradient(
-        #39d1e0,
-        #087e99,
-        #07516b
-    );
+    border-color: #b3fff5;
+    box-shadow: 0 5px #07354b, 0 9px 18px #0005;
 }
 
 .boton.rojo {
+    background: linear-gradient(#fa9175, #b8412c, #862719);
     color: white;
-    background: linear-gradient(
-        #ed8566,
-        #b8412c,
-        #87291b
-    );
 }
 
 .boton.madera {
-    color: #fff4d4;
-    background: linear-gradient(
-        #bd8047,
-        #805024,
-        #512b15
-    );
+    background: linear-gradient(#bd8550, #805024, #512b15);
+    color: #fff0ce;
 }
 
 .boton.verde {
+    background: linear-gradient(#4bdd83, #16864a);
     color: white;
-    background: linear-gradient(
-        #45d784,
-        #138746
-    );
 }
 
 .botonera {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
-/* ==========================================
-   PORTADA PRINCIPAL
-========================================== */
+/* PORTADA */
 
 .portada {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 15px;
     width: 100%;
-    max-width: 1250px;
-    margin: auto;
-    padding: 14px 0;
 }
 
-.encabezado-menu {
+.encabezado {
     text-align: center;
+    padding: 12px 0;
 }
 
 .etiqueta {
     display: inline-block;
-    padding: 6px 18px;
-    border-radius: 40px;
-    background: #082c42b8;
-    border: 1px solid #ffde88;
-    color: #fff0b8;
+    background: #08384e99;
+    color: #fff1bb;
+    border: 1px solid #ffdc82;
+    border-radius: 30px;
+    padding: 6px 17px;
     font-size: 11px;
     font-weight: 900;
     letter-spacing: 2px;
@@ -316,141 +318,131 @@ button:focus-visible {
 
 .titulo {
     font-family: 'Fredoka', sans-serif;
-    font-size: clamp(37px, 6vw, 82px);
+    font-size: clamp(36px, 6vw, 86px);
     line-height: 1;
-    color: #ffde82;
-    -webkit-text-stroke: 1.5px #75421f;
-    text-shadow:
-        0 4px #ad6b2e,
-        0 8px #4c2815,
-        0 15px 22px #0007;
     margin: 12px 0;
+    color: #ffe08a;
+    -webkit-text-stroke: 1.5px #75421f;
+    text-shadow: 0 4px #b67631, 0 8px #512b15, 0 12px 25px #0008;
 }
 
 .subtitulo {
-    font-size: clamp(15px, 1.8vw, 23px);
+    font-size: clamp(15px, 2vw, 23px);
+    color: #fff4d3;
     font-weight: 900;
-    color: #fff5d8;
+    text-shadow: 0 3px 8px #000;
     margin: 8px 0;
-    text-shadow: 0 3px 7px #000a;
 }
 
-/* Espacio central para apreciar el video */
+/* ISLAS FLOTANTES SIN CUADROS */
 
-.mundo-menu {
-    display: grid;
-    grid-template-columns: 260px 1fr 260px;
-    gap: 22px;
-    align-items: end;
+.zona-islas {
     flex: 1;
-    min-height: 300px;
-    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 320px) 1fr minmax(0, 320px);
+    align-items: end;
+    gap: 25px;
+    min-height: 380px;
+    padding: 95px 20px 12px;
 }
 
-/* Multiplicaciones */
-
-.tarjeta-isla {
+.opcion-isla {
+    position: relative;
     text-align: center;
-    padding: 17px 13px;
-    border: 3px solid #ffe4a0;
-    border-bottom: 7px solid #78491e;
-    border-radius: 23px;
-    background: linear-gradient(
-        145deg,
-        rgba(145, 85, 26, .84),
-        rgba(66, 32, 9, .89)
-    );
-    backdrop-filter: blur(4px);
-    box-shadow: 0 12px 25px #0005;
-    animation: aparecer .6s ease;
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 
-/* Divisiones */
-
-.tarjeta-isla.division {
-    border-color: #9bfff0;
-    border-bottom-color: #07506d;
-    background: linear-gradient(
-        145deg,
-        rgba(8, 119, 139, .85),
-        rgba(4, 54, 81, .89)
-    );
+.imagen-boton {
+    display: block;
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
 }
 
-.simbolo-grande {
+.imagen-flotante {
+    display: block;
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    filter: drop-shadow(0 13px 10px #0007);
+    animation: flotar 3.5s ease-in-out infinite;
+}
+
+.division .imagen-flotante {
+    animation-delay: .6s;
+}
+
+.imagen-alternativa {
+    color: #ffdf7e;
     font-family: 'Fredoka', sans-serif;
-    font-size: 60px;
-    line-height: 1;
-    color: #ffe38b;
-    text-shadow: 0 4px #75421f;
+    font-size: 120px;
+    text-shadow: 0 7px #75421f;
     animation: flotar 3s infinite;
 }
 
-.division .simbolo-grande {
-    color: #b5fff0;
-    text-shadow: 0 4px #07506d;
-}
-
-.tarjeta-isla h2 {
+.nombre-isla {
     font-family: 'Fredoka', sans-serif;
-    font-size: 23px;
-    margin: 8px 0;
-    color: #fff4c5;
+    font-size: clamp(19px, 2.5vw, 29px);
+    color: #fff0b5;
+    margin: 5px 0;
+    text-shadow: 0 3px #75421f, 0 5px 8px #000;
 }
 
-.tarjeta-isla.division h2 {
-    color: #d0fff8;
+.division .nombre-isla {
+    color: #b9fff5;
+    text-shadow: 0 3px #07536d, 0 5px 8px #000;
 }
 
-.tarjeta-isla p {
-    margin: 6px 0;
+.descripcion-isla {
     font-size: 13px;
-    font-weight: 800;
+    font-weight: 900;
+    color: #fff6dd;
+    margin: 5px 0 11px;
+    text-shadow: 0 2px 5px #000;
 }
 
-.niveles-mini {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin: 11px 0;
+.boton-isla {
+    width: 95%;
+    max-width: 280px;
+    font-size: 17px;
+    animation: brillo 4s infinite;
 }
 
-.niveles-mini span {
-    background: #ffffff24;
-    border-radius: 20px;
-    padding: 5px 8px;
-    font-size: 11px;
+.progreso-isla {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 13px;
+    background: #08384ecc;
+    color: #fff4ce;
+    border-radius: 30px;
+    font-size: 12px;
     font-weight: 900;
 }
 
-.tarjeta-isla .boton {
-    width: 100%;
-    font-size: 15px;
-    margin-top: 11px;
-}
-
-/* ==========================================
-   PERSONAJE JAKE
-========================================== */
+/* PERSONAJE JAKE */
 
 .jake-centro {
-    text-align: center;
     align-self: end;
-    padding-bottom: 5px;
+    text-align: center;
+    padding-bottom: 10px;
 }
 
 .jake-contenedor {
     position: relative;
-    width: min(230px, 100%);
+    width: min(210px, 100%);
     margin: auto;
 }
 
 .jake-img {
     display: block;
     width: 100%;
-    max-height: 280px;
+    max-height: 245px;
     object-fit: contain;
-    filter: drop-shadow(0 12px 8px #0006);
+    filter: drop-shadow(0 10px 8px #0007);
     animation: flotar 3s infinite;
 }
 
@@ -462,39 +454,27 @@ button:focus-visible {
     animation: temblar .4s ease 2;
 }
 
-.jake-fallback {
-    display: none;
-    font-size: 110px;
-    animation: flotar 3s infinite;
-}
-
 .sombrero-equipado {
     position: absolute;
-    top: -5px;
-    right: 5px;
-    font-size: 30px;
-    filter: drop-shadow(0 3px 4px #0006);
+    top: 0;
+    right: 0;
+    font-size: 28px;
 }
 
 .cartel-jake {
     display: inline-block;
-    margin-top: 5px;
-    padding: 8px 13px;
-    border: 2px solid #ffe29b;
+    padding: 8px 14px;
+    margin-top: 8px;
+    border: 2px solid #ffe19a;
     border-radius: 12px;
-    background: linear-gradient(
-        #a86a37,
-        #623614
-    );
+    background: linear-gradient(#aa6b38, #633517);
     color: #fff0b7;
-    box-shadow: 0 4px #44230f;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 900;
+    box-shadow: 0 4px #492510;
 }
 
-/* ==========================================
-   CONTROLES INFERIORES
-========================================== */
+/* CONTROLES INFERIORES */
 
 .datos-menu {
     display: flex;
@@ -502,234 +482,106 @@ button:focus-visible {
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
+    margin: 8px 0;
 }
 
 .caja-capitan {
-    background: #082c42e8;
-    border: 2px solid #dcb462;
-    border-radius: 14px;
-    padding: 9px 14px;
+    background: #082d43e8;
+    border: 2px solid #e9be68;
+    border-radius: 15px;
+    padding: 8px 14px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     gap: 10px;
 }
 
 .caja-capitan label {
-    font-weight: 900;
-    color: #ffdf8e;
+    color: #ffdfa0;
     font-size: 13px;
+    font-weight: 900;
 }
 
 #nombre {
-    border: 2px solid #c58d45;
-    border-radius: 9px;
-    background: #fff8e3;
-    color: #58351d;
-    padding: 8px 11px;
     width: 170px;
-    font-weight: 900;
+    max-width: 100%;
+    padding: 8px 10px;
+    border: 2px solid #c68c45;
+    border-radius: 9px;
+    color: #56341d;
+    background: #fff8e2;
     font-size: 14px;
+    font-weight: 900;
 }
 
 #contrarreloj {
-    accent-color: #ffc84e;
-    width: 16px;
-    height: 16px;
+    accent-color: #ffd05b;
+    width: 17px;
+    height: 17px;
     vertical-align: middle;
 }
 
 .menu-inferior {
     display: flex;
     justify-content: center;
-    gap: 10px;
     flex-wrap: wrap;
+    gap: 11px;
+    padding: 6px 0;
 }
 
 .menu-inferior .boton {
     font-size: 14px;
-    padding: 9px 16px;
 }
 
 .pie {
     text-align: center;
-    font-size: 10px;
     color: #fff5d3;
+    font-size: 10px;
     letter-spacing: 2px;
     font-weight: 900;
+    padding: 8px 0;
     text-shadow: 0 2px 5px #000;
-    padding: 7px 0;
 }
 
-/* ==========================================
-   TRANSICIÓN ANIMADA DE NUBES
-========================================== */
-
-#transicionNubes {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    z-index: 1000;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-#transicionNubes.activa {
-    visibility: visible;
-    pointer-events: all;
-}
-
-.nube {
-    position: absolute;
-    top: -20%;
-    height: 140%;
-    width: 100%;
-    background:
-        radial-gradient(
-            ellipse at 38% 15%,
-            white 0 30%,
-            transparent 31%
-        ),
-        radial-gradient(
-            ellipse at 65% 30%,
-            #f7fdff 0 33%,
-            transparent 34%
-        ),
-        radial-gradient(
-            ellipse at 40% 50%,
-            white 0 35%,
-            transparent 36%
-        ),
-        radial-gradient(
-            ellipse at 65% 70%,
-            #effaff 0 32%,
-            transparent 33%
-        ),
-        radial-gradient(
-            ellipse at 40% 90%,
-            white 0 31%,
-            transparent 32%
-        );
-    filter: drop-shadow(0 0 35px #d3efff);
-    transition: transform .65s ease-in-out;
-}
-
-.nube.izquierda {
-    left: -20%;
-    transform: translateX(-110%);
-}
-
-.nube.derecha {
-    right: -20%;
-    transform: translateX(110%);
-}
-
-#transicionNubes.cerrada .izquierda {
-    transform: translateX(35%);
-}
-
-#transicionNubes.cerrada .derecha {
-    transform: translateX(-35%);
-}
-
-#veloNubes {
-    position: absolute;
-    inset: 0;
-    background: #f5fcff;
-    opacity: 0;
-    transition: opacity .45s;
-}
-
-#transicionNubes.cerrada #veloNubes {
-    opacity: 1;
-}
-
-#mensajeViaje {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    color: #145b77;
-    font-family: 'Fredoka', sans-serif;
-    font-size: clamp(23px, 4vw, 45px);
-    text-align: center;
-    font-weight: 700;
-    opacity: 0;
-    transition: opacity .3s;
-}
-
-#transicionNubes.cerrada #mensajeViaje {
-    opacity: 1;
-}
-
-.barco-viaje {
-    display: block;
-    font-size: 95px;
-    animation: flotar 1.3s infinite;
-}
-
-#avisoVideo {
-    display: none;
-    position: fixed;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    background: #082c42;
-    border: 2px solid #ffd66b;
-    border-radius: 12px;
-    padding: 12px 16px;
-    max-width: 90%;
-    color: white;
-    font-size: 13px;
-}
-
-/* ==========================================
-   NIVELES
-========================================== */
+/* NIVELES */
 
 .titulo-seccion {
     text-align: center;
     font-family: 'Fredoka', sans-serif;
-    font-size: clamp(28px, 4.5vw, 55px);
-    color: #ffe28b;
-    text-shadow: 0 4px #71421c,
-                 0 8px 15px #0008;
+    color: #ffe18a;
+    font-size: clamp(28px, 4.5vw, 54px);
     margin: 25px 0 10px;
+    text-shadow: 0 4px #75421f, 0 8px 15px #0009;
 }
 
 .descripcion {
     text-align: center;
     font-weight: 900;
-    text-shadow: 0 2px 6px #000;
     font-size: 17px;
+    text-shadow: 0 3px 6px #000;
 }
 
 .niveles-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
-    max-width: 950px;
     width: 100%;
-    margin: auto auto 35px;
-    padding: 20px 0;
+    max-width: 950px;
+    margin: auto auto 40px;
+    padding-top: 30px;
 }
 
 .nivel-card {
-    text-align: center;
-    padding: 18px 12px;
-    background: linear-gradient(
-        #fff5dbe8,
-        #edcd91eb
-    );
-    color: #5c381d;
-    border: 4px solid #ffe2a0;
+    background: linear-gradient(#fff8e0f2, #eacb93f2);
+    color: #5c391f;
+    border: 4px solid #ffe4a1;
     border-bottom: 8px solid #75421f;
-    border-radius: 22px;
-    box-shadow: 0 12px 25px #0005;
-    backdrop-filter: blur(3px);
+    border-radius: 23px;
+    padding: 18px 13px;
+    text-align: center;
+    box-shadow: 0 12px 25px #0006;
+    animation: aparecer .5s;
 }
 
 .nivel-card.bloqueado {
@@ -737,108 +589,111 @@ button:focus-visible {
 }
 
 .nivel-card h3 {
-    margin: 8px 0;
     font-family: 'Fredoka', sans-serif;
     font-size: 27px;
+    margin: 8px 0;
 }
 
 .icono-nivel {
-    font-size: 49px;
+    font-size: 55px;
     animation: flotar 3s infinite;
 }
 
 .ejemplo {
     display: block;
-    background: #fffdf2;
-    border: 2px dashed #c49143;
+    background: #fffdf3;
+    border: 2px dashed #c08c42;
     border-radius: 13px;
-    padding: 9px;
+    padding: 10px;
     font-family: 'Fredoka', sans-serif;
     font-size: 25px;
-    color: #075a70;
+    color: #075c74;
 }
 
 .nivel-card p {
-    font-weight: 800;
     font-size: 14px;
+    font-weight: 800;
 }
 
 .nivel-card .boton {
     width: 100%;
 }
 
-/* ==========================================
-   MAPA DE LOS DOS TESOROS
-========================================== */
+/* MAPA */
 
 .mapa-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 25px;
-    max-width: 1000px;
+    gap: 30px;
     width: 100%;
+    max-width: 1000px;
     margin: auto;
 }
 
 .mapa-isla {
-    padding: 25px 18px;
-    background: #082c42d9;
-    border: 3px solid #ffd77b;
-    border-radius: 24px;
     text-align: center;
-    backdrop-filter: blur(4px);
+    padding: 18px;
+}
+
+.mapa-isla img {
+    width: 100%;
+    height: 210px;
+    object-fit: contain;
+    animation: flotar 3s infinite;
+    filter: drop-shadow(0 10px 8px #0006);
 }
 
 .mapa-isla h3 {
+    color: #ffe18a;
     font-family: 'Fredoka', sans-serif;
-    font-size: 25px;
-    color: #ffe396;
+    font-size: 28px;
+    text-shadow: 0 3px #75421f;
 }
 
 .ruta {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    gap: 8px;
     flex-wrap: wrap;
-    gap: 7px;
     margin: 20px 0;
 }
 
 .casilla {
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
     display: grid;
     place-items: center;
-    border: 3px solid #e2ab4e;
+    background: #fff0bd;
+    color: #67401f;
+    border: 3px solid #d6a049;
     border-radius: 50%;
-    background: #fff1c5;
-    color: #69401f;
-    font-weight: 900;
     font-size: 22px;
+    font-weight: 900;
+    box-shadow: 0 4px #75421f;
 }
 
 .casilla.superada {
+    background: #239b55;
     color: white;
-    background: #209b54;
 }
 
-/* ==========================================
-   JUEGO
-========================================== */
+/* JUEGO */
 
 .hud {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 9px;
-    margin: 16px 0;
+    flex-wrap: wrap;
+    margin: 15px 0;
 }
 
 .zona-juego {
     display: grid;
-    grid-template-columns: 1fr 185px;
-    align-items: center;
+    grid-template-columns: 1fr 180px;
     gap: 22px;
+    align-items: center;
     max-width: 1000px;
     width: 100%;
     margin: auto;
@@ -852,104 +707,95 @@ button:focus-visible {
 .info-mision {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 12px;
+    color: #fff1b8;
     font-size: 17px;
-    color: #fff0bb;
     font-weight: 900;
     text-shadow: 0 3px 6px #000;
 }
 
 .progreso {
     width: 100%;
-    height: 18px;
-    background: #082c42;
-    border: 3px solid #ffe29b;
-    border-radius: 25px;
+    height: 19px;
+    background: #082d43;
+    border: 3px solid #ffe19a;
+    border-radius: 30px;
     overflow: hidden;
     margin: 9px 0;
 }
 
 #barraAvance {
-    height: 100%;
     width: 0;
+    height: 100%;
     background: repeating-linear-gradient(
-        115deg,
-        #ffe16f 0 13px,
-        #e9a32e 13px 26px
+        120deg,
+        #ffe178 0 12px,
+        #e8a12c 12px 24px
     );
     transition: width .4s;
 }
 
 #barraTiempo {
-    height: 100%;
     width: 100%;
-    background: #32d36c;
-    transition: width .25s;
+    height: 100%;
+    background: #32d56b;
+    transition: width .3s;
 }
 
 .camino {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
     gap: 9px;
-    margin: 13px 0;
+    flex-wrap: wrap;
+    margin: 12px 0;
 }
 
 .paso {
-    width: 43px;
-    height: 43px;
-    border: 3px solid #c08b36;
-    border-radius: 50%;
-    background: #fff0bd;
-    color: #673e1e;
     display: grid;
     place-items: center;
-    font-weight: 900;
+    width: 44px;
+    height: 44px;
+    background: #fff0bd;
+    color: #67401f;
+    border: 3px solid #ca9440;
+    border-radius: 50%;
     font-size: 19px;
+    font-weight: 900;
 }
 
 .paso.actual {
-    background: #ffc844;
+    background: #ffd04d;
     animation: flotar 1.5s infinite;
 }
 
 .paso.correcto {
-    background: #239f58;
+    background: #239b55;
     color: white;
 }
 
 .paso.fallado {
-    background: #ba553c;
+    background: #c0553b;
     color: white;
 }
 
 .tablero {
-    background: linear-gradient(
-        #fff9e0,
-        #f0d397
-    );
+    background: linear-gradient(#fff9e2, #efd198);
+    color: #56351d;
     border: 8px solid #75421f;
     border-radius: 24px;
-    box-shadow:
-        0 0 0 3px #ffdb86,
-        0 8px #452511,
-        0 15px 30px #0006;
     overflow: hidden;
-    color: #57351e;
+    box-shadow: 0 0 0 3px #ffde8c, 0 8px #492512, 0 15px 28px #0006;
 }
 
 .cabecera-tablero {
-    background: linear-gradient(
-        #9c6232,
-        #5a3218
-    );
-    color: #ffebbc;
-    padding: 10px 15px;
+    background: linear-gradient(#a36a37, #5d351a);
+    color: #fff0bd;
     display: flex;
     justify-content: space-between;
     gap: 8px;
     flex-wrap: wrap;
+    padding: 11px 15px;
     font-size: 13px;
     font-weight: 900;
 }
@@ -961,128 +807,108 @@ button:focus-visible {
 
 #historia {
     font-size: 17px;
-    font-weight: 800;
     line-height: 1.4;
+    font-weight: 800;
 }
 
 #ecuacion {
     display: inline-block;
-    border: 3px dashed #c69244;
+    background: #fffdf3;
+    color: #075c74;
+    border: 3px dashed #c79445;
     border-radius: 18px;
-    background: #fffdf2;
-    color: #07586e;
+    padding: 10px 24px;
+    margin: 5px 0 20px;
     font-family: 'Fredoka', sans-serif;
-    font-size: clamp(34px, 6vw, 65px);
+    font-size: clamp(33px, 6vw, 65px);
     font-weight: 700;
-    padding: 9px 24px;
-    margin: 5px 0 19px;
 }
 
 .respuestas {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 13px;
 }
 
 .respuesta {
     min-height: 82px;
+    padding: 5px;
     border: 4px solid white;
     border-radius: 18px;
     color: white;
     font-family: 'Fredoka', sans-serif;
+    font-size: clamp(20px, 3.5vw, 40px);
     font-weight: 700;
-    font-size: clamp(22px, 3.8vw, 40px);
-    box-shadow: 0 6px #69401f;
-    text-shadow: 0 2px #0004;
+    box-shadow: 0 6px #69421f;
 }
 
 .respuesta:nth-child(1) {
-    background: linear-gradient(
-        #ff9863,
-        #d74a29
-    );
+    background: linear-gradient(#ff9969, #d94d2c);
 }
 
 .respuesta:nth-child(2) {
-    background: linear-gradient(
-        #48dfaa,
-        #097f5b
-    );
+    background: linear-gradient(#45dda4, #087c59);
 }
 
 .respuesta:nth-child(3) {
-    background: linear-gradient(
-        #b49bff,
-        #6734bf
-    );
+    background: linear-gradient(#b39cff, #6939bb);
 }
 
 .respuesta.acierto {
-    background: #1b9e4b !important;
-    outline: 4px solid #ffda60;
+    background: #189d48 !important;
+    outline: 4px solid #ffdc65;
     opacity: 1;
 }
 
 .respuesta.fallo {
-    background: #c5312b !important;
+    background: #c42d2a !important;
     opacity: 1;
     animation: temblar .4s;
 }
 
 #mensaje {
     min-height: 25px;
+    margin-bottom: 0;
     font-size: 16px;
     font-weight: 900;
-    margin-bottom: 0;
 }
 
 .guia-jake {
     text-align: center;
 }
 
-.guia-jake .jake-img {
-    max-height: 250px;
-}
-
 .dialogo-jake {
     padding: 12px;
-    border: 3px solid #b57e37;
+    background: #fff2c9;
+    color: #57351d;
+    border: 3px solid #b8813c;
     border-radius: 14px;
-    background: #fff2c8;
-    color: #5a361b;
-    box-shadow: 0 4px #623616;
     font-size: 14px;
     font-weight: 900;
+    box-shadow: 0 4px #67401f;
 }
 
-/* ==========================================
-   PANELES Y RESULTADOS
-========================================== */
+/* PANELES */
 
 .panel {
     width: min(950px, 100%);
     margin: 20px auto;
     padding: 23px;
+    background: linear-gradient(#fff8df, #eccd93);
+    color: #59371e;
     border: 7px solid #75421f;
-    border-radius: 23px;
-    color: #5b361c;
-    background: linear-gradient(
-        #fff7dc,
-        #ebcc92
-    );
-    box-shadow: 0 8px #482510,
-                0 15px 30px #0006;
+    border-radius: 24px;
+    box-shadow: 0 8px #472510, 0 15px 25px #0006;
 }
 
-.panel h2,
-.panel h3 {
+.panel h2, .panel h3 {
     font-family: 'Fredoka', sans-serif;
 }
 
 .resultado-panel {
+    max-width: 720px;
     margin: auto;
     text-align: center;
-    max-width: 700px;
     animation: aparecer .5s;
 }
 
@@ -1092,7 +918,7 @@ button:focus-visible {
 }
 
 #estrellas {
-    font-size: 43px;
+    font-size: 45px;
 }
 
 .resultado-datos {
@@ -1104,16 +930,14 @@ button:focus-visible {
 }
 
 .resultado-datos span {
-    background: #fff9e6;
-    border: 2px solid #d9aa54;
+    background: #fff9e8;
+    border: 2px solid #d6a550;
     border-radius: 13px;
     padding: 12px;
     font-weight: 900;
 }
 
-/* ==========================================
-   TIENDA PIRATA
-========================================== */
+/* TIENDA */
 
 .tienda-grid {
     display: grid;
@@ -1123,20 +947,20 @@ button:focus-visible {
 }
 
 .producto {
-    padding: 15px 10px;
-    border: 3px solid #d4a253;
-    border-radius: 18px;
-    text-align: center;
     background: #fff9e8;
+    border: 3px solid #d6a653;
+    border-radius: 18px;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.producto.equipado {
+    background: #effff2;
+    border-color: #249c56;
 }
 
 .producto-icono {
     font-size: 60px;
-}
-
-.producto.equipado {
-    border-color: #279e5c;
-    background: #effff2;
 }
 
 .producto .boton {
@@ -1145,11 +969,11 @@ button:focus-visible {
 }
 
 .record {
+    background: #fff9e9;
+    border-left: 5px solid #d7a240;
+    border-radius: 10px;
     padding: 13px;
     margin: 8px 0;
-    border-radius: 10px;
-    border-left: 5px solid #d5a13f;
-    background: #fff9e7;
     font-weight: 800;
 }
 
@@ -1160,26 +984,24 @@ button:focus-visible {
 }
 
 .instruccion {
-    padding: 14px;
-    border-radius: 15px;
     background: #fffaf0;
-    border: 2px solid #d6a95c;
+    border: 2px solid #d6ab60;
+    border-radius: 15px;
+    padding: 14px;
 }
 
-/* ==========================================
-   MODALES
-========================================== */
+/* VENTANAS EMERGENTES */
 
 .modal {
     position: fixed;
     inset: 0;
-    z-index: 50;
-    padding: 15px;
+    z-index: 100;
     display: none;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     background: #001c30df;
     backdrop-filter: blur(5px);
+    padding: 15px;
 }
 
 .modal.abierto {
@@ -1191,51 +1013,58 @@ button:focus-visible {
     max-height: 90vh;
     overflow: auto;
     text-align: center;
-    animation: aparecer .35s;
+    animation: aparecer .3s;
 }
 
 #ecuacionCofre {
+    color: #075c74;
     font-size: 38px;
-    color: #075a70;
 }
-
-/* ==========================================
-   CONFETI
-========================================== */
 
 .confeti {
     position: fixed;
     top: -30px;
-    z-index: 100;
+    z-index: 500;
     pointer-events: none;
     animation: caer 3s linear forwards;
 }
 
-@keyframes caer {
-    to {
-        transform: translateY(110vh) rotate(720deg);
+/* ADAPTACIÓN A PANTALLAS */
+
+@media(max-height: 850px) and (min-width: 761px) {
+
+    .zona-islas {
+        min-height: 300px;
+        padding-top: 55px;
+    }
+
+    .imagen-flotante {
+        height: 195px;
+    }
+
+    .titulo {
+        font-size: clamp(35px, 5.5vw, 72px);
+    }
+
+    .jake-img {
+        max-height: 200px;
     }
 }
 
-/* ==========================================
-   DISEÑO RESPONSIVO
-========================================== */
-
 @media(max-width: 1000px) {
 
-    .mundo-menu {
-        grid-template-columns: 220px 1fr 220px;
+    .zona-islas {
+        grid-template-columns: minmax(0, 235px) 1fr minmax(0, 235px);
         gap: 12px;
     }
 
-    .tarjeta-isla h2 {
-        font-size: 20px;
+    .imagen-flotante {
+        height: 190px;
     }
 
     .zona-juego {
-        grid-template-columns: 1fr 145px;
+        grid-template-columns: 1fr 140px;
     }
-
 }
 
 @media(max-width: 760px) {
@@ -1249,13 +1078,14 @@ button:focus-visible {
     }
 
     .titulo {
-        font-size: clamp(31px, 8vw, 49px);
+        font-size: clamp(31px, 8vw, 48px);
     }
 
-    .mundo-menu {
+    .zona-islas {
         grid-template-columns: 1fr 1fr;
-        min-height: auto;
-        gap: 10px;
+        min-height: 280px;
+        gap: 12px;
+        padding: 45px 0 15px;
     }
 
     .jake-centro {
@@ -1263,49 +1093,40 @@ button:focus-visible {
         grid-row: 1;
     }
 
+    .jake-centro.sin-imagen {
+        display: none;
+    }
+
     .jake-contenedor {
-        max-width: 130px;
+        max-width: 125px;
     }
 
     .jake-img {
-        max-height: 160px;
+        max-height: 140px;
     }
 
-    .jake-fallback {
-        font-size: 65px;
+    .imagen-flotante {
+        height: 155px;
     }
 
-    .tarjeta-isla {
-        padding: 12px 7px;
+    .nombre-isla {
+        font-size: clamp(14px, 3.6vw, 22px);
     }
 
-    .tarjeta-isla h2 {
-        font-size: clamp(13px, 3.7vw, 22px);
-    }
-
-    .tarjeta-isla p {
+    .boton-isla {
+        width: 100%;
         font-size: 12px;
+        padding: 10px 5px;
     }
 
-    .simbolo-grande {
-        font-size: 44px;
-    }
-
-    .niveles-mini {
-        flex-wrap: wrap;
-    }
-
-    .tarjeta-isla .boton {
-        font-size: 12px;
-        padding: 8px;
+    .descripcion-isla {
+        font-size: 11px;
     }
 
     .niveles-grid,
-    .mapa-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .zona-juego {
+    .mapa-grid,
+    .zona-juego,
+    .manual-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1315,10 +1136,6 @@ button:focus-visible {
 
     .tienda-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .manual-grid {
-        grid-template-columns: 1fr;
     }
 
     .respuesta {
@@ -1335,9 +1152,7 @@ button:focus-visible {
 
     .boton {
         font-size: 13px;
-        padding: 9px 13px;
     }
-
 }
 
 @media(prefers-reduced-motion: reduce) {
@@ -1346,7 +1161,6 @@ button:focus-visible {
         animation: none !important;
         transition-duration: .01ms !important;
     }
-
 }
 
 </style>
@@ -1354,9 +1168,7 @@ button:focus-visible {
 
 <body>
 
-<!-- ==========================================
-     LOS DOS VIDEOS DE GITHUB
-========================================== -->
+<!-- VIDEOS DEL REPOSITORIO -->
 
 <div id="fondos">
 
@@ -1374,22 +1186,48 @@ button:focus-visible {
     <video
         id="videoPartida"
         class="video-fondo"
-        src="./division%20multiplicacion.mp4"
         muted
         loop
         playsinline
         preload="auto">
+
+        <source
+            src="./divisi%C3%B3n%20multiplicacion.mp4"
+            type="video/mp4">
+
+        <source
+            src="./division%20multiplicacion.mp4"
+            type="video/mp4">
+
     </video>
 
 </div>
 
-<div class="sombra-fondo"></div>
+<div class="sombra"></div>
 
-<main id="aplicacion">
+<!-- INTRO REAL DE NUBES -->
 
-<!-- ==========================================
-     MENÚ PRINCIPAL
-========================================== -->
+<div id="transicion">
+
+    <video
+        id="videoNubes"
+        src="./nuves.mp4"
+        muted
+        playsinline
+        preload="auto">
+    </video>
+
+    <button id="saltarIntro">
+        Saltar viaje ➜
+    </button>
+
+</div>
+
+<div id="avisoVideo" role="status" hidden></div>
+
+<main id="app">
+
+<!-- MENÚ PRINCIPAL -->
 
 <section id="menu" class="pantalla activa">
 
@@ -1402,16 +1240,15 @@ button:focus-visible {
         <div class="controles">
 
             <span class="chip">
-                🪙 BOTÍN: <b id="saldoMenu">0</b>
+                🪙 BOTÍN:
+                <b id="saldoMenu">0</b>
             </span>
 
-            <button class="chip"
-                    onclick="abrirRecords()">
+            <button class="chip" onclick="abrirRecords()">
                 🏆 RÉCORDS
             </button>
 
-            <button class="chip"
-                    id="sonidoBtn"
+            <button class="chip" id="sonidoBtn"
                     onclick="cambiarSonido()">
                 🔊 SONIDO: SÍ
             </button>
@@ -1422,7 +1259,7 @@ button:focus-visible {
 
     <div class="portada">
 
-        <div class="encabezado-menu">
+        <div class="encabezado">
 
             <span class="etiqueta">
                 AVENTURA EDUCATIVA INTERACTIVA
@@ -1438,38 +1275,54 @@ button:focus-visible {
 
         </div>
 
-        <div class="mundo-menu">
+        <div class="zona-islas">
 
-            <!-- ISLA IZQUIERDA -->
+            <!-- MULTIPLICACIONES -->
 
-            <article class="tarjeta-isla">
+            <article class="opcion-isla">
 
-                <div class="simbolo-grande">×</div>
+                <button
+                    class="imagen-boton"
+                    onclick="elegirIsla('mul')"
+                    aria-label="Explorar multiplicaciones">
 
-                <h2>MULTIPLICACIONES</h2>
+                    <img
+                        src="./multiplicaciones.png"
+                        alt="Isla de multiplicaciones"
+                        class="imagen-flotante"
+                        onerror="errorIsla(this)">
 
-                <p>🏝️ Isla del Tesoro Dorado</p>
+                    <span class="imagen-alternativa" hidden>
+                        ×
+                    </span>
 
-                <div class="niveles-mini">
+                </button>
 
-                    <span>Fácil</span>
-                    <span>Medio</span>
-                    <span>Difícil</span>
+                <h2 class="nombre-isla">
+                    MULTIPLICACIONES
+                </h2>
 
-                </div>
-
-                <p id="progresoMul">
-                    0 de 3 niveles
+                <p class="descripcion-isla">
+                    Isla del Tesoro Dorado
                 </p>
 
-                <button class="boton"
-                        onclick="elegirIsla('mul')">
-                    ⚔️ EXPLORAR ISLA
+                <button
+                    class="boton boton-isla"
+                    onclick="elegirIsla('mul')">
+
+                    ⚔️ ¡A MULTIPLICAR!
+
                 </button>
+
+                <br>
+
+                <span id="progresoMul" class="progreso-isla">
+                    0 de 3 niveles
+                </span>
 
             </article>
 
-            <!-- JAKE ORIGINAL -->
+            <!-- JAKE -->
 
             <div class="jake-centro">
 
@@ -1477,12 +1330,10 @@ button:focus-visible {
 
                     <img
                         src="./jake.png"
-                        class="jake-img"
                         alt="Jake"
-                        onclick="animarJake('feliz')"
-                        onerror="errorImagen(this)">
-
-                    <div class="jake-fallback">🏴‍☠️</div>
+                        class="jake-img"
+                        onerror="ocultarJake(this)"
+                        onclick="animarJake('feliz')">
 
                     <span class="sombrero-equipado"></span>
 
@@ -1494,32 +1345,48 @@ button:focus-visible {
 
             </div>
 
-            <!-- ISLA DERECHA -->
+            <!-- DIVISIONES -->
 
-            <article class="tarjeta-isla division">
+            <article class="opcion-isla division">
 
-                <div class="simbolo-grande">÷</div>
+                <button
+                    class="imagen-boton"
+                    onclick="elegirIsla('div')"
+                    aria-label="Explorar divisiones">
 
-                <h2>DIVISIONES</h2>
+                    <img
+                        src="./divisiones.png"
+                        alt="Isla de divisiones"
+                        class="imagen-flotante"
+                        onerror="errorIsla(this)">
 
-                <p>💎 Isla de los Diamantes</p>
+                    <span class="imagen-alternativa" hidden>
+                        ÷
+                    </span>
 
-                <div class="niveles-mini">
+                </button>
 
-                    <span>Fácil</span>
-                    <span>Medio</span>
-                    <span>Difícil</span>
+                <h2 class="nombre-isla">
+                    DIVISIONES
+                </h2>
 
-                </div>
-
-                <p id="progresoDiv">
-                    0 de 3 niveles
+                <p class="descripcion-isla">
+                    Isla de los Diamantes
                 </p>
 
-                <button class="boton azul"
-                        onclick="elegirIsla('div')">
-                    💎 EXPLORAR ISLA
+                <button
+                    class="boton azul boton-isla"
+                    onclick="elegirIsla('div')">
+
+                    💎 ¡A DIVIDIR!
+
                 </button>
+
+                <br>
+
+                <span id="progresoDiv" class="progreso-isla">
+                    0 de 3 niveles
+                </span>
 
             </article>
 
@@ -1534,16 +1401,16 @@ button:focus-visible {
                 </label>
 
                 <input
-                    type="text"
                     id="nombre"
+                    type="text"
                     maxlength="20"
                     value="Explorador">
 
                 <label>
 
                     <input
-                        type="checkbox"
                         id="contrarreloj"
+                        type="checkbox"
                         checked>
 
                     ⏱️ Contrarreloj
@@ -1556,18 +1423,15 @@ button:focus-visible {
 
         <div class="menu-inferior">
 
-            <button class="boton rojo"
-                    onclick="abrirTienda()">
+            <button class="boton rojo" onclick="abrirTienda()">
                 🏴‍☠️ TIENDA PIRATA
             </button>
 
-            <button class="boton azul"
-                    onclick="abrirMapa()">
+            <button class="boton azul" onclick="abrirMapa()">
                 🗺️ MAPA DEL TESORO
             </button>
 
-            <button class="boton madera"
-                    onclick="mostrar('manual')">
+            <button class="boton madera" onclick="mostrar('manual')">
                 📜 MANUAL
             </button>
 
@@ -1590,16 +1454,12 @@ button:focus-visible {
     </div>
 
     <footer class="pie">
-
         LA ISLA MATEMÁGICA · APRENDE, EXPLORA Y CONQUISTA
-
     </footer>
 
 </section>
 
-<!-- ==========================================
-     SELECCIÓN DE NIVELES
-========================================== -->
+<!-- SELECCIÓN DE NIVELES -->
 
 <section id="niveles" class="pantalla">
 
@@ -1609,30 +1469,23 @@ button:focus-visible {
             🧭 ELIGE TU DESAFÍO
         </span>
 
-        <button class="boton madera"
-                onclick="irMenu()">
+        <button class="boton madera" onclick="irMenu()">
             ⬅ VOLVER AL PUERTO
         </button>
 
     </header>
 
-    <h2 class="titulo-seccion"
-        id="tituloNiveles">
-    </h2>
+    <h2 id="tituloNiveles" class="titulo-seccion"></h2>
 
     <p class="descripcion">
-        Supera las misiones y descubre los tesoros.
+        Supera las misiones y conquista el tesoro.
     </p>
 
-    <div class="niveles-grid"
-         id="listaNiveles">
-    </div>
+    <div class="niveles-grid" id="listaNiveles"></div>
 
 </section>
 
-<!-- ==========================================
-     MAPA
-========================================== -->
+<!-- MAPA -->
 
 <section id="mapa" class="pantalla">
 
@@ -1642,8 +1495,7 @@ button:focus-visible {
             🗺️ CARTA DE NAVEGACIÓN
         </span>
 
-        <button class="boton madera"
-                onclick="irMenu()">
+        <button class="boton madera" onclick="irMenu()">
             ⬅ PUERTO
         </button>
 
@@ -1654,21 +1506,23 @@ button:focus-visible {
     </h2>
 
     <p class="descripcion">
-        Conquista las dos islas y sus seis niveles.
+        Conquista las dos islas matemágicas.
     </p>
 
     <div class="mapa-grid">
 
         <article class="mapa-isla">
 
-            <div class="simbolo-grande">×</div>
+            <img
+                src="./multiplicaciones.png"
+                alt="Multiplicaciones"
+                onerror="this.hidden=true">
 
             <h3>MULTIPLICACIONES</h3>
 
             <div class="ruta" id="rutaMul"></div>
 
-            <button class="boton"
-                    onclick="elegirIsla('mul')">
+            <button class="boton" onclick="elegirIsla('mul')">
                 EXPLORAR ISLA
             </button>
 
@@ -1676,14 +1530,16 @@ button:focus-visible {
 
         <article class="mapa-isla">
 
-            <div class="simbolo-grande">÷</div>
+            <img
+                src="./divisiones.png"
+                alt="Divisiones"
+                onerror="this.hidden=true">
 
             <h3>DIVISIONES</h3>
 
             <div class="ruta" id="rutaDiv"></div>
 
-            <button class="boton azul"
-                    onclick="elegirIsla('div')">
+            <button class="boton azul" onclick="elegirIsla('div')">
                 EXPLORAR ISLA
             </button>
 
@@ -1693,20 +1549,15 @@ button:focus-visible {
 
 </section>
 
-<!-- ==========================================
-     PANTALLA DE JUEGO
-========================================== -->
+<!-- PARTIDA -->
 
 <section id="juego" class="pantalla">
 
     <header class="barra-superior">
 
-        <span class="emblema"
-              id="tituloJuego">
-        </span>
+        <span class="emblema" id="tituloJuego"></span>
 
-        <button class="boton rojo"
-                onclick="preguntarSalida()">
+        <button class="boton rojo" onclick="preguntarSalida()">
             ✖ SALIR
         </button>
 
@@ -1756,13 +1607,13 @@ button:focus-visible {
                 <div id="barraAvance"></div>
             </div>
 
-            <div id="camino" class="camino"></div>
+            <div class="camino" id="camino"></div>
 
             <article class="tablero">
 
                 <div class="cabecera-tablero">
 
-                    <span>DESAFÍO MATEMÁGICO</span>
+                    <span>DESAFÍO MATEMÁTICO</span>
 
                     <span id="capitan"></span>
 
@@ -1770,25 +1621,17 @@ button:focus-visible {
 
                 <div class="contenido-tablero">
 
-                    <div class="progreso"
-                         id="contenedorTiempo">
-
+                    <div class="progreso" id="contenedorTiempo">
                         <div id="barraTiempo"></div>
-
                     </div>
 
                     <p id="historia"></p>
 
-                    <div id="ecuacion">
-                        24 × 3 = ?
-                    </div>
+                    <div id="ecuacion"></div>
 
-                    <div class="respuestas"
-                         id="respuestas">
-                    </div>
+                    <div class="respuestas" id="respuestas"></div>
 
-                    <p id="mensaje"
-                       aria-live="polite">
+                    <p id="mensaje" aria-live="polite">
                         Selecciona la respuesta correcta.
                     </p>
 
@@ -1804,21 +1647,16 @@ button:focus-visible {
 
                 <img
                     src="./jake.png"
-                    class="jake-img"
                     alt="Jake"
-                    onerror="errorImagen(this)">
-
-                <div class="jake-fallback">🏴‍☠️</div>
+                    class="jake-img"
+                    onerror="ocultarJake(this)">
 
                 <span class="sombrero-equipado"></span>
 
             </div>
 
-            <div class="dialogo-jake"
-                 id="dialogoJake">
-
+            <div class="dialogo-jake" id="dialogoJake">
                 ¡Vamos, capitán! El tesoro está cerca.
-
             </div>
 
         </aside>
@@ -1827,9 +1665,7 @@ button:focus-visible {
 
 </section>
 
-<!-- ==========================================
-     RESULTADOS
-========================================== -->
+<!-- RESULTADOS -->
 
 <section id="resultados" class="pantalla">
 
@@ -1839,8 +1675,7 @@ button:focus-visible {
             📜 BITÁCORA DEL CAPITÁN
         </span>
 
-        <button class="boton madera"
-                onclick="irMenu()">
+        <button class="boton madera" onclick="irMenu()">
             ⬅ MENÚ
         </button>
 
@@ -1848,10 +1683,7 @@ button:focus-visible {
 
     <div class="panel resultado-panel">
 
-        <div class="tesoro-final"
-             id="tesoroFinal">
-            🏆
-        </div>
+        <div id="tesoroFinal" class="tesoro-final">🏆</div>
 
         <h2 id="tituloResultado"></h2>
 
@@ -1880,24 +1712,28 @@ button:focus-visible {
 
         <div class="botonera">
 
-            <button class="boton"
-                    id="siguienteBtn"
-                    onclick="siguienteNivel()">
+            <button
+                class="boton"
+                id="siguienteBtn"
+                onclick="siguienteNivel()">
+
                 SIGUIENTE NIVEL ➜
+
             </button>
 
-            <button class="boton verde"
-                    onclick="iniciarNivel(estado.nivel)">
+            <button
+                class="boton verde"
+                onclick="iniciarNivel(estado.nivel)">
+
                 🔄 REPETIR
+
             </button>
 
-            <button class="boton azul"
-                    onclick="abrirMapa()">
+            <button class="boton azul" onclick="abrirMapa()">
                 🗺️ MAPA
             </button>
 
-            <button class="boton rojo"
-                    onclick="abrirTienda()">
+            <button class="boton rojo" onclick="abrirTienda()">
                 🏴‍☠️ TIENDA
             </button>
 
@@ -1907,9 +1743,7 @@ button:focus-visible {
 
 </section>
 
-<!-- ==========================================
-     TIENDA PIRATA
-========================================== -->
+<!-- TIENDA -->
 
 <section id="tienda" class="pantalla">
 
@@ -1920,8 +1754,7 @@ button:focus-visible {
             <b id="saldoTienda">0</b>
         </span>
 
-        <button class="boton madera"
-                onclick="irMenu()">
+        <button class="boton madera" onclick="irMenu()">
             ⬅ PUERTO
         </button>
 
@@ -1935,33 +1768,25 @@ button:focus-visible {
 
         <div class="botonera">
 
-            <button class="boton"
-                    onclick="cargarTienda('barcos')">
+            <button class="boton" onclick="cargarTienda('barcos')">
                 ⛵ BARCOS
             </button>
 
-            <button class="boton azul"
-                    onclick="cargarTienda('sombreros')">
+            <button class="boton azul" onclick="cargarTienda('sombreros')">
                 🎩 SOMBREROS
             </button>
 
         </div>
 
-        <p id="mensajeTienda"
-           style="text-align:center;font-weight:900">
-        </p>
+        <p id="mensajeTienda" style="text-align:center;font-weight:900"></p>
 
-        <div id="productos"
-             class="tienda-grid">
-        </div>
+        <div id="productos" class="tienda-grid"></div>
 
     </div>
 
 </section>
 
-<!-- ==========================================
-     RÉCORDS
-========================================== -->
+<!-- RÉCORDS -->
 
 <section id="records" class="pantalla">
 
@@ -1971,8 +1796,7 @@ button:focus-visible {
             🏆 SALÓN DE LA FAMA
         </span>
 
-        <button class="boton madera"
-                onclick="irMenu()">
+        <button class="boton madera" onclick="irMenu()">
             ⬅ PUERTO
         </button>
 
@@ -1982,15 +1806,11 @@ button:focus-visible {
         MEJORES CAPITANES
     </h2>
 
-    <div class="panel"
-         id="listaRecords">
-    </div>
+    <div class="panel" id="listaRecords"></div>
 
 </section>
 
-<!-- ==========================================
-     MANUAL
-========================================== -->
+<!-- MANUAL -->
 
 <section id="manual" class="pantalla">
 
@@ -2000,8 +1820,7 @@ button:focus-visible {
             📜 ESCUELA DE PIRATAS
         </span>
 
-        <button class="boton madera"
-                onclick="irMenu()">
+        <button class="boton madera" onclick="irMenu()">
             ⬅ VOLVER
         </button>
 
@@ -2031,8 +1850,8 @@ button:focus-visible {
                 <h3>🧮 Resuelve las operaciones</h3>
 
                 <p>
-                    Cada nivel tiene cinco preguntas aleatorias.
-                    Selecciona una de las tres respuestas.
+                    Cada nivel contiene cinco preguntas aleatorias.
+                    Selecciona la respuesta correcta.
                 </p>
 
             </article>
@@ -2048,7 +1867,7 @@ button:focus-visible {
                 </p>
 
                 <p>
-                    Los tiempos son iguales en ambas islas.
+                    Los tiempos son iguales para ambas operaciones.
                 </p>
 
             </article>
@@ -2058,8 +1877,8 @@ button:focus-visible {
                 <h3>❤️ Protege tus vidas</h3>
 
                 <p>
-                    Comienzas cada nivel con tres vidas.
-                    Evita las respuestas incorrectas.
+                    Cada nivel comienza con tres corazones.
+                    Las respuestas incorrectas pueden hacerte perder una vida.
                 </p>
 
             </article>
@@ -2080,9 +1899,9 @@ button:focus-visible {
                 <h3>🎁 Cofre de la vida</h3>
 
                 <p>
-                    Si pierdes tus tres vidas, resuelve
-                    una operación especial para recuperar
-                    un corazón.
+                    Si pierdes tus tres corazones,
+                    resuelve una operación especial
+                    para recuperar una vida.
                 </p>
 
             </article>
@@ -2092,8 +1911,7 @@ button:focus-visible {
                 <h3>🪙 Tienda pirata</h3>
 
                 <p>
-                    Consigue monedas para comprar barcos
-                    y sombreros.
+                    Consigue monedas y compra barcos y sombreros.
                 </p>
 
             </article>
@@ -2103,8 +1921,8 @@ button:focus-visible {
                 <h3>🏆 Conquista los tesoros</h3>
 
                 <p>
-                    Termina cada nivel con al menos tres
-                    aciertos para desbloquear el siguiente.
+                    Termina cada nivel con al menos tres aciertos
+                    para desbloquear el siguiente.
                 </p>
 
             </article>
@@ -2115,13 +1933,11 @@ button:focus-visible {
 
         <div class="botonera">
 
-            <button class="boton"
-                    onclick="elegirIsla('mul')">
+            <button class="boton" onclick="elegirIsla('mul')">
                 × MULTIPLICACIONES
             </button>
 
-            <button class="boton azul"
-                    onclick="elegirIsla('div')">
+            <button class="boton azul" onclick="elegirIsla('div')">
                 ÷ DIVISIONES
             </button>
 
@@ -2133,35 +1949,7 @@ button:focus-visible {
 
 </main>
 
-<!-- ==========================================
-     TRANSICIÓN DE NUBES
-========================================== -->
-
-<div id="transicionNubes" aria-hidden="true">
-
-    <div id="veloNubes"></div>
-
-    <div class="nube izquierda"></div>
-
-    <div class="nube derecha"></div>
-
-    <div id="mensajeViaje">
-
-        <span class="barco-viaje">⛵</span>
-
-        <span id="textoViaje">
-            ¡Zarpando hacia la aventura!
-        </span>
-
-    </div>
-
-</div>
-
-<div id="avisoVideo" role="status"></div>
-
-<!-- ==========================================
-     BONUS
-========================================== -->
+<!-- BONUS -->
 
 <div class="modal" id="modalBonus">
 
@@ -2172,19 +1960,16 @@ button:focus-visible {
         <h2>¡SEGUNDA OPORTUNIDAD!</h2>
 
         <p>
-            Repite la misma operación
-            sin perder un corazón.
+            Repite la misma operación sin perder una vida.
         </p>
 
         <div class="botonera">
 
-            <button class="boton verde"
-                    onclick="usarBonus()">
+            <button class="boton verde" onclick="usarBonus()">
                 USAR BONUS
             </button>
 
-            <button class="boton rojo"
-                    onclick="rechazarBonus()">
+            <button class="boton rojo" onclick="rechazarBonus()">
                 CONTINUAR
             </button>
 
@@ -2194,9 +1979,7 @@ button:focus-visible {
 
 </div>
 
-<!-- ==========================================
-     COFRE DE LA VIDA
-========================================== -->
+<!-- COFRE -->
 
 <div class="modal" id="modalCofre">
 
@@ -2207,15 +1990,12 @@ button:focus-visible {
         <h2>¡COFRE DE LA VIDA!</h2>
 
         <p>
-            Resuelve esta operación
-            para recuperar un corazón.
+            Resuelve esta operación para recuperar un corazón.
         </p>
 
         <h2 id="ecuacionCofre"></h2>
 
-        <div class="respuestas"
-             id="respuestasCofre">
-        </div>
+        <div class="respuestas" id="respuestasCofre"></div>
 
         <p id="mensajeCofre"></p>
 
@@ -2223,9 +2003,7 @@ button:focus-visible {
 
 </div>
 
-<!-- ==========================================
-     SALIR DE LA PARTIDA
-========================================== -->
+<!-- CONFIRMACIÓN DE SALIDA -->
 
 <div class="modal" id="modalSalir">
 
@@ -2234,18 +2012,16 @@ button:focus-visible {
         <h2>⚓ ¿ABANDONAR LA EXPEDICIÓN?</h2>
 
         <p>
-            Tus monedas ganadas permanecerán guardadas.
+            Las monedas que ganaste permanecerán guardadas.
         </p>
 
         <div class="botonera">
 
-            <button class="boton rojo"
-                    onclick="irMenu()">
+            <button class="boton rojo" onclick="irMenu()">
                 SALIR AL PUERTO
             </button>
 
-            <button class="boton verde"
-                    onclick="cancelarSalida()">
+            <button class="boton verde" onclick="cancelarSalida()">
                 SEGUIR JUGANDO
             </button>
 
@@ -2261,12 +2037,7 @@ button:focus-visible {
 
 const $ = id => document.getElementById(id);
 
-const esperar = ms =>
-    new Promise(resolve => setTimeout(resolve, ms));
-
-/* ==========================================
-   CONFIGURACIÓN MATEMÁTICA
-========================================== */
+/* CONFIGURACIÓN */
 
 const TIEMPOS = {
     1: 30,
@@ -2288,47 +2059,32 @@ const ISLAS = {
 };
 
 const EJEMPLOS = {
-
     mul: {
         1: "24 × 3",
         2: "35 × 12",
         3: "245 × 32"
     },
-
     div: {
         1: "48 ÷ 4",
         2: "648 ÷ 8",
         3: "864 ÷ 24"
     }
-
 };
 
-/* ==========================================
-   ARCHIVOS DE VIDEO
-========================================== */
-
 const ARCHIVOS = {
-
     principal: [
         "./videoprincipal.mp4"
     ],
-
     partida: [
-        "./division%20multiplicacion.mp4",
         "./divisi%C3%B3n%20multiplicacion.mp4",
-        "./division%20multiplicaci%C3%B3n.mp4",
-        "./divisi%C3%B3n%20multiplicaci%C3%B3n.mp4"
+        "./division%20multiplicacion.mp4"
     ]
-
 };
 
 let pantallaActual = "menu";
-
 let fondoActual = null;
-
 let navegando = false;
-
-let solicitudVideo = 0;
+let versionVideo = 0;
 
 const pantallasIsla = [
     "niveles",
@@ -2336,382 +2092,66 @@ const pantallasIsla = [
     "resultados"
 ];
 
-function tipoFondo(pantalla) {
-
-    return pantallasIsla.includes(pantalla)
-        ? "partida"
-        : "principal";
-
-}
-
-function obtenerVideo(tipo) {
-
-    return tipo === "partida"
-        ? $("videoPartida")
-        : $("videoPrincipal");
-
-}
-
-function prepararVideos() {
-
-    document.querySelectorAll(".video-fondo")
-        .forEach(video => {
-
-            video.muted = true;
-
-            video.defaultMuted = true;
-
-            video.loop = true;
-
-            video.playsInline = true;
-
-        });
-
-}
-
-async function intentarReproducir(video) {
-
-    let limite;
-
-    try {
-
-        await Promise.race([
-
-            video.play(),
-
-            new Promise((resolve, reject) => {
-
-                limite = setTimeout(() => {
-
-                    reject(
-                        new Error("El video tardó en cargar.")
-                    );
-
-                }, 6000);
-
-            })
-
-        ]);
-
-        return true;
-
-    } catch {
-
-        return false;
-
-    } finally {
-
-        clearTimeout(limite);
-
-    }
-
-}
-
-async function cambiarFondo(tipo) {
-
-    const solicitud = ++solicitudVideo;
-
-    const video = obtenerVideo(tipo);
-
-    const otro = obtenerVideo(
-        tipo === "principal"
-            ? "partida"
-            : "principal"
-    );
-
-    if (
-        fondoActual === tipo &&
-        !video.paused &&
-        !video.error
-    ) {
-
-        return true;
-
-    }
-
-    let correcto = false;
-
-    if (!video.error) {
-
-        correcto = await intentarReproducir(video);
-
-    }
-
-    if (!correcto) {
-
-        for (const ruta of ARCHIVOS[tipo]) {
-
-            if (solicitud !== solicitudVideo) {
-                return false;
-            }
-
-            video.src = ruta;
-
-            video.load();
-
-            correcto = await intentarReproducir(video);
-
-            if (correcto) {
-                break;
-            }
-
-        }
-
-    }
-
-    if (solicitud !== solicitudVideo) {
-
-        return false;
-
-    }
-
-    otro.pause();
-
-    otro.classList.remove("visible");
-
-    if (correcto) {
-
-        video.classList.add("visible");
-
-        fondoActual = tipo;
-
-        $("avisoVideo").style.display = "none";
-
-        return true;
-
-    }
-
-    video.classList.remove("visible");
-
-    video.pause();
-
-    fondoActual = null;
-
-    $("avisoVideo").textContent =
-        "No se pudo cargar el video " +
-        (tipo === "principal"
-            ? "principal."
-            : "de multiplicaciones y divisiones.") +
-        " Revisa el nombre y formato del archivo en GitHub.";
-
-    $("avisoVideo").style.display = "block";
-
-    return false;
-
-}
-
-/* ==========================================
-   CAMBIO DE PANTALLA CON NUBES
-========================================== */
-
-function mostrarDirecto(id) {
-
-    document.querySelectorAll(".pantalla")
-        .forEach(p => {
-
-            p.classList.remove("activa");
-
-        });
-
-    $(id).classList.add("activa");
-
-    pantallaActual = id;
-
-    window.scrollTo(0, 0);
-
-}
-
-async function mostrar(id) {
-
-    if (navegando) return false;
-
-    const nuevoFondo = tipoFondo(id);
-
-    const fondoAnterior = tipoFondo(pantallaActual);
-
-    if (nuevoFondo === fondoAnterior) {
-
-        mostrarDirecto(id);
-
-        if (
-            fondoActual !== nuevoFondo ||
-            obtenerVideo(nuevoFondo).paused
-        ) {
-
-            cambiarFondo(nuevoFondo);
-
-        }
-
-        return true;
-
-    }
-
-    navegando = true;
-
-    const nubes = $("transicionNubes");
-
-    const reducido = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    const duracion = reducido ? 10 : 650;
-
-    $("textoViaje").textContent =
-        nuevoFondo === "principal"
-
-        ? "¡Regresando al puerto!"
-
-        : estado.isla === "mul"
-
-            ? "¡Rumbo a la isla de multiplicaciones!"
-
-            : "¡Rumbo a la isla de divisiones!";
-
-    nubes.classList.add("activa");
-
-    try {
-
-        await esperar(30);
-
-        nubes.classList.add("cerrada");
-
-        await esperar(duracion);
-
-        mostrarDirecto(id);
-
-        await cambiarFondo(nuevoFondo);
-
-        await esperar(reducido ? 10 : 350);
-
-        nubes.classList.remove("cerrada");
-
-        await esperar(duracion);
-
-        return true;
-
-    } finally {
-
-        nubes.classList.remove("cerrada");
-
-        nubes.classList.remove("activa");
-
-        navegando = false;
-
-    }
-
-}
-
-/* Recuperar reproducción mediante interacción */
-
-document.addEventListener("pointerdown", () => {
-
-    if (navegando) return;
-
-    const tipo = tipoFondo(pantallaActual);
-
-    const video = obtenerVideo(tipo);
-
-    if (video.paused) {
-
-        cambiarFondo(tipo);
-
-    }
-
-});
-
-document.addEventListener("visibilitychange", () => {
-
-    if (document.hidden) {
-
-        $("videoPrincipal").pause();
-
-        $("videoPartida").pause();
-
-    } else if (!navegando) {
-
-        cambiarFondo(
-            tipoFondo(pantallaActual)
-        );
-
-    }
-
-});
-
-/* ==========================================
-   TIENDA PIRATA
-========================================== */
+/* TIENDA */
 
 const CATALOGO = {
 
     barcos: [
-
         {
             id: "barco1",
             nombre: "Balandra",
             icono: "⛵",
             precio: 0
         },
-
         {
             id: "barco2",
             nombre: "Carabela Real",
             icono: "🚢",
             precio: 60
         },
-
         {
             id: "barco3",
             nombre: "Galeón Pirata",
             icono: "🚤",
             precio: 110
         },
-
         {
             id: "barco4",
             nombre: "Navío Dorado",
             icono: "🛳️",
             precio: 200
         }
-
     ],
 
     sombreros: [
-
         {
             id: "sombrero1",
             nombre: "Explorador",
             icono: "",
             precio: 0
         },
-
         {
             id: "sombrero2",
             nombre: "Capitán",
             icono: "🎩",
             precio: 40
         },
-
         {
             id: "sombrero3",
             nombre: "Aventurero",
             icono: "🤠",
             precio: 75
         },
-
         {
             id: "sombrero4",
             nombre: "Rey Pirata",
             icono: "👑",
             precio: 150
         }
-
     ]
-
 };
 
-/* ==========================================
-   GUARDAR PROGRESO
-========================================== */
+/* GUARDADO DEL PROGRESO */
 
 function cargarDatos() {
 
@@ -2729,10 +2169,7 @@ function cargarDatos() {
             div: []
         },
 
-        comprados: [
-            "barco1",
-            "sombrero1"
-        ],
+        comprados: ["barco1", "sombrero1"],
 
         barco: "barco1",
 
@@ -2740,12 +2177,11 @@ function cargarDatos() {
 
         records: [],
 
-        sonido: true,
-
         nombre: "Explorador",
 
-        contrarreloj: true
+        sonido: true,
 
+        contrarreloj: true
     };
 
     try {
@@ -2771,15 +2207,12 @@ function cargarDatos() {
                 ...inicial.completados,
                 ...anterior.completados
             }
-
         };
 
     } catch {
 
         return inicial;
-
     }
-
 }
 
 let datos = cargarDatos();
@@ -2794,74 +2227,399 @@ function guardar() {
         );
 
     } catch {}
-
 }
 
-/* ==========================================
-   ESTADO DEL JUEGO
-========================================== */
+/* ESTADO DE LA PARTIDA */
 
 const estado = {
 
     isla: "mul",
-
     nivel: 1,
-
     vidas: 3,
-
     puntos: 0,
-
     monedas: 0,
-
     racha: 0,
-
     bonus: 1,
-
     cofreUsado: false,
-
     preguntaNumero: 0,
-
     aciertos: 0,
-
     historial: [],
-
     pregunta: null,
-
     usadas: new Set(),
-
     tiempo: 0,
-
     limite: 30,
-
     intervalo: null,
-
     pendiente: null,
-
     bloqueado: false,
-
     activa: false,
-
     pausado: false,
-
     contrarreloj: true
 
 };
 
-/* ==========================================
-   MENÚ Y NAVEGACIÓN
-========================================== */
+/* CONTROL DE VIDEOS */
+
+function tipoFondo(pantalla) {
+
+    return pantallasIsla.includes(pantalla)
+        ? "partida"
+        : "principal";
+}
+
+function obtenerVideo(tipo) {
+
+    return tipo === "partida"
+        ? $("videoPartida")
+        : $("videoPrincipal");
+}
+
+function prepararVideos() {
+
+    document.querySelectorAll("video").forEach(video => {
+
+        video.muted = true;
+        video.defaultMuted = true;
+        video.playsInline = true;
+
+    });
+
+    $("videoPrincipal").loop = true;
+    $("videoPartida").loop = true;
+    $("videoNubes").loop = false;
+}
+
+async function reproducirSeguro(video) {
+
+    let temporizador;
+
+    try {
+
+        await Promise.race([
+
+            video.play(),
+
+            new Promise((resolve, reject) => {
+
+                temporizador = setTimeout(() => {
+
+                    reject(new Error("Tiempo de carga agotado"));
+
+                }, 5000);
+
+            })
+
+        ]);
+
+        return true;
+
+    } catch {
+
+        return false;
+
+    } finally {
+
+        clearTimeout(temporizador);
+
+    }
+}
+
+async function cambiarFondo(tipo) {
+
+    const version = ++versionVideo;
+
+    const video = obtenerVideo(tipo);
+
+    const otro = obtenerVideo(
+        tipo === "principal" ? "partida" : "principal"
+    );
+
+    if (
+        fondoActual === tipo &&
+        !video.paused &&
+        !video.error
+    ) {
+
+        return true;
+
+    }
+
+    let correcto = false;
+
+    if (!video.error) {
+
+        correcto = await reproducirSeguro(video);
+
+    }
+
+    if (!correcto) {
+
+        for (const ruta of ARCHIVOS[tipo]) {
+
+            if (version !== versionVideo) return false;
+
+            video.src = ruta;
+            video.load();
+
+            correcto = await reproducirSeguro(video);
+
+            if (correcto) break;
+
+        }
+    }
+
+    if (version !== versionVideo) return false;
+
+    otro.pause();
+    otro.classList.remove("visible");
+
+    if (correcto) {
+
+        video.classList.add("visible");
+
+        fondoActual = tipo;
+
+        $("avisoVideo").hidden = true;
+
+        return true;
+
+    }
+
+    video.pause();
+
+    video.classList.remove("visible");
+
+    fondoActual = null;
+
+    $("avisoVideo").textContent =
+        "No se pudo cargar el video. Revisa el archivo MP4 en GitHub.";
+
+    $("avisoVideo").hidden = false;
+
+    return false;
+}
+
+/* INTRO CON EL VIDEO NUVES.MP4 */
+
+function reproducirIntro(cambiarEscenario) {
+
+    return new Promise(resolve => {
+
+        const capa = $("transicion");
+
+        const video = $("videoNubes");
+
+        const saltar = $("saltarIntro");
+
+        let terminado = false;
+
+        let cambioPendiente = null;
+
+        let seguridad;
+
+        function cambiarUnaVez() {
+
+            if (!cambioPendiente) {
+
+                cambioPendiente = Promise.resolve()
+                    .then(cambiarEscenario)
+                    .catch(console.error);
+
+            }
+
+            return cambioPendiente;
+        }
+
+        async function terminar() {
+
+            if (terminado) return;
+
+            terminado = true;
+
+            clearTimeout(seguridad);
+
+            video.removeEventListener("timeupdate", revisarTiempo);
+            video.removeEventListener("ended", terminar);
+            video.removeEventListener("error", terminar);
+            saltar.removeEventListener("click", terminar);
+
+            video.pause();
+
+            try {
+
+                await cambiarUnaVez();
+
+            } finally {
+
+                capa.classList.remove("activa");
+
+                resolve();
+
+            }
+        }
+
+        function revisarTiempo() {
+
+            if (
+                Number.isFinite(video.duration) &&
+                video.currentTime >= video.duration * .5
+            ) {
+
+                cambiarUnaVez();
+
+            }
+        }
+
+        capa.classList.add("activa");
+
+        video.muted = true;
+
+        video.loop = false;
+
+        try {
+
+            video.currentTime = 0;
+
+        } catch {}
+
+        video.addEventListener("timeupdate", revisarTiempo);
+        video.addEventListener("ended", terminar);
+        video.addEventListener("error", terminar);
+        saltar.addEventListener("click", terminar);
+
+        seguridad = setTimeout(
+
+            terminar,
+
+            Number.isFinite(video.duration)
+
+                ? video.duration * 1000 + 15000
+
+                : 45000
+
+        );
+
+        video.play().catch(terminar);
+
+    });
+}
+
+/* NAVEGACIÓN */
+
+function mostrarDirecto(id) {
+
+    document.querySelectorAll(".pantalla")
+        .forEach(p => p.classList.remove("activa"));
+
+    $(id).classList.add("activa");
+
+    pantallaActual = id;
+
+    window.scrollTo(0, 0);
+}
+
+async function mostrar(id) {
+
+    if (navegando) return false;
+
+    const nuevoFondo = tipoFondo(id);
+
+    const anteriorFondo = tipoFondo(pantallaActual);
+
+    if (nuevoFondo === anteriorFondo) {
+
+        mostrarDirecto(id);
+
+        if (
+            fondoActual !== nuevoFondo ||
+            obtenerVideo(nuevoFondo).paused
+        ) {
+
+            cambiarFondo(nuevoFondo);
+
+        }
+
+        return true;
+    }
+
+    navegando = true;
+
+    $("app").inert = true;
+
+    detenerReloj();
+
+    try {
+
+        if (
+            window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            ).matches
+        ) {
+
+            mostrarDirecto(id);
+
+            await cambiarFondo(nuevoFondo);
+
+        } else {
+
+            await reproducirIntro(async () => {
+
+                mostrarDirecto(id);
+
+                await cambiarFondo(nuevoFondo);
+
+            });
+        }
+
+        return true;
+
+    } finally {
+
+        navegando = false;
+
+        $("app").inert = false;
+
+    }
+}
+
+document.addEventListener("pointerdown", () => {
+
+    if (navegando) return;
+
+    const tipo = tipoFondo(pantallaActual);
+
+    const video = obtenerVideo(tipo);
+
+    if (video.paused && !video.error) {
+
+        cambiarFondo(tipo);
+
+    }
+});
+
+document.addEventListener("visibilitychange", () => {
+
+    if (document.hidden) {
+
+        $("videoPrincipal").pause();
+
+        $("videoPartida").pause();
+
+    } else if (!navegando) {
+
+        cambiarFondo(tipoFondo(pantallaActual));
+
+    }
+});
+
+/* MENÚ */
 
 function guardarPreferencias() {
 
-    datos.nombre =
-        $("nombre").value.trim() ||
-        "Explorador";
+    datos.nombre = $("nombre").value.trim() || "Explorador";
 
-    datos.contrarreloj =
-        $("contrarreloj").checked;
+    datos.contrarreloj = $("contrarreloj").checked;
 
     guardar();
-
 }
 
 function detenerReloj() {
@@ -2869,7 +2627,6 @@ function detenerReloj() {
     clearInterval(estado.intervalo);
 
     estado.intervalo = null;
-
 }
 
 function detenerPartida() {
@@ -2887,12 +2644,7 @@ function detenerPartida() {
     estado.pausado = false;
 
     document.querySelectorAll(".modal")
-        .forEach(modal => {
-
-            modal.classList.remove("abierto");
-
-        });
-
+        .forEach(modal => modal.classList.remove("abierto"));
 }
 
 function irMenu() {
@@ -2906,7 +2658,6 @@ function irMenu() {
     actualizarMenu();
 
     mostrar("menu");
-
 }
 
 function actualizarMenu() {
@@ -2914,12 +2665,10 @@ function actualizarMenu() {
     $("saldoMenu").textContent = datos.monedas;
 
     $("progresoMul").textContent =
-        datos.completados.mul.length +
-        " de 3 niveles";
+        datos.completados.mul.length + " de 3 niveles";
 
     $("progresoDiv").textContent =
-        datos.completados.div.length +
-        " de 3 niveles";
+        datos.completados.div.length + " de 3 niveles";
 
     $("totalCompletados").textContent =
         (
@@ -2928,90 +2677,81 @@ function actualizarMenu() {
         ) + "/6";
 
     $("recordMenu").textContent = Math.max(
-
         0,
-
-        ...datos.records.map(r => r.puntos)
-
+        ...datos.records.map(record => record.puntos)
     );
 
-    $("sonidoBtn").textContent =
-        datos.sonido
-
+    $("sonidoBtn").textContent = datos.sonido
         ? "🔊 SONIDO: SÍ"
-
         : "🔇 SONIDO: NO";
 
     actualizarEquipamiento();
-
 }
 
-/* ==========================================
-   IMAGEN DE JAKE
-========================================== */
+/* IMÁGENES */
 
-function errorImagen(imagen) {
+function errorIsla(imagen) {
 
-    imagen.style.display = "none";
+    imagen.hidden = true;
 
-    const fallback =
-        imagen.parentElement.querySelector(
-            ".jake-fallback"
-        );
+    if (imagen.nextElementSibling) {
 
-    if (fallback) {
-
-        fallback.style.display = "block";
+        imagen.nextElementSibling.hidden = false;
 
     }
+}
 
+function ocultarJake(imagen) {
+
+    imagen.parentElement.hidden = true;
+
+    const centro = imagen.closest(".jake-centro");
+
+    if (centro) {
+
+        centro.classList.add("sin-imagen");
+
+        centro.style.visibility = "hidden";
+
+    }
 }
 
 function animarJake(tipo) {
 
-    document.querySelectorAll(".jake-img")
-        .forEach(img => {
+    document.querySelectorAll(".jake-img").forEach(imagen => {
 
-            img.classList.remove(
-                "feliz",
-                "triste"
-            );
+        imagen.classList.remove("feliz", "triste");
 
-            void img.offsetWidth;
+        void imagen.offsetWidth;
 
-            img.classList.add(tipo);
+        imagen.classList.add(tipo);
 
-            setTimeout(() => {
+        setTimeout(() => {
 
-                img.classList.remove(tipo);
+            imagen.classList.remove(tipo);
 
-            }, 1300);
+        }, 1300);
 
-        });
-
+    });
 }
 
 function actualizarEquipamiento() {
 
-    const sombrero =
-        CATALOGO.sombreros.find(
-            item => item.id === datos.sombrero
-        );
+    const sombrero = CATALOGO.sombreros.find(
+        item => item.id === datos.sombrero
+    );
 
-    document.querySelectorAll(
-        ".sombrero-equipado"
-    ).forEach(elemento => {
+    document.querySelectorAll(".sombrero-equipado")
+        .forEach(elemento => {
 
-        elemento.textContent =
-            sombrero ? sombrero.icono : "";
+            elemento.textContent = sombrero
+                ? sombrero.icono
+                : "";
 
-    });
-
+        });
 }
 
-/* ==========================================
-   MAPA
-========================================== */
+/* MAPA */
 
 function abrirMapa() {
 
@@ -3026,7 +2766,6 @@ function abrirMapa() {
     dibujarRuta("div", "rutaDiv");
 
     mostrar("mapa");
-
 }
 
 function dibujarRuta(isla, contenedor) {
@@ -3035,8 +2774,7 @@ function dibujarRuta(isla, contenedor) {
 
     for (let nivel = 1; nivel <= 3; nivel++) {
 
-        const boton =
-            document.createElement("button");
+        const boton = document.createElement("button");
 
         boton.className = "casilla";
 
@@ -3071,30 +2809,23 @@ function dibujarRuta(isla, contenedor) {
 
         $(contenedor).appendChild(boton);
 
-        const flecha =
-            document.createElement("span");
+        const flecha = document.createElement("span");
 
         flecha.textContent = "➜";
 
         $(contenedor).appendChild(flecha);
-
     }
 
-    const tesoro =
-        document.createElement("span");
+    const tesoro = document.createElement("span");
 
-    tesoro.style.fontSize = "38px";
+    tesoro.style.fontSize = "37px";
 
-    tesoro.textContent =
-        isla === "mul" ? "🏆" : "💎";
+    tesoro.textContent = isla === "mul" ? "🏆" : "💎";
 
     $(contenedor).appendChild(tesoro);
-
 }
 
-/* ==========================================
-   ELEGIR MULTIPLICACIÓN O DIVISIÓN
-========================================== */
+/* SELECCIÓN DE ISLA */
 
 function elegirIsla(isla) {
 
@@ -3106,8 +2837,7 @@ function elegirIsla(isla) {
 
     estado.isla = isla;
 
-    $("tituloNiveles").textContent =
-        isla === "mul"
+    $("tituloNiveles").textContent = isla === "mul"
 
         ? "× ISLA DE MULTIPLICACIONES"
 
@@ -3125,19 +2855,15 @@ function elegirIsla(isla) {
         const completado =
             datos.completados[isla].includes(nivel);
 
-        const tarjeta =
-            document.createElement("article");
+        const tarjeta = document.createElement("article");
 
         tarjeta.className =
-            "nivel-card" +
-            (bloqueado ? " bloqueado" : "");
+            "nivel-card" + (bloqueado ? " bloqueado" : "");
 
         tarjeta.innerHTML = `
 
             <div class="icono-nivel">
-
                 ${["", "🌴", "🧭", "🏆"][nivel]}
-
             </div>
 
             <h3>${NIVELES[nivel]}</h3>
@@ -3147,7 +2873,9 @@ function elegirIsla(isla) {
             </span>
 
             <p>
-                ⏱️ ${TIEMPOS[nivel]} segundos por pregunta
+                ⏱️ ${datos.contrarreloj
+                    ? TIEMPOS[nivel] + " segundos"
+                    : "Sin límite"}
             </p>
 
             <p>❤️ 3 vidas · 5 misiones</p>
@@ -3158,26 +2886,21 @@ function elegirIsla(isla) {
 
         `;
 
-        const boton =
-            document.createElement("button");
+        const boton = document.createElement("button");
 
-        boton.className =
-            isla === "mul"
-                ? "boton"
-                : "boton azul";
+        boton.className = isla === "mul"
+            ? "boton"
+            : "boton azul";
 
         boton.disabled = bloqueado;
 
-        boton.textContent =
-            bloqueado
-                ? "🔒 BLOQUEADO"
-                : "⚔️ COMENZAR";
+        boton.textContent = bloqueado
 
-        boton.onclick = () => {
+            ? "🔒 BLOQUEADO"
 
-            iniciarNivel(nivel);
+            : "⚔️ COMENZAR";
 
-        };
+        boton.onclick = () => iniciarNivel(nivel);
 
         tarjeta.appendChild(boton);
 
@@ -3185,25 +2908,16 @@ function elegirIsla(isla) {
 
     }
 
-    /*
-       Aquí se activa el segundo video,
-       incluso antes de comenzar la partida.
-    */
-
     mostrar("niveles");
-
 }
 
-/* ==========================================
-   GENERADOR DE PREGUNTAS
-========================================== */
+/* GENERADOR MATEMÁTICO */
 
 function aleatorio(min, max) {
 
     return Math.floor(
         Math.random() * (max - min + 1)
     ) + min;
-
 }
 
 function mezclar(lista) {
@@ -3212,13 +2926,11 @@ function mezclar(lista) {
 
         const j = aleatorio(0, i);
 
-        [lista[i], lista[j]] =
-            [lista[j], lista[i]];
+        [lista[i], lista[j]] = [lista[j], lista[i]];
 
     }
 
     return lista;
-
 }
 
 function generarPregunta(isla, nivel) {
@@ -3256,11 +2968,11 @@ function generarPregunta(isla, nivel) {
             `Jake encontró ${a} cofres con ${b} monedas
              en cada uno. ¿Cuántas monedas hay en total?`,
 
-            `Tenemos ${a} bolsas con ${b} diamantes
+            `Tenemos ${a} cajas con ${b} diamantes
              en cada una. ¿Cuántos diamantes tenemos?`,
 
-            `La tripulación encontró ${a} cajas con
-             ${b} frutas cada una. ¿Cuántas frutas hay?`
+            `La tripulación encontró ${a} bolsas con
+             ${b} gemas cada una. ¿Cuántas gemas hay?`
 
         ];
 
@@ -3298,8 +3010,6 @@ function generarPregunta(isla, nivel) {
             );
 
         }
-
-        // División exacta, sin decimales.
 
         a = b * resultado;
 
@@ -3341,30 +3051,21 @@ function generarPregunta(isla, nivel) {
             opciones.add(falsa);
 
         }
-
     }
 
     return {
 
         a,
-
         b,
-
-        simbolo,
-
         resultado,
-
+        simbolo,
         historia,
-
         opciones: mezclar([...opciones])
 
     };
-
 }
 
-/* ==========================================
-   INICIAR NIVEL
-========================================== */
+/* INICIAR NIVEL */
 
 async function iniciarNivel(nivel) {
 
@@ -3377,34 +3078,25 @@ async function iniciarNivel(nivel) {
 
     detenerPartida();
 
-    estado.nivel = nivel;
+    Object.assign(estado, {
 
-    estado.vidas = 3;
+        nivel,
+        vidas: 3,
+        puntos: 0,
+        monedas: 0,
+        racha: 0,
+        bonus: 1,
+        cofreUsado: false,
+        preguntaNumero: 0,
+        aciertos: 0,
+        historial: [],
+        usadas: new Set(),
+        contrarreloj: datos.contrarreloj
 
-    estado.puntos = 0;
-
-    estado.monedas = 0;
-
-    estado.racha = 0;
-
-    estado.bonus = 1;
-
-    estado.cofreUsado = false;
-
-    estado.preguntaNumero = 0;
-
-    estado.aciertos = 0;
-
-    estado.historial = [];
-
-    estado.usadas = new Set();
-
-    estado.contrarreloj = datos.contrarreloj;
+    });
 
     $("tituloJuego").textContent =
-        ISLAS[estado.isla] +
-        " · " +
-        NIVELES[nivel];
+        ISLAS[estado.isla] + " · " + NIVELES[nivel];
 
     $("capitan").textContent =
         "CAPITÁN/A: " + datos.nombre;
@@ -3412,28 +3104,22 @@ async function iniciarNivel(nivel) {
     $("dialogoJake").textContent =
         "¡Vamos, capitán! Encuentra el tesoro.";
 
-    await mostrar("juego");
+    const abierto = await mostrar("juego");
 
-    if (pantallaActual !== "juego") return;
+    if (!abierto || pantallaActual !== "juego") return;
 
     estado.activa = true;
 
     estado.bloqueado = false;
 
     siguientePregunta();
-
 }
 
-/* ==========================================
-   HUD Y CAMINO DEL BARCO
-========================================== */
+/* INDICADORES */
 
 function actualizarHUD() {
 
-    const vidas = Math.max(
-        0,
-        Math.min(3, estado.vidas)
-    );
+    const vidas = Math.max(0, Math.min(3, estado.vidas));
 
     $("vidas").textContent =
         "❤️".repeat(vidas) +
@@ -3456,7 +3142,6 @@ function actualizarHUD() {
         estado.historial.length / TOTAL * 100 + "%";
 
     dibujarCamino();
-
 }
 
 function dibujarCamino() {
@@ -3469,8 +3154,7 @@ function dibujarCamino() {
 
     for (let i = 0; i < TOTAL; i++) {
 
-        const paso =
-            document.createElement("span");
+        const paso = document.createElement("span");
 
         paso.className = "paso";
 
@@ -3482,15 +3166,13 @@ function dibujarCamino() {
                 correcto ? "correcto" : "fallado"
             );
 
-            paso.textContent =
-                correcto ? "✓" : "✖";
+            paso.textContent = correcto ? "✓" : "✖";
 
         } else if (i === estado.preguntaNumero) {
 
             paso.classList.add("actual");
 
-            paso.textContent =
-                barco ? barco.icono : "⛵";
+            paso.textContent = barco ? barco.icono : "⛵";
 
         } else {
 
@@ -3502,21 +3184,17 @@ function dibujarCamino() {
 
     }
 
-    const tesoro =
-        document.createElement("span");
+    const tesoro = document.createElement("span");
 
-    tesoro.style.fontSize = "33px";
+    tesoro.style.fontSize = "35px";
 
     tesoro.textContent =
         estado.isla === "mul" ? "🏆" : "💎";
 
     $("camino").appendChild(tesoro);
-
 }
 
-/* ==========================================
-   SIGUIENTE PREGUNTA
-========================================== */
+/* PREGUNTAS */
 
 function siguientePregunta() {
 
@@ -3530,9 +3208,7 @@ function siguientePregunta() {
 
     }
 
-    let pregunta;
-
-    let clave;
+    let pregunta, clave;
 
     do {
 
@@ -3553,7 +3229,6 @@ function siguientePregunta() {
     estado.pregunta = pregunta;
 
     mostrarPregunta();
-
 }
 
 function mostrarPregunta() {
@@ -3576,8 +3251,7 @@ function mostrarPregunta() {
 
     p.opciones.forEach(valor => {
 
-        const boton =
-            document.createElement("button");
+        const boton = document.createElement("button");
 
         boton.className = "respuesta";
 
@@ -3585,11 +3259,7 @@ function mostrarPregunta() {
 
         boton.dataset.valor = valor;
 
-        boton.onclick = () => {
-
-            responder(valor, boton);
-
-        };
+        boton.onclick = () => responder(valor, boton);
 
         $("respuestas").appendChild(boton);
 
@@ -3598,13 +3268,9 @@ function mostrarPregunta() {
     actualizarHUD();
 
     iniciarReloj(true);
-
 }
 
-/* ==========================================
-   TEMPORIZADOR
-   MULTIPLICACIONES Y DIVISIONES
-========================================== */
+/* TEMPORIZADOR IGUAL PARA AMBAS OPERACIONES */
 
 function iniciarReloj(reiniciar = true) {
 
@@ -3614,13 +3280,13 @@ function iniciarReloj(reiniciar = true) {
 
         $("tiempo").textContent = "⏱️ SIN LÍMITE";
 
-        $("contenedorTiempo").style.display = "none";
+        $("contenedorTiempo").hidden = true;
 
         return;
 
     }
 
-    $("contenedorTiempo").style.display = "block";
+    $("contenedorTiempo").hidden = false;
 
     estado.limite = TIEMPOS[estado.nivel];
 
@@ -3637,7 +3303,8 @@ function iniciarReloj(reiniciar = true) {
         if (
             !estado.activa ||
             estado.bloqueado ||
-            estado.pausado
+            estado.pausado ||
+            navegando
         ) return;
 
         estado.tiempo--;
@@ -3652,15 +3319,13 @@ function iniciarReloj(reiniciar = true) {
 
             bloquearRespuestas();
 
-            $("mensaje").textContent =
-                "⌛ ¡Tiempo agotado!";
+            $("mensaje").textContent = "⌛ ¡Tiempo agotado!";
 
             gestionarError();
 
         }
 
     }, 1000);
-
 }
 
 function actualizarReloj() {
@@ -3673,32 +3338,20 @@ function actualizarReloj() {
         estado.tiempo / estado.limite * 100
     );
 
-    $("barraTiempo").style.width =
-        porcentaje + "%";
+    $("barraTiempo").style.width = porcentaje + "%";
 
     $("barraTiempo").style.background =
         porcentaje > 50 ? "#22c55e" :
-
         porcentaje > 20 ? "#f59e0b" :
-
         "#ef4444";
-
 }
 
-/* ==========================================
-   RESPUESTAS Y PUNTOS
-========================================== */
+/* RESPUESTAS */
 
 function bloquearRespuestas() {
 
-    document.querySelectorAll(
-        "#respuestas button"
-    ).forEach(boton => {
-
-        boton.disabled = true;
-
-    });
-
+    document.querySelectorAll("#respuestas button")
+        .forEach(boton => boton.disabled = true);
 }
 
 function responder(valor, boton) {
@@ -3741,9 +3394,7 @@ function responder(valor, boton) {
         guardar();
 
         $("mensaje").textContent =
-            "¡CORRECTO! +" +
-            monedas +
-            " monedas 🪙";
+            "¡CORRECTO! +" + monedas + " monedas 🪙";
 
         $("dialogoJake").textContent =
             "¡Excelente trabajo, capitán!";
@@ -3772,12 +3423,9 @@ function responder(valor, boton) {
         gestionarError();
 
     }
-
 }
 
-/* ==========================================
-   ERROR Y SEGUNDA OPORTUNIDAD
-========================================== */
+/* BONUS Y ERRORES */
 
 function gestionarError() {
 
@@ -3798,8 +3446,7 @@ function gestionarError() {
 
             if (estado.activa) {
 
-                $("modalBonus")
-                    .classList.add("abierto");
+                $("modalBonus").classList.add("abierto");
 
             }
 
@@ -3810,7 +3457,6 @@ function gestionarError() {
         perderVida();
 
     }
-
 }
 
 function usarBonus() {
@@ -3830,7 +3476,6 @@ function usarBonus() {
     );
 
     mostrarPregunta();
-
 }
 
 function rechazarBonus() {
@@ -3842,7 +3487,6 @@ function rechazarBonus() {
     $("modalBonus").classList.remove("abierto");
 
     perderVida();
-
 }
 
 function perderVida() {
@@ -3853,20 +3497,18 @@ function perderVida() {
 
     actualizarHUD();
 
-    document.querySelectorAll(
-        "#respuestas button"
-    ).forEach(boton => {
+    document.querySelectorAll("#respuestas button")
+        .forEach(boton => {
 
-        if (
-            Number(boton.dataset.valor) ===
-            estado.pregunta.resultado
-        ) {
+            if (
+                Number(boton.dataset.valor) ===
+                estado.pregunta.resultado
+            ) {
 
-            boton.classList.add("acierto");
+                boton.classList.add("acierto");
 
-        }
-
-    });
+            }
+        });
 
     $("mensaje").textContent =
         "La respuesta correcta era " +
@@ -3897,12 +3539,9 @@ function perderVida() {
         }
 
     }, 1500);
-
 }
 
-/* ==========================================
-   COFRE PARA RECUPERAR UNA VIDA
-========================================== */
+/* COFRE DE LA VIDA */
 
 function abrirCofre() {
 
@@ -3922,10 +3561,11 @@ function abrirCofre() {
 
     $("respuestasCofre").innerHTML = "";
 
+    let respondido = false;
+
     p.opciones.forEach(valor => {
 
-        const boton =
-            document.createElement("button");
+        const boton = document.createElement("button");
 
         boton.className = "respuesta";
 
@@ -3933,16 +3573,14 @@ function abrirCofre() {
 
         boton.onclick = () => {
 
-            document.querySelectorAll(
-                "#respuestasCofre button"
-            ).forEach(b => {
+            if (respondido || !estado.activa) return;
 
-                b.disabled = true;
+            respondido = true;
 
-            });
+            document.querySelectorAll("#respuestasCofre button")
+                .forEach(b => b.disabled = true);
 
-            const correcto =
-                valor === p.resultado;
+            const correcto = valor === p.resultado;
 
             boton.classList.add(
                 correcto ? "acierto" : "fallo"
@@ -3957,11 +3595,12 @@ function abrirCofre() {
 
                 reproducirSonido(true);
 
+                actualizarHUD();
+
             } else {
 
                 $("mensajeCofre").textContent =
-                    "Respuesta correcta: " +
-                    p.resultado;
+                    "Respuesta correcta: " + p.resultado;
 
                 reproducirSonido(false);
 
@@ -3969,8 +3608,7 @@ function abrirCofre() {
 
             estado.pendiente = setTimeout(() => {
 
-                $("modalCofre")
-                    .classList.remove("abierto");
+                $("modalCofre").classList.remove("abierto");
 
                 if (correcto) {
 
@@ -3985,18 +3623,14 @@ function abrirCofre() {
                 }
 
             }, 1500);
-
         };
 
         $("respuestasCofre").appendChild(boton);
 
     });
-
 }
 
-/* ==========================================
-   RESULTADOS Y DESBLOQUEO
-========================================== */
+/* RESULTADOS */
 
 function finalizarNivel(terminado) {
 
@@ -4005,16 +3639,13 @@ function finalizarNivel(terminado) {
     const victoria =
         terminado && estado.aciertos >= 3;
 
-    $("puntosFinal").textContent =
-        estado.puntos;
+    $("puntosFinal").textContent = estado.puntos;
 
-    $("monedasFinal").textContent =
-        estado.monedas;
+    $("monedasFinal").textContent = estado.monedas;
 
-    $("aciertosFinal").textContent =
-        estado.aciertos;
+    $("aciertosFinal").textContent = estado.aciertos;
 
-    $("siguienteBtn").style.display = "none";
+    $("siguienteBtn").hidden = true;
 
     if (victoria) {
 
@@ -4028,34 +3659,26 @@ function finalizarNivel(terminado) {
         }
 
         datos.desbloqueados[estado.isla] = Math.min(
-
             3,
-
             Math.max(
-
                 datos.desbloqueados[estado.isla],
-
                 estado.nivel + 1
-
             )
-
         );
 
         $("tituloResultado").textContent =
             estado.nivel === 3
 
-            ? "¡ISLA CONQUISTADA!"
+                ? "¡ISLA CONQUISTADA!"
 
-            : "¡NIVEL SUPERADO!";
+                : "¡NIVEL SUPERADO!";
 
         $("tesoroFinal").textContent =
             estado.isla === "mul" ? "🏆" : "💎";
 
         $("estrellas").textContent =
             estado.aciertos === 5 ? "⭐⭐⭐" :
-
             estado.aciertos === 4 ? "⭐⭐" :
-
             "⭐";
 
         $("textoResultado").textContent =
@@ -4063,24 +3686,19 @@ function finalizarNivel(terminado) {
 
         if (estado.nivel < 3) {
 
-            $("siguienteBtn").style.display =
-                "inline-block";
+            $("siguienteBtn").hidden = false;
 
         }
 
         if (
-
             datos.completados.mul.length === 3 &&
-
             datos.completados.div.length === 3
-
         ) {
 
             $("tituloResultado").textContent =
                 "¡LEYENDA DE LA ISLA MATEMÁGICA!";
 
-            $("tesoroFinal").textContent =
-                "🏆💎";
+            $("tesoroFinal").textContent = "🏆💎";
 
             $("textoResultado").textContent =
                 "¡Conquistaste las dos islas y sus seis desafíos!";
@@ -4099,8 +3717,7 @@ function finalizarNivel(terminado) {
         $("estrellas").textContent = "";
 
         $("textoResultado").textContent =
-            "Necesitas terminar el nivel " +
-            "y conseguir al menos tres aciertos.";
+            "Necesitas terminar el nivel y conseguir al menos tres aciertos.";
 
     }
 
@@ -4125,7 +3742,6 @@ function finalizarNivel(terminado) {
     guardar();
 
     mostrar("resultados");
-
 }
 
 function siguienteNivel() {
@@ -4139,12 +3755,9 @@ function siguienteNivel() {
         abrirMapa();
 
     }
-
 }
 
-/* ==========================================
-   PAUSAR Y SALIR
-========================================== */
+/* PAUSAR Y SALIR */
 
 function preguntarSalida() {
 
@@ -4161,7 +3774,6 @@ function preguntarSalida() {
     bloquearRespuestas();
 
     $("modalSalir").classList.add("abierto");
-
 }
 
 function cancelarSalida() {
@@ -4170,21 +3782,13 @@ function cancelarSalida() {
 
     estado.pausado = false;
 
-    document.querySelectorAll(
-        "#respuestas button"
-    ).forEach(boton => {
-
-        boton.disabled = false;
-
-    });
+    document.querySelectorAll("#respuestas button")
+        .forEach(boton => boton.disabled = false);
 
     iniciarReloj(false);
-
 }
 
-/* ==========================================
-   TIENDA PIRATA
-========================================== */
+/* TIENDA PIRATA */
 
 function abrirTienda() {
 
@@ -4200,7 +3804,6 @@ function abrirTienda() {
     cargarTienda("barcos");
 
     mostrar("tienda");
-
 }
 
 function cargarTienda(tipo) {
@@ -4215,24 +3818,18 @@ function cargarTienda(tipo) {
             datos.comprados.includes(item.id);
 
         const equipado = tipo === "barcos"
-
             ? datos.barco === item.id
-
             : datos.sombrero === item.id;
 
-        const tarjeta =
-            document.createElement("article");
+        const tarjeta = document.createElement("article");
 
         tarjeta.className =
-            "producto" +
-            (equipado ? " equipado" : "");
+            "producto" + (equipado ? " equipado" : "");
 
         tarjeta.innerHTML = `
 
             <div class="producto-icono">
-
                 ${item.icono || "🧢"}
-
             </div>
 
             <h3>${item.nombre}</h3>
@@ -4241,33 +3838,26 @@ function cargarTienda(tipo) {
 
         `;
 
-        const boton =
-            document.createElement("button");
+        const boton = document.createElement("button");
 
-        boton.className =
-            equipado ? "boton verde" : "boton";
+        boton.className = equipado
+            ? "boton verde"
+            : "boton";
 
         boton.disabled = equipado;
 
         boton.textContent =
             equipado ? "EQUIPADO" :
-
             comprado ? "EQUIPAR" :
-
             "COMPRAR";
 
-        boton.onclick = () => {
-
-            comprar(item, tipo);
-
-        };
+        boton.onclick = () => comprar(item, tipo);
 
         tarjeta.appendChild(boton);
 
         $("productos").appendChild(tarjeta);
 
     });
-
 }
 
 function comprar(item, tipo) {
@@ -4311,12 +3901,9 @@ function comprar(item, tipo) {
     actualizarEquipamiento();
 
     cargarTienda(tipo);
-
 }
 
-/* ==========================================
-   RÉCORDS
-========================================== */
+/* RÉCORDS */
 
 function abrirRecords() {
 
@@ -4335,8 +3922,7 @@ function abrirRecords() {
 
         datos.records.forEach((record, i) => {
 
-            const fila =
-                document.createElement("div");
+            const fila = document.createElement("div");
 
             fila.className = "record";
 
@@ -4352,12 +3938,9 @@ function abrirRecords() {
     }
 
     mostrar("records");
-
 }
 
-/* ==========================================
-   EFECTOS DE SONIDO
-========================================== */
+/* SONIDO */
 
 let audioContext;
 
@@ -4374,7 +3957,6 @@ function cambiarSonido() {
         reproducirSonido(true);
 
     }
-
 }
 
 function reproducirSonido(correcto) {
@@ -4389,53 +3971,34 @@ function reproducirSonido(correcto) {
 
         if (!Audio) return;
 
-        audioContext =
-            audioContext || new Audio();
+        audioContext = audioContext || new Audio();
 
         audioContext.resume().catch(() => {});
 
-        const oscilador =
-            audioContext.createOscillator();
+        const oscilador = audioContext.createOscillator();
 
-        const volumen =
-            audioContext.createGain();
+        const volumen = audioContext.createGain();
 
-        const ahora =
-            audioContext.currentTime;
+        const ahora = audioContext.currentTime;
 
         oscilador.type =
             correcto ? "sine" : "triangle";
 
         oscilador.frequency.setValueAtTime(
-
             correcto ? 650 : 180,
-
             ahora
-
         );
 
         oscilador.frequency.exponentialRampToValueAtTime(
-
             correcto ? 1150 : 90,
-
             ahora + .3
-
         );
 
-        volumen.gain.setValueAtTime(
-
-            .12,
-
-            ahora
-
-        );
+        volumen.gain.setValueAtTime(.12, ahora);
 
         volumen.gain.exponentialRampToValueAtTime(
-
             .001,
-
             ahora + .4
-
         );
 
         oscilador.connect(volumen);
@@ -4447,12 +4010,9 @@ function reproducirSonido(correcto) {
         oscilador.stop(ahora + .4);
 
     } catch {}
-
 }
 
-/* ==========================================
-   CELEBRACIÓN
-========================================== */
+/* CONFETI */
 
 function celebrar() {
 
@@ -4465,21 +4025,16 @@ function celebrar() {
     const colores = [
 
         "#ffd65a",
-
         "#22c55e",
-
         "#38bdf8",
-
         "#fb7185",
-
         "#a78bfa"
 
     ];
 
     for (let i = 0; i < 70; i++) {
 
-        const papel =
-            document.createElement("div");
+        const papel = document.createElement("div");
 
         papel.className = "confeti";
 
@@ -4491,53 +4046,35 @@ function celebrar() {
         papel.style.height = "18px";
 
         papel.style.background =
-            colores[
-                aleatorio(0, colores.length - 1)
-            ];
+            colores[aleatorio(0, colores.length - 1)];
 
         papel.style.animationDelay =
             Math.random() * .8 + "s";
 
         document.body.appendChild(papel);
 
-        setTimeout(() => {
-
-            papel.remove();
-
-        }, 4200);
+        setTimeout(() => papel.remove(), 4200);
 
     }
-
 }
 
-/* ==========================================
-   CONTROLES DE TECLADO
-========================================== */
+/* CONTROL MEDIANTE TECLADO */
 
 document.addEventListener("keydown", evento => {
 
     if (
-
         pantallaActual !== "juego" ||
-
         !estado.activa ||
-
         estado.bloqueado ||
-
         estado.pausado ||
-
         navegando ||
-
         document.querySelector(".modal.abierto")
-
     ) return;
 
     if (["1", "2", "3"].includes(evento.key)) {
 
         const botones =
-            document.querySelectorAll(
-                "#respuestas button"
-            );
+            document.querySelectorAll("#respuestas button");
 
         const boton =
             botones[Number(evento.key) - 1];
@@ -4549,17 +4086,13 @@ document.addEventListener("keydown", evento => {
         }
 
     }
-
 });
 
-/* ==========================================
-   INICIAR LA ISLA MATEMÁGICA
-========================================== */
+/* INICIAR LA ISLA MATEMÁGICA */
 
 $("nombre").value = datos.nombre;
 
-$("contrarreloj").checked =
-    datos.contrarreloj;
+$("contrarreloj").checked = datos.contrarreloj;
 
 prepararVideos();
 
@@ -4567,9 +4100,28 @@ actualizarMenu();
 
 cambiarFondo("principal");
 
+/*
+    ARCHIVOS NECESARIOS EN GITHUB:
+
+    index.html
+    videoprincipal.mp4
+    división multiplicacion.mp4
+    nuves.mp4
+    multiplicaciones.png
+    divisiones.png
+
+    jake.png es opcional hasta que se suba
+    la imagen original del personaje.
+
+    Los videos utilizan reproducción automática
+    sin sonido y la introducción termina según
+    la duración real del archivo nuves.mp4.
+
+    Pendiente: comprobar la reproducción real
+    de los archivos multimedia en GitHub Pages.
+*/
+
 </script>
 
 </body>
 </html>
-
-
