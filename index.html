@@ -5,22 +5,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ISLA MATEMÁTICA | Los dos tesoros</title>
+<title>La Isla Matemágica | Los dos tesoros</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 
-/* ======================================
+/* ==========================================
+   LA ISLA MATEMÁGICA
    CONFIGURACIÓN GENERAL
-====================================== */
+========================================== */
 
 :root {
-    --oro: #ffd56a;
+    --oro: #ffd66b;
+    --crema: #fff4ce;
     --madera: #75421f;
-    --oscuro: #092d42;
-    --crema: #fff3d0;
-    --azul: #087c99;
+    --oscuro: #082c42;
+    --turquesa: #42e4df;
 }
 
 * {
@@ -29,9 +30,9 @@
 
 body {
     margin: 0;
-    font-family: 'Nunito', Arial, sans-serif;
     color: white;
-    background: #075985;
+    background: #086b91;
+    font-family: 'Nunito', Arial, sans-serif;
     overflow-x: hidden;
 }
 
@@ -46,63 +47,61 @@ button {
 
 button:hover:not(:disabled) {
     transform: translateY(-4px);
-    filter: brightness(1.12);
+    filter: brightness(1.13);
 }
 
 button:disabled {
     cursor: not-allowed;
-    opacity: .55;
+    opacity: .5;
 }
 
 button:focus-visible {
-    outline: 4px solid white;
+    outline: 3px solid white;
+    outline-offset: 3px;
 }
 
-/* ======================================
+/* ==========================================
    VIDEOS DE FONDO
-====================================== */
+========================================== */
 
-#fondoVideos {
+#fondos {
     position: fixed;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
     z-index: 0;
+    overflow: hidden;
     background: linear-gradient(
-        145deg,
-        #38bdf8,
-        #0891b2,
-        #075985
+        #55b8d7,
+        #087c9c,
+        #073953
     );
 }
 
 .video-fondo {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity .7s;
     pointer-events: none;
+    transition: opacity .35s;
 }
 
 .video-fondo.visible {
     opacity: 1;
 }
 
-.capa-oscura {
+.sombra-fondo {
     position: fixed;
     inset: 0;
     z-index: 1;
     pointer-events: none;
     background: linear-gradient(
         180deg,
-        rgba(0, 20, 40, .20),
-        rgba(0, 20, 40, .08),
-        rgba(0, 20, 40, .42)
+        rgba(0, 20, 40, .24),
+        transparent 35%,
+        transparent 60%,
+        rgba(0, 20, 40, .45)
     );
 }
 
@@ -116,26 +115,17 @@ button:focus-visible {
     min-height: 100svh;
     width: min(1400px, 100%);
     margin: auto;
-    padding: 20px;
+    padding: 16px 25px;
 }
 
 .pantalla.activa {
     display: flex;
     flex-direction: column;
-    animation: aparecer .4s ease;
 }
 
-@keyframes aparecer {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* ==========================================
+   ANIMACIONES
+========================================== */
 
 @keyframes flotar {
     0%, 100% {
@@ -147,276 +137,321 @@ button:focus-visible {
     }
 }
 
-@keyframes brillo {
-    50% {
-        filter: brightness(1.2);
-    }
-}
-
 @keyframes saltar {
     50% {
         transform: translateY(-35px) rotate(8deg);
     }
 }
 
-@keyframes errorJake {
+@keyframes temblar {
     25% {
-        transform: rotate(-7deg);
+        transform: translateX(-8px);
     }
 
     75% {
-        transform: rotate(7deg);
+        transform: translateX(8px);
     }
 }
 
-/* ======================================
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes resplandor {
+    50% {
+        filter: brightness(1.25);
+    }
+}
+
+/* ==========================================
    BARRA SUPERIOR
-====================================== */
+========================================== */
 
 .barra-superior {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
 }
 
 .emblema {
-    border: 2px solid #ffda7b;
-    background: #092d42df;
-    color: #fff1bf;
-    padding: 12px 20px;
-    border-radius: 50px;
+    color: #fff0bc;
+    background: #082c42e8;
+    border: 2px solid #eac16b;
+    padding: 10px 16px;
+    border-radius: 40px;
     font-weight: 900;
+    font-size: 13px;
     letter-spacing: 1px;
 }
 
 .controles {
     display: flex;
+    gap: 8px;
     flex-wrap: wrap;
-    gap: 9px;
-    align-items: center;
+    justify-content: center;
 }
 
 .chip {
-    background: #092d42e8;
-    border: 2px solid #ffd56a;
+    color: #fff4d3;
+    background: #082c42e8;
+    border: 2px solid #e9b85a;
     border-radius: 40px;
-    padding: 9px 16px;
-    color: #fff5d6;
+    padding: 8px 14px;
+    font-size: 13px;
     font-weight: 900;
 }
 
 .chip b {
-    color: #ffdb6b;
+    color: #ffdb6c;
 }
 
-/* ======================================
-   BOTONES PIRATAS
-====================================== */
+/* ==========================================
+   BOTONES
+========================================== */
 
 .boton {
-    min-height: 48px;
-    border: 3px solid #ffe4a0;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #ffe5a4;
     border-radius: 15px;
-    padding: 12px 21px;
-    color: #563013;
+    min-height: 45px;
+    padding: 11px 19px;
+    color: #57310f;
     font-family: 'Fredoka', sans-serif;
-    font-size: 17px;
     font-weight: 700;
+    font-size: 16px;
     background: linear-gradient(
-        #fff0a7,
-        #f4be48,
-        #d58a23
+        #fff0a6,
+        #f4bc45,
+        #dc9025
     );
-    box-shadow: 0 6px 0 #65391d,
-                0 10px 20px #001a2b55;
+    box-shadow: 0 5px #744019,
+                0 10px 20px #0004;
 }
 
 .boton.azul {
     color: white;
+    border-color: #a4fff5;
     background: linear-gradient(
-        #38c5d5,
-        #08758e,
-        #09485d
+        #39d1e0,
+        #087e99,
+        #07516b
     );
 }
 
 .boton.rojo {
     color: white;
     background: linear-gradient(
-        #ef8064,
-        #b43b28,
-        #84251a
+        #ed8566,
+        #b8412c,
+        #87291b
     );
 }
 
 .boton.madera {
-    color: #fff1d1;
+    color: #fff4d4;
     background: linear-gradient(
-        #b77943,
-        #75421f,
-        #4b2817
+        #bd8047,
+        #805024,
+        #512b15
     );
 }
 
 .boton.verde {
     color: white;
     background: linear-gradient(
-        #4ade80,
-        #15803d
+        #45d784,
+        #138746
     );
 }
 
 .botonera {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
 }
 
-/* ======================================
-   MENÚ PRINCIPAL
-====================================== */
+/* ==========================================
+   PORTADA PRINCIPAL
+========================================== */
 
 .portada {
     flex: 1;
-    display: grid;
-    grid-template-columns: 1fr 260px 1fr;
-    align-items: center;
-    gap: 22px;
-    max-width: 1250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
     width: 100%;
+    max-width: 1250px;
     margin: auto;
-    padding: 25px 0;
+    padding: 14px 0;
 }
 
 .encabezado-menu {
-    grid-column: 1 / -1;
     text-align: center;
 }
 
 .etiqueta {
     display: inline-block;
-    background: #092d42cc;
-    border: 2px solid #ffd56a;
-    color: #ffe8a3;
-    padding: 7px 19px;
-    border-radius: 35px;
+    padding: 6px 18px;
+    border-radius: 40px;
+    background: #082c42b8;
+    border: 1px solid #ffde88;
+    color: #fff0b8;
+    font-size: 11px;
     font-weight: 900;
     letter-spacing: 2px;
-    font-size: 13px;
 }
 
 .titulo {
-    margin: 15px 0;
     font-family: 'Fredoka', sans-serif;
-    font-size: clamp(45px, 7vw, 90px);
-    line-height: .95;
-    color: #ffda78;
-    -webkit-text-stroke: 1.5px #73401c;
+    font-size: clamp(37px, 6vw, 82px);
+    line-height: 1;
+    color: #ffde82;
+    -webkit-text-stroke: 1.5px #75421f;
     text-shadow:
-        0 4px #b47531,
-        0 8px #4b2817,
-        0 14px 25px #0009;
+        0 4px #ad6b2e,
+        0 8px #4c2815,
+        0 15px 22px #0007;
+    margin: 12px 0;
 }
 
 .subtitulo {
-    font-size: clamp(17px, 2.4vw, 24px);
+    font-size: clamp(15px, 1.8vw, 23px);
     font-weight: 900;
-    color: #fff7d4;
-    text-shadow: 0 3px 8px #001928;
+    color: #fff5d8;
+    margin: 8px 0;
+    text-shadow: 0 3px 7px #000a;
 }
+
+/* Espacio central para apreciar el video */
+
+.mundo-menu {
+    display: grid;
+    grid-template-columns: 260px 1fr 260px;
+    gap: 22px;
+    align-items: end;
+    flex: 1;
+    min-height: 300px;
+    width: 100%;
+}
+
+/* Multiplicaciones */
 
 .tarjeta-isla {
-    position: relative;
     text-align: center;
-    min-height: 320px;
-    padding: 22px 15px;
-    border: 4px solid #ffe2a0;
-    border-bottom: 10px solid #78451d;
-    border-radius: 25px;
+    padding: 17px 13px;
+    border: 3px solid #ffe4a0;
+    border-bottom: 7px solid #78491e;
+    border-radius: 23px;
     background: linear-gradient(
-        150deg,
-        #8b4e17ed,
-        #48260aef
+        145deg,
+        rgba(145, 85, 26, .84),
+        rgba(66, 32, 9, .89)
     );
-    box-shadow: 0 15px 30px #001b2b88;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 12px 25px #0005;
+    animation: aparecer .6s ease;
 }
 
+/* Divisiones */
+
 .tarjeta-isla.division {
-    border-color: #a8fff3;
-    border-bottom-color: #083f58;
+    border-color: #9bfff0;
+    border-bottom-color: #07506d;
     background: linear-gradient(
-        150deg,
-        #137e91eb,
-        #073d57ee
+        145deg,
+        rgba(8, 119, 139, .85),
+        rgba(4, 54, 81, .89)
     );
 }
 
 .simbolo-grande {
     font-family: 'Fredoka', sans-serif;
-    font-size: 85px;
+    font-size: 60px;
     line-height: 1;
-    color: #ffe48a;
-    text-shadow: 0 5px #70401b;
+    color: #ffe38b;
+    text-shadow: 0 4px #75421f;
     animation: flotar 3s infinite;
 }
 
 .division .simbolo-grande {
-    color: #b6ffef;
-    text-shadow: 0 5px #075168;
+    color: #b5fff0;
+    text-shadow: 0 4px #07506d;
 }
 
 .tarjeta-isla h2 {
     font-family: 'Fredoka', sans-serif;
-    font-size: clamp(22px, 3vw, 31px);
-    margin: 15px 0 5px;
-    color: #fff1bb;
+    font-size: 23px;
+    margin: 8px 0;
+    color: #fff4c5;
 }
 
-.division h2 {
-    color: #d6fff9;
+.tarjeta-isla.division h2 {
+    color: #d0fff8;
 }
 
 .tarjeta-isla p {
-    margin: 8px 0;
+    margin: 6px 0;
+    font-size: 13px;
     font-weight: 800;
-}
-
-.tarjeta-isla .boton {
-    width: 100%;
-    margin-top: 17px;
 }
 
 .niveles-mini {
     display: flex;
     justify-content: center;
-    gap: 9px;
-    margin: 16px 0;
+    gap: 5px;
+    margin: 11px 0;
 }
 
 .niveles-mini span {
-    border-radius: 50px;
-    padding: 6px 10px;
-    background: #ffffff22;
-    font-size: 13px;
+    background: #ffffff24;
+    border-radius: 20px;
+    padding: 5px 8px;
+    font-size: 11px;
     font-weight: 900;
 }
 
+.tarjeta-isla .boton {
+    width: 100%;
+    font-size: 15px;
+    margin-top: 11px;
+}
+
+/* ==========================================
+   PERSONAJE JAKE
+========================================== */
+
 .jake-centro {
     text-align: center;
+    align-self: end;
+    padding-bottom: 5px;
+}
+
+.jake-contenedor {
+    position: relative;
+    width: min(230px, 100%);
+    margin: auto;
 }
 
 .jake-img {
     display: block;
     width: 100%;
-    max-height: 320px;
+    max-height: 280px;
     object-fit: contain;
-    margin: auto;
-    filter: drop-shadow(0 12px 10px #0007);
-    animation: flotar 3s ease-in-out infinite;
+    filter: drop-shadow(0 12px 8px #0006);
+    animation: flotar 3s infinite;
 }
 
 .jake-img.feliz {
@@ -424,184 +459,340 @@ button:focus-visible {
 }
 
 .jake-img.triste {
-    animation: errorJake .4s ease 2;
+    animation: temblar .4s ease 2;
 }
 
-.jake-alternativo {
+.jake-fallback {
+    display: none;
     font-size: 110px;
     animation: flotar 3s infinite;
 }
 
-.cartel-jake {
-    display: inline-block;
-    margin-top: 10px;
-    background: linear-gradient(#a86432, #633517);
-    border: 3px solid #ffda76;
-    border-radius: 12px;
-    padding: 11px;
-    font-weight: 900;
-    color: #fff0b5;
-    box-shadow: 0 5px #45220f;
+.sombrero-equipado {
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    font-size: 30px;
+    filter: drop-shadow(0 3px 4px #0006);
 }
 
+.cartel-jake {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 8px 13px;
+    border: 2px solid #ffe29b;
+    border-radius: 12px;
+    background: linear-gradient(
+        #a86a37,
+        #623614
+    );
+    color: #fff0b7;
+    box-shadow: 0 4px #44230f;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+/* ==========================================
+   CONTROLES INFERIORES
+========================================== */
+
 .datos-menu {
-    grid-column: 1 / -1;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 10px;
     flex-wrap: wrap;
-    gap: 14px;
 }
 
 .caja-capitan {
-    background: #092d42e8;
-    border: 2px solid #ffd56a;
-    border-radius: 17px;
-    padding: 13px 18px;
+    background: #082c42e8;
+    border: 2px solid #dcb462;
+    border-radius: 14px;
+    padding: 9px 14px;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .caja-capitan label {
     font-weight: 900;
-    color: #ffe19a;
+    color: #ffdf8e;
+    font-size: 13px;
 }
 
-.caja-capitan input[type=text] {
-    background: #fff7df;
-    color: #583419;
-    border: 2px solid #d59b43;
-    border-radius: 10px;
-    font-size: 17px;
-    font-weight: 800;
-    padding: 10px;
-    max-width: 100%;
+#nombre {
+    border: 2px solid #c58d45;
+    border-radius: 9px;
+    background: #fff8e3;
+    color: #58351d;
+    padding: 8px 11px;
+    width: 170px;
+    font-weight: 900;
+    font-size: 14px;
 }
 
-.caja-capitan input[type=checkbox] {
-    accent-color: #ffcf57;
-    width: 18px;
-    height: 18px;
+#contrarreloj {
+    accent-color: #ffc84e;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
 }
 
 .menu-inferior {
-    grid-column: 1 / -1;
     display: flex;
     justify-content: center;
+    gap: 10px;
     flex-wrap: wrap;
-    gap: 12px;
+}
+
+.menu-inferior .boton {
+    font-size: 14px;
+    padding: 9px 16px;
 }
 
 .pie {
     text-align: center;
-    color: #fff3c8;
-    font-size: 12px;
-    font-weight: 900;
+    font-size: 10px;
+    color: #fff5d3;
     letter-spacing: 2px;
-    padding: 15px 0;
+    font-weight: 900;
     text-shadow: 0 2px 5px #000;
+    padding: 7px 0;
 }
 
-/* ======================================
+/* ==========================================
+   TRANSICIÓN ANIMADA DE NUBES
+========================================== */
+
+#transicionNubes {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1000;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#transicionNubes.activa {
+    visibility: visible;
+    pointer-events: all;
+}
+
+.nube {
+    position: absolute;
+    top: -20%;
+    height: 140%;
+    width: 100%;
+    background:
+        radial-gradient(
+            ellipse at 38% 15%,
+            white 0 30%,
+            transparent 31%
+        ),
+        radial-gradient(
+            ellipse at 65% 30%,
+            #f7fdff 0 33%,
+            transparent 34%
+        ),
+        radial-gradient(
+            ellipse at 40% 50%,
+            white 0 35%,
+            transparent 36%
+        ),
+        radial-gradient(
+            ellipse at 65% 70%,
+            #effaff 0 32%,
+            transparent 33%
+        ),
+        radial-gradient(
+            ellipse at 40% 90%,
+            white 0 31%,
+            transparent 32%
+        );
+    filter: drop-shadow(0 0 35px #d3efff);
+    transition: transform .65s ease-in-out;
+}
+
+.nube.izquierda {
+    left: -20%;
+    transform: translateX(-110%);
+}
+
+.nube.derecha {
+    right: -20%;
+    transform: translateX(110%);
+}
+
+#transicionNubes.cerrada .izquierda {
+    transform: translateX(35%);
+}
+
+#transicionNubes.cerrada .derecha {
+    transform: translateX(-35%);
+}
+
+#veloNubes {
+    position: absolute;
+    inset: 0;
+    background: #f5fcff;
+    opacity: 0;
+    transition: opacity .45s;
+}
+
+#transicionNubes.cerrada #veloNubes {
+    opacity: 1;
+}
+
+#mensajeViaje {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    color: #145b77;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(23px, 4vw, 45px);
+    text-align: center;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+#transicionNubes.cerrada #mensajeViaje {
+    opacity: 1;
+}
+
+.barco-viaje {
+    display: block;
+    font-size: 95px;
+    animation: flotar 1.3s infinite;
+}
+
+#avisoVideo {
+    display: none;
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: #082c42;
+    border: 2px solid #ffd66b;
+    border-radius: 12px;
+    padding: 12px 16px;
+    max-width: 90%;
+    color: white;
+    font-size: 13px;
+}
+
+/* ==========================================
    NIVELES
-====================================== */
+========================================== */
 
 .titulo-seccion {
     text-align: center;
     font-family: 'Fredoka', sans-serif;
-    font-size: clamp(30px, 5vw, 55px);
-    color: #ffe18b;
-    text-shadow: 0 4px #633517, 0 8px 15px #0009;
-    margin: 30px 0 10px;
+    font-size: clamp(28px, 4.5vw, 55px);
+    color: #ffe28b;
+    text-shadow: 0 4px #71421c,
+                 0 8px 15px #0008;
+    margin: 25px 0 10px;
 }
 
 .descripcion {
     text-align: center;
-    font-size: 19px;
-    font-weight: 800;
-    text-shadow: 0 3px 6px #000;
+    font-weight: 900;
+    text-shadow: 0 2px 6px #000;
+    font-size: 17px;
 }
 
 .niveles-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    max-width: 1100px;
+    gap: 18px;
+    max-width: 950px;
     width: 100%;
-    gap: 24px;
-    margin: auto;
-    padding: 25px 0;
+    margin: auto auto 35px;
+    padding: 20px 0;
 }
 
 .nivel-card {
     text-align: center;
-    color: #56351e;
-    background: linear-gradient(#fff5d7, #e8c480);
-    border: 5px solid #ffe3a1;
-    border-bottom: 10px solid #75421f;
-    border-radius: 24px;
-    padding: 22px 15px;
-    box-shadow: 0 15px 25px #0006;
+    padding: 18px 12px;
+    background: linear-gradient(
+        #fff5dbe8,
+        #edcd91eb
+    );
+    color: #5c381d;
+    border: 4px solid #ffe2a0;
+    border-bottom: 8px solid #75421f;
+    border-radius: 22px;
+    box-shadow: 0 12px 25px #0005;
+    backdrop-filter: blur(3px);
 }
 
 .nivel-card.bloqueado {
-    filter: saturate(.4);
+    filter: saturate(.5);
 }
 
 .nivel-card h3 {
-    font-size: 30px;
+    margin: 8px 0;
     font-family: 'Fredoka', sans-serif;
-    margin: 10px 0;
+    font-size: 27px;
 }
 
 .icono-nivel {
-    font-size: 65px;
+    font-size: 49px;
     animation: flotar 3s infinite;
 }
 
 .ejemplo {
     display: block;
-    background: #fffdf0;
-    border: 2px dashed #bf8a44;
-    border-radius: 12px;
-    padding: 12px;
+    background: #fffdf2;
+    border: 2px dashed #c49143;
+    border-radius: 13px;
+    padding: 9px;
     font-family: 'Fredoka', sans-serif;
-    font-size: 26px;
-    color: #07566d;
+    font-size: 25px;
+    color: #075a70;
+}
+
+.nivel-card p {
+    font-weight: 800;
+    font-size: 14px;
 }
 
 .nivel-card .boton {
     width: 100%;
-    margin-top: 10px;
 }
 
-/* ======================================
-   MAPA
-====================================== */
+/* ==========================================
+   MAPA DE LOS DOS TESOROS
+========================================== */
 
 .mapa-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    max-width: 1050px;
+    gap: 25px;
+    max-width: 1000px;
     width: 100%;
     margin: auto;
-    gap: 25px;
 }
 
 .mapa-isla {
-    background: #092d42d9;
-    border: 4px solid #ffe29b;
-    border-radius: 25px;
-    padding: 25px;
+    padding: 25px 18px;
+    background: #082c42d9;
+    border: 3px solid #ffd77b;
+    border-radius: 24px;
     text-align: center;
+    backdrop-filter: blur(4px);
 }
 
 .mapa-isla h3 {
     font-family: 'Fredoka', sans-serif;
-    font-size: 27px;
-    color: #ffdf7b;
+    font-size: 25px;
+    color: #ffe396;
 }
 
 .ruta {
@@ -609,85 +800,82 @@ button:focus-visible {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 8px;
-    margin: 25px 0;
+    gap: 7px;
+    margin: 20px 0;
 }
 
 .casilla {
-    width: 55px;
-    height: 55px;
-    border: 3px solid #ffda78;
-    border-radius: 50%;
+    width: 48px;
+    height: 48px;
     display: grid;
     place-items: center;
-    background: #fff2c9;
-    color: #643c1f;
-    font-size: 24px;
+    border: 3px solid #e2ab4e;
+    border-radius: 50%;
+    background: #fff1c5;
+    color: #69401f;
     font-weight: 900;
+    font-size: 22px;
 }
 
 .casilla.superada {
-    background: #1b9d56;
     color: white;
+    background: #209b54;
 }
 
-/* ======================================
-   PANTALLA DE JUEGO
-====================================== */
+/* ==========================================
+   JUEGO
+========================================== */
 
 .hud {
     display: flex;
     justify-content: center;
-    gap: 9px;
     flex-wrap: wrap;
-    margin: 15px 0;
-}
-
-.hud .chip {
-    font-size: 15px;
+    gap: 9px;
+    margin: 16px 0;
 }
 
 .zona-juego {
     display: grid;
-    grid-template-columns: 1fr 220px;
+    grid-template-columns: 1fr 185px;
     align-items: center;
-    gap: 25px;
-    max-width: 1150px;
+    gap: 22px;
+    max-width: 1000px;
     width: 100%;
     margin: auto;
+    padding-bottom: 20px;
 }
 
 .panel-juego {
-    width: 100%;
+    min-width: 0;
 }
 
 .info-mision {
     display: flex;
     justify-content: space-between;
-    gap: 12px;
-    font-size: 18px;
-    font-weight: 900;
+    gap: 10px;
+    font-size: 17px;
     color: #fff0bb;
+    font-weight: 900;
     text-shadow: 0 3px 6px #000;
 }
 
 .progreso {
     width: 100%;
-    height: 20px;
-    background: #092d42;
-    border: 3px solid #ffe4a0;
-    border-radius: 30px;
+    height: 18px;
+    background: #082c42;
+    border: 3px solid #ffe29b;
+    border-radius: 25px;
     overflow: hidden;
-    margin: 10px 0;
+    margin: 9px 0;
 }
 
 #barraAvance {
     height: 100%;
     width: 0;
     background: repeating-linear-gradient(
-        120deg,
-        #ffdf6c 0 12px,
-        #e99b28 12px 24px
+        115deg,
+        #ffe16f 0 13px,
+        #e9a32e 13px 26px
     );
     transition: width .4s;
 }
@@ -695,7 +883,7 @@ button:focus-visible {
 #barraTiempo {
     height: 100%;
     width: 100%;
-    background: #39d56c;
+    background: #32d36c;
     transition: width .25s;
 }
 
@@ -705,20 +893,20 @@ button:focus-visible {
     align-items: center;
     flex-wrap: wrap;
     gap: 9px;
-    padding: 15px 0;
+    margin: 13px 0;
 }
 
 .paso {
-    background: #fff0bb;
-    color: #5e381e;
-    border: 3px solid #bd822e;
-    width: 45px;
-    height: 45px;
+    width: 43px;
+    height: 43px;
+    border: 3px solid #c08b36;
+    border-radius: 50%;
+    background: #fff0bd;
+    color: #673e1e;
     display: grid;
     place-items: center;
-    border-radius: 50%;
-    font-size: 20px;
     font-weight: 900;
+    font-size: 19px;
 }
 
 .paso.actual {
@@ -727,112 +915,123 @@ button:focus-visible {
 }
 
 .paso.correcto {
-    background: #25a45a;
+    background: #239f58;
     color: white;
 }
 
 .paso.fallado {
-    background: #ce6b48;
+    background: #ba553c;
     color: white;
 }
 
 .tablero {
     background: linear-gradient(
-        #fff8dc,
-        #f0d096
+        #fff9e0,
+        #f0d397
     );
-    border: 9px solid #75421f;
-    border-radius: 25px;
+    border: 8px solid #75421f;
+    border-radius: 24px;
     box-shadow:
-        0 0 0 3px #ffdc8d,
-        0 10px #462513,
-        0 18px 25px #0007;
-    color: #55361f;
+        0 0 0 3px #ffdb86,
+        0 8px #452511,
+        0 15px 30px #0006;
     overflow: hidden;
+    color: #57351e;
 }
 
 .cabecera-tablero {
     background: linear-gradient(
-        #9a5a2c,
-        #583017
+        #9c6232,
+        #5a3218
     );
-    color: #ffe7ae;
-    padding: 13px 17px;
-    font-weight: 900;
+    color: #ffebbc;
+    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
     gap: 8px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    font-weight: 900;
 }
 
 .contenido-tablero {
+    padding: 18px;
     text-align: center;
-    padding: 20px;
 }
 
 #historia {
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 800;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 #ecuacion {
-    font-family: 'Fredoka', sans-serif;
-    color: #07546d;
-    font-size: clamp(36px, 7vw, 70px);
-    background: #fffdf1;
-    border: 3px dashed #c38d40;
-    border-radius: 20px;
     display: inline-block;
-    padding: 13px 28px;
-    margin: 5px 0 24px;
+    border: 3px dashed #c69244;
+    border-radius: 18px;
+    background: #fffdf2;
+    color: #07586e;
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(34px, 6vw, 65px);
     font-weight: 700;
+    padding: 9px 24px;
+    margin: 5px 0 19px;
 }
 
 .respuestas {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    gap: 13px;
 }
 
 .respuesta {
-    min-height: 95px;
-    border: 4px solid #fff;
-    border-radius: 20px;
+    min-height: 82px;
+    border: 4px solid white;
+    border-radius: 18px;
     color: white;
-    font-size: clamp(24px, 4vw, 42px);
     font-family: 'Fredoka', sans-serif;
     font-weight: 700;
-    box-shadow: 0 6px #68401f;
-    text-shadow: 0 3px #0003;
+    font-size: clamp(22px, 3.8vw, 40px);
+    box-shadow: 0 6px #69401f;
+    text-shadow: 0 2px #0004;
 }
 
 .respuesta:nth-child(1) {
-    background: linear-gradient(#ff9864, #d74827);
+    background: linear-gradient(
+        #ff9863,
+        #d74a29
+    );
 }
 
 .respuesta:nth-child(2) {
-    background: linear-gradient(#45dca4, #097e5a);
+    background: linear-gradient(
+        #48dfaa,
+        #097f5b
+    );
 }
 
 .respuesta:nth-child(3) {
-    background: linear-gradient(#ae94ff, #6634bc);
+    background: linear-gradient(
+        #b49bff,
+        #6734bf
+    );
 }
 
 .respuesta.acierto {
-    background: #159747 !important;
-    outline: 4px solid #ffdc60;
+    background: #1b9e4b !important;
+    outline: 4px solid #ffda60;
     opacity: 1;
 }
 
 .respuesta.fallo {
-    background: #c52c29 !important;
+    background: #c5312b !important;
     opacity: 1;
+    animation: temblar .4s;
 }
 
 #mensaje {
-    min-height: 28px;
-    font-size: 18px;
+    min-height: 25px;
+    font-size: 16px;
     font-weight: 900;
     margin-bottom: 0;
 }
@@ -841,33 +1040,37 @@ button:focus-visible {
     text-align: center;
 }
 
-.guia-jake img {
-    max-height: 270px;
+.guia-jake .jake-img {
+    max-height: 250px;
 }
 
 .dialogo-jake {
-    background: #fff3ce;
-    color: #57341d;
-    border: 3px solid #b27837;
-    border-radius: 15px;
-    padding: 13px;
+    padding: 12px;
+    border: 3px solid #b57e37;
+    border-radius: 14px;
+    background: #fff2c8;
+    color: #5a361b;
+    box-shadow: 0 4px #623616;
+    font-size: 14px;
     font-weight: 900;
-    box-shadow: 0 5px #653818;
 }
 
-/* ======================================
-   PANELES, TIENDA Y RESULTADOS
-====================================== */
+/* ==========================================
+   PANELES Y RESULTADOS
+========================================== */
 
 .panel {
     width: min(950px, 100%);
     margin: 20px auto;
-    padding: 25px;
+    padding: 23px;
     border: 7px solid #75421f;
-    border-radius: 24px;
-    background: linear-gradient(#fff8e0, #efd097);
-    color: #57351d;
-    box-shadow: 0 9px #44230f,
+    border-radius: 23px;
+    color: #5b361c;
+    background: linear-gradient(
+        #fff7dc,
+        #ebcc92
+    );
+    box-shadow: 0 8px #482510,
                 0 15px 30px #0006;
 }
 
@@ -877,8 +1080,10 @@ button:focus-visible {
 }
 
 .resultado-panel {
-    text-align: center;
     margin: auto;
+    text-align: center;
+    max-width: 700px;
+    animation: aparecer .5s;
 }
 
 .tesoro-final {
@@ -887,86 +1092,94 @@ button:focus-visible {
 }
 
 #estrellas {
-    font-size: 55px;
-    margin: 10px 0;
+    font-size: 43px;
 }
 
 .resultado-datos {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     margin: 20px 0;
 }
 
 .resultado-datos span {
-    border: 2px solid #dcac56;
-    background: #fff8df;
-    border-radius: 14px;
-    padding: 15px;
+    background: #fff9e6;
+    border: 2px solid #d9aa54;
+    border-radius: 13px;
+    padding: 12px;
     font-weight: 900;
 }
+
+/* ==========================================
+   TIENDA PIRATA
+========================================== */
 
 .tienda-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    gap: 13px;
     margin-top: 20px;
 }
 
 .producto {
-    background: #fff9e8;
-    border: 3px solid #cf9d4b;
-    border-radius: 17px;
-    padding: 15px;
+    padding: 15px 10px;
+    border: 3px solid #d4a253;
+    border-radius: 18px;
     text-align: center;
+    background: #fff9e8;
 }
 
 .producto-icono {
-    font-size: 65px;
+    font-size: 60px;
+}
+
+.producto.equipado {
+    border-color: #279e5c;
+    background: #effff2;
 }
 
 .producto .boton {
     width: 100%;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .record {
-    background: #fff9e8;
-    border-left: 5px solid #d69b35;
     padding: 13px;
+    margin: 8px 0;
     border-radius: 10px;
-    margin: 10px 0;
+    border-left: 5px solid #d5a13f;
+    background: #fff9e7;
     font-weight: 800;
 }
 
 .manual-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 13px;
 }
 
 .instruccion {
-    background: #fffaf0;
-    border: 2px solid #d5aa62;
+    padding: 14px;
     border-radius: 15px;
-    padding: 15px;
+    background: #fffaf0;
+    border: 2px solid #d6a95c;
 }
 
-/* ======================================
+/* ==========================================
    MODALES
-====================================== */
+========================================== */
 
 .modal {
-    display: none;
     position: fixed;
     inset: 0;
-    z-index: 20;
-    background: #001c30d9;
-    backdrop-filter: blur(5px);
+    z-index: 50;
+    padding: 15px;
+    display: none;
     align-items: center;
     justify-content: center;
-    padding: 15px;
+    background: #001c30df;
+    backdrop-filter: blur(5px);
 }
 
 .modal.abierto {
@@ -975,22 +1188,25 @@ button:focus-visible {
 
 .modal .panel {
     max-width: 580px;
+    max-height: 90vh;
+    overflow: auto;
     text-align: center;
+    animation: aparecer .35s;
 }
 
 #ecuacionCofre {
     font-size: 38px;
-    color: #07566d;
+    color: #075a70;
 }
 
-/* ======================================
-   PARTÍCULAS
-====================================== */
+/* ==========================================
+   CONFETI
+========================================== */
 
 .confeti {
     position: fixed;
     top: -30px;
-    z-index: 30;
+    z-index: 100;
     pointer-events: none;
     animation: caer 3s linear forwards;
 }
@@ -1001,23 +1217,23 @@ button:focus-visible {
     }
 }
 
-/* ======================================
-   ADAPTACIÓN PARA CELULARES
-====================================== */
+/* ==========================================
+   DISEÑO RESPONSIVO
+========================================== */
 
 @media(max-width: 1000px) {
 
-    .portada {
-        grid-template-columns: 1fr 180px 1fr;
+    .mundo-menu {
+        grid-template-columns: 220px 1fr 220px;
         gap: 12px;
     }
 
-    .zona-juego {
-        grid-template-columns: 1fr 160px;
+    .tarjeta-isla h2 {
+        font-size: 20px;
     }
 
-    .tarjeta-isla h2 {
-        font-size: 23px;
+    .zona-juego {
+        grid-template-columns: 1fr 145px;
     }
 
 }
@@ -1028,51 +1244,63 @@ button:focus-visible {
         padding: 12px;
     }
 
-    .portada {
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
+    .barra-superior {
+        justify-content: center;
     }
 
-    .encabezado-menu {
-        grid-column: 1 / -1;
+    .titulo {
+        font-size: clamp(31px, 8vw, 49px);
+    }
+
+    .mundo-menu {
+        grid-template-columns: 1fr 1fr;
+        min-height: auto;
+        gap: 10px;
     }
 
     .jake-centro {
         grid-column: 1 / -1;
-        grid-row: 2;
+        grid-row: 1;
     }
 
-    .jake-centro .jake-img {
-        max-height: 170px;
-        max-width: 180px;
+    .jake-contenedor {
+        max-width: 130px;
+    }
+
+    .jake-img {
+        max-height: 160px;
+    }
+
+    .jake-fallback {
+        font-size: 65px;
     }
 
     .tarjeta-isla {
-        min-height: 270px;
-        padding: 15px 8px;
+        padding: 12px 7px;
     }
 
     .tarjeta-isla h2 {
-        font-size: clamp(14px, 3.7vw, 23px);
+        font-size: clamp(13px, 3.7vw, 22px);
+    }
+
+    .tarjeta-isla p {
+        font-size: 12px;
     }
 
     .simbolo-grande {
-        font-size: 65px;
+        font-size: 44px;
     }
 
     .niveles-mini {
         flex-wrap: wrap;
-        gap: 3px;
     }
 
-    .niveles-mini span {
-        font-size: 11px;
+    .tarjeta-isla .boton {
+        font-size: 12px;
+        padding: 8px;
     }
 
-    .niveles-grid {
-        grid-template-columns: 1fr;
-    }
-
+    .niveles-grid,
     .mapa-grid {
         grid-template-columns: 1fr;
     }
@@ -1094,7 +1322,7 @@ button:focus-visible {
     }
 
     .respuesta {
-        min-height: 70px;
+        min-height: 65px;
     }
 
     .respuestas {
@@ -1105,24 +1333,20 @@ button:focus-visible {
         padding: 12px;
     }
 
-    .barra-superior {
-        justify-content: center;
-    }
-
-    .titulo {
-        font-size: 48px;
-    }
-
     .boton {
-        font-size: 14px;
-        padding: 10px 12px;
+        font-size: 13px;
+        padding: 9px 13px;
     }
+
 }
 
 @media(prefers-reduced-motion: reduce) {
+
     * {
         animation: none !important;
+        transition-duration: .01ms !important;
     }
+
 }
 
 </style>
@@ -1130,56 +1354,55 @@ button:focus-visible {
 
 <body>
 
-<!-- ==================================
-     VIDEOS REALES DEL REPOSITORIO
-=================================== -->
+<!-- ==========================================
+     LOS DOS VIDEOS DE GITHUB
+========================================== -->
 
-<div id="fondoVideos">
+<div id="fondos">
 
     <video
         id="videoPrincipal"
         class="video-fondo visible"
+        src="./videoprincipal.mp4"
         autoplay
         muted
         loop
         playsinline
-        preload="auto"
-        src="./videoprincipal.mp4">
+        preload="auto">
     </video>
 
     <video
         id="videoPartida"
         class="video-fondo"
+        src="./division%20multiplicacion.mp4"
         muted
         loop
         playsinline
-        preload="auto"
-        src="./divisi%C3%B3n%20multiplicacion.mp4">
+        preload="auto">
     </video>
 
 </div>
 
-<div class="capa-oscura"></div>
+<div class="sombra-fondo"></div>
 
 <main id="aplicacion">
 
-<!-- ==================================
+<!-- ==========================================
      MENÚ PRINCIPAL
-=================================== -->
+========================================== -->
 
 <section id="menu" class="pantalla activa">
 
     <header class="barra-superior">
 
-        <div class="emblema">
+        <span class="emblema">
             🧭 LA TRIPULACIÓN DE JAKE
-        </div>
+        </span>
 
         <div class="controles">
 
             <span class="chip">
-                🪙 BOTÍN:
-                <b id="saldoMenu">0</b>
+                🪙 BOTÍN: <b id="saldoMenu">0</b>
             </span>
 
             <button class="chip"
@@ -1206,86 +1429,101 @@ button:focus-visible {
             </span>
 
             <h1 class="titulo">
-                ISLA MATEMÁTICA
+                LA ISLA MATEMÁGICA
             </h1>
 
             <p class="subtitulo">
-                ¡Dos islas, dos operaciones y grandes tesoros!
+                ¡Multiplica, divide y descubre la magia de los números!
             </p>
 
         </div>
 
-        <!-- MULTIPLICACIONES -->
+        <div class="mundo-menu">
 
-        <article class="tarjeta-isla">
+            <!-- ISLA IZQUIERDA -->
 
-            <div class="simbolo-grande">×</div>
+            <article class="tarjeta-isla">
 
-            <h2>MULTIPLICACIONES</h2>
+                <div class="simbolo-grande">×</div>
 
-            <p>🏝️ Isla del Tesoro Dorado</p>
+                <h2>MULTIPLICACIONES</h2>
 
-            <div class="niveles-mini">
-                <span>Fácil</span>
-                <span>Medio</span>
-                <span>Difícil</span>
+                <p>🏝️ Isla del Tesoro Dorado</p>
+
+                <div class="niveles-mini">
+
+                    <span>Fácil</span>
+                    <span>Medio</span>
+                    <span>Difícil</span>
+
+                </div>
+
+                <p id="progresoMul">
+                    0 de 3 niveles
+                </p>
+
+                <button class="boton"
+                        onclick="elegirIsla('mul')">
+                    ⚔️ EXPLORAR ISLA
+                </button>
+
+            </article>
+
+            <!-- JAKE ORIGINAL -->
+
+            <div class="jake-centro">
+
+                <div class="jake-contenedor">
+
+                    <img
+                        src="./jake.png"
+                        class="jake-img"
+                        alt="Jake"
+                        onclick="animarJake('feliz')"
+                        onerror="errorImagen(this)">
+
+                    <div class="jake-fallback">🏴‍☠️</div>
+
+                    <span class="sombrero-equipado"></span>
+
+                </div>
+
+                <div class="cartel-jake">
+                    ¡AL ABORDAJE, CAPITÁN!
+                </div>
+
             </div>
 
-            <p>Multiplica y consigue monedas de oro.</p>
+            <!-- ISLA DERECHA -->
 
-            <p id="progresoMul">0 de 3 niveles</p>
+            <article class="tarjeta-isla division">
 
-            <button class="boton"
-                    onclick="elegirIsla('mul')">
-                ⚔️ JUGAR MULTIPLICACIONES
-            </button>
+                <div class="simbolo-grande">÷</div>
 
-        </article>
+                <h2>DIVISIONES</h2>
 
-        <!-- JAKE ORIGINAL -->
+                <p>💎 Isla de los Diamantes</p>
 
-        <div class="jake-centro">
+                <div class="niveles-mini">
 
-            <img
-                src="./jake.png"
-                class="jake-img"
-                id="jakeMenu"
-                alt="Jake"
-                onclick="animarJake('feliz')"
-                onerror="mostrarJakeAlternativo(this)">
+                    <span>Fácil</span>
+                    <span>Medio</span>
+                    <span>Difícil</span>
 
-            <div class="cartel-jake">
-                🏴‍☠️ ¡AL ABORDAJE!
-            </div>
+                </div>
+
+                <p id="progresoDiv">
+                    0 de 3 niveles
+                </p>
+
+                <button class="boton azul"
+                        onclick="elegirIsla('div')">
+                    💎 EXPLORAR ISLA
+                </button>
+
+            </article>
 
         </div>
-
-        <!-- DIVISIONES -->
-
-        <article class="tarjeta-isla division">
-
-            <div class="simbolo-grande">÷</div>
-
-            <h2>DIVISIONES</h2>
-
-            <p>💎 Isla de los Diamantes</p>
-
-            <div class="niveles-mini">
-                <span>Fácil</span>
-                <span>Medio</span>
-                <span>Difícil</span>
-            </div>
-
-            <p>Divide y encuentra cristales mágicos.</p>
-
-            <p id="progresoDiv">0 de 3 niveles</p>
-
-            <button class="boton azul"
-                    onclick="elegirIsla('div')">
-                💎 JUGAR DIVISIONES
-            </button>
-
-        </article>
 
         <div class="datos-menu">
 
@@ -1338,17 +1576,13 @@ button:focus-visible {
         <div class="datos-menu">
 
             <span class="chip">
-
                 NIVELES SUPERADOS:
                 <b id="totalCompletados">0/6</b>
-
             </span>
 
             <span class="chip">
-
                 RÉCORD:
                 <b id="recordMenu">0</b> PTS
-
             </span>
 
         </div>
@@ -1356,21 +1590,23 @@ button:focus-visible {
     </div>
 
     <footer class="pie">
-        ISLA MATEMÁTICA · MULTIPLICA, DIVIDE Y CONQUISTA LOS MARES
+
+        LA ISLA MATEMÁGICA · APRENDE, EXPLORA Y CONQUISTA
+
     </footer>
 
 </section>
 
-<!-- ==================================
+<!-- ==========================================
      SELECCIÓN DE NIVELES
-=================================== -->
+========================================== -->
 
 <section id="niveles" class="pantalla">
 
     <header class="barra-superior">
 
         <span class="emblema">
-            🧭 SELECCIONA TU DESAFÍO
+            🧭 ELIGE TU DESAFÍO
         </span>
 
         <button class="boton madera"
@@ -1385,7 +1621,7 @@ button:focus-visible {
     </h2>
 
     <p class="descripcion">
-        Completa las misiones y desbloquea nuevos desafíos.
+        Supera las misiones y descubre los tesoros.
     </p>
 
     <div class="niveles-grid"
@@ -1394,9 +1630,9 @@ button:focus-visible {
 
 </section>
 
-<!-- ==================================
+<!-- ==========================================
      MAPA
-=================================== -->
+========================================== -->
 
 <section id="mapa" class="pantalla">
 
@@ -1418,7 +1654,7 @@ button:focus-visible {
     </h2>
 
     <p class="descripcion">
-        Conquista los seis niveles de las dos islas.
+        Conquista las dos islas y sus seis niveles.
     </p>
 
     <div class="mapa-grid">
@@ -1457,9 +1693,9 @@ button:focus-visible {
 
 </section>
 
-<!-- ==================================
+<!-- ==========================================
      PANTALLA DE JUEGO
-=================================== -->
+========================================== -->
 
 <section id="juego" class="pantalla">
 
@@ -1479,28 +1715,23 @@ button:focus-visible {
     <div class="hud">
 
         <span class="chip">
-            VIDAS:
-            <b id="vidas">❤️❤️❤️</b>
+            VIDAS: <b id="vidas">❤️❤️❤️</b>
         </span>
 
         <span class="chip">
-            RACHA:
-            <b id="racha">0</b>
+            RACHA: <b id="racha">0</b>
         </span>
 
         <span class="chip">
-            PUNTOS:
-            <b id="puntos">0</b>
+            PUNTOS: <b id="puntos">0</b>
         </span>
 
         <span class="chip">
-            🪙 BOTÍN:
-            <b id="monedasJuego">0</b>
+            🪙 BOTÍN: <b id="monedasJuego">0</b>
         </span>
 
         <span class="chip">
-            BONUS:
-            <b id="bonus">1</b>
+            BONUS: <b id="bonus">1</b>
         </span>
 
     </div>
@@ -1522,9 +1753,7 @@ button:focus-visible {
             </div>
 
             <div class="progreso">
-
                 <div id="barraAvance"></div>
-
             </div>
 
             <div id="camino" class="camino"></div>
@@ -1533,9 +1762,7 @@ button:focus-visible {
 
                 <div class="cabecera-tablero">
 
-                    <span>
-                        DESAFÍO MATEMÁTICO
-                    </span>
+                    <span>DESAFÍO MATEMÁGICO</span>
 
                     <span id="capitan"></span>
 
@@ -1573,17 +1800,24 @@ button:focus-visible {
 
         <aside class="guia-jake">
 
-            <img
-                src="./jake.png"
-                id="jakeJuego"
-                class="jake-img"
-                alt="Jake"
-                onerror="mostrarJakeAlternativo(this)">
+            <div class="jake-contenedor">
+
+                <img
+                    src="./jake.png"
+                    class="jake-img"
+                    alt="Jake"
+                    onerror="errorImagen(this)">
+
+                <div class="jake-fallback">🏴‍☠️</div>
+
+                <span class="sombrero-equipado"></span>
+
+            </div>
 
             <div class="dialogo-jake"
                  id="dialogoJake">
 
-                ¡Vamos, pirata! El tesoro está cerca.
+                ¡Vamos, capitán! El tesoro está cerca.
 
             </div>
 
@@ -1593,9 +1827,9 @@ button:focus-visible {
 
 </section>
 
-<!-- ==================================
+<!-- ==========================================
      RESULTADOS
-=================================== -->
+========================================== -->
 
 <section id="resultados" class="pantalla">
 
@@ -1654,7 +1888,7 @@ button:focus-visible {
 
             <button class="boton verde"
                     onclick="iniciarNivel(estado.nivel)">
-                🔄 REPETIR NIVEL
+                🔄 REPETIR
             </button>
 
             <button class="boton azul"
@@ -1673,9 +1907,9 @@ button:focus-visible {
 
 </section>
 
-<!-- ==================================
+<!-- ==========================================
      TIENDA PIRATA
-=================================== -->
+========================================== -->
 
 <section id="tienda" class="pantalla">
 
@@ -1725,9 +1959,9 @@ button:focus-visible {
 
 </section>
 
-<!-- ==================================
+<!-- ==========================================
      RÉCORDS
-=================================== -->
+========================================== -->
 
 <section id="records" class="pantalla">
 
@@ -1739,7 +1973,7 @@ button:focus-visible {
 
         <button class="boton madera"
                 onclick="irMenu()">
-            ⬅ VOLVER
+            ⬅ PUERTO
         </button>
 
     </header>
@@ -1754,9 +1988,9 @@ button:focus-visible {
 
 </section>
 
-<!-- ==================================
+<!-- ==========================================
      MANUAL
-=================================== -->
+========================================== -->
 
 <section id="manual" class="pantalla">
 
@@ -1797,9 +2031,8 @@ button:focus-visible {
                 <h3>🧮 Resuelve las operaciones</h3>
 
                 <p>
-                    Cada nivel tiene cinco preguntas.
-                    Debes seleccionar la respuesta correcta
-                    entre tres opciones.
+                    Cada nivel tiene cinco preguntas aleatorias.
+                    Selecciona una de las tres respuestas.
                 </p>
 
             </article>
@@ -1815,7 +2048,7 @@ button:focus-visible {
                 </p>
 
                 <p>
-                    Los tiempos son iguales para las dos islas.
+                    Los tiempos son iguales en ambas islas.
                 </p>
 
             </article>
@@ -1825,8 +2058,8 @@ button:focus-visible {
                 <h3>❤️ Protege tus vidas</h3>
 
                 <p>
-                    Comienzas cada nivel con tres corazones.
-                    Cada error puede hacerte perder una vida.
+                    Comienzas cada nivel con tres vidas.
+                    Evita las respuestas incorrectas.
                 </p>
 
             </article>
@@ -1847,7 +2080,7 @@ button:focus-visible {
                 <h3>🎁 Cofre de la vida</h3>
 
                 <p>
-                    Si pierdes tus tres vidas, puedes resolver
+                    Si pierdes tus tres vidas, resuelve
                     una operación especial para recuperar
                     un corazón.
                 </p>
@@ -1856,11 +2089,11 @@ button:focus-visible {
 
             <article class="instruccion">
 
-                <h3>🪙 Gana monedas</h3>
+                <h3>🪙 Tienda pirata</h3>
 
                 <p>
-                    Resuelve operaciones, acumula monedas
-                    y compra artículos en la tienda pirata.
+                    Consigue monedas para comprar barcos
+                    y sombreros.
                 </p>
 
             </article>
@@ -1870,9 +2103,8 @@ button:focus-visible {
                 <h3>🏆 Conquista los tesoros</h3>
 
                 <p>
-                    Consigue al menos tres aciertos y termina
-                    cada nivel para desbloquear el siguiente.
-                    Completa los seis niveles.
+                    Termina cada nivel con al menos tres
+                    aciertos para desbloquear el siguiente.
                 </p>
 
             </article>
@@ -1901,9 +2133,35 @@ button:focus-visible {
 
 </main>
 
-<!-- ==================================
-     MODAL BONUS
-=================================== -->
+<!-- ==========================================
+     TRANSICIÓN DE NUBES
+========================================== -->
+
+<div id="transicionNubes" aria-hidden="true">
+
+    <div id="veloNubes"></div>
+
+    <div class="nube izquierda"></div>
+
+    <div class="nube derecha"></div>
+
+    <div id="mensajeViaje">
+
+        <span class="barco-viaje">⛵</span>
+
+        <span id="textoViaje">
+            ¡Zarpando hacia la aventura!
+        </span>
+
+    </div>
+
+</div>
+
+<div id="avisoVideo" role="status"></div>
+
+<!-- ==========================================
+     BONUS
+========================================== -->
 
 <div class="modal" id="modalBonus">
 
@@ -1914,7 +2172,7 @@ button:focus-visible {
         <h2>¡SEGUNDA OPORTUNIDAD!</h2>
 
         <p>
-            Puedes repetir esta operación
+            Repite la misma operación
             sin perder un corazón.
         </p>
 
@@ -1936,9 +2194,9 @@ button:focus-visible {
 
 </div>
 
-<!-- ==================================
+<!-- ==========================================
      COFRE DE LA VIDA
-=================================== -->
+========================================== -->
 
 <div class="modal" id="modalCofre">
 
@@ -1949,7 +2207,8 @@ button:focus-visible {
         <h2>¡COFRE DE LA VIDA!</h2>
 
         <p>
-            Resuelve esta operación para recuperar un corazón.
+            Resuelve esta operación
+            para recuperar un corazón.
         </p>
 
         <h2 id="ecuacionCofre"></h2>
@@ -1964,9 +2223,9 @@ button:focus-visible {
 
 </div>
 
-<!-- ==================================
-     CONFIRMACIÓN DE SALIDA
-=================================== -->
+<!-- ==========================================
+     SALIR DE LA PARTIDA
+========================================== -->
 
 <div class="modal" id="modalSalir">
 
@@ -1975,7 +2234,7 @@ button:focus-visible {
         <h2>⚓ ¿ABANDONAR LA EXPEDICIÓN?</h2>
 
         <p>
-            Tus monedas ganadas estarán guardadas.
+            Tus monedas ganadas permanecerán guardadas.
         </p>
 
         <div class="botonera">
@@ -2002,9 +2261,12 @@ button:focus-visible {
 
 const $ = id => document.getElementById(id);
 
-/* ======================================
+const esperar = ms =>
+    new Promise(resolve => setTimeout(resolve, ms));
+
+/* ==========================================
    CONFIGURACIÓN MATEMÁTICA
-====================================== */
+========================================== */
 
 const TIEMPOS = {
     1: 30,
@@ -2026,6 +2288,7 @@ const ISLAS = {
 };
 
 const EJEMPLOS = {
+
     mul: {
         1: "24 × 3",
         2: "35 × 12",
@@ -2037,11 +2300,346 @@ const EJEMPLOS = {
         2: "648 ÷ 8",
         3: "864 ÷ 24"
     }
+
 };
 
-/* ======================================
-   TIENDA
-====================================== */
+/* ==========================================
+   ARCHIVOS DE VIDEO
+========================================== */
+
+const ARCHIVOS = {
+
+    principal: [
+        "./videoprincipal.mp4"
+    ],
+
+    partida: [
+        "./division%20multiplicacion.mp4",
+        "./divisi%C3%B3n%20multiplicacion.mp4",
+        "./division%20multiplicaci%C3%B3n.mp4",
+        "./divisi%C3%B3n%20multiplicaci%C3%B3n.mp4"
+    ]
+
+};
+
+let pantallaActual = "menu";
+
+let fondoActual = null;
+
+let navegando = false;
+
+let solicitudVideo = 0;
+
+const pantallasIsla = [
+    "niveles",
+    "juego",
+    "resultados"
+];
+
+function tipoFondo(pantalla) {
+
+    return pantallasIsla.includes(pantalla)
+        ? "partida"
+        : "principal";
+
+}
+
+function obtenerVideo(tipo) {
+
+    return tipo === "partida"
+        ? $("videoPartida")
+        : $("videoPrincipal");
+
+}
+
+function prepararVideos() {
+
+    document.querySelectorAll(".video-fondo")
+        .forEach(video => {
+
+            video.muted = true;
+
+            video.defaultMuted = true;
+
+            video.loop = true;
+
+            video.playsInline = true;
+
+        });
+
+}
+
+async function intentarReproducir(video) {
+
+    let limite;
+
+    try {
+
+        await Promise.race([
+
+            video.play(),
+
+            new Promise((resolve, reject) => {
+
+                limite = setTimeout(() => {
+
+                    reject(
+                        new Error("El video tardó en cargar.")
+                    );
+
+                }, 6000);
+
+            })
+
+        ]);
+
+        return true;
+
+    } catch {
+
+        return false;
+
+    } finally {
+
+        clearTimeout(limite);
+
+    }
+
+}
+
+async function cambiarFondo(tipo) {
+
+    const solicitud = ++solicitudVideo;
+
+    const video = obtenerVideo(tipo);
+
+    const otro = obtenerVideo(
+        tipo === "principal"
+            ? "partida"
+            : "principal"
+    );
+
+    if (
+        fondoActual === tipo &&
+        !video.paused &&
+        !video.error
+    ) {
+
+        return true;
+
+    }
+
+    let correcto = false;
+
+    if (!video.error) {
+
+        correcto = await intentarReproducir(video);
+
+    }
+
+    if (!correcto) {
+
+        for (const ruta of ARCHIVOS[tipo]) {
+
+            if (solicitud !== solicitudVideo) {
+                return false;
+            }
+
+            video.src = ruta;
+
+            video.load();
+
+            correcto = await intentarReproducir(video);
+
+            if (correcto) {
+                break;
+            }
+
+        }
+
+    }
+
+    if (solicitud !== solicitudVideo) {
+
+        return false;
+
+    }
+
+    otro.pause();
+
+    otro.classList.remove("visible");
+
+    if (correcto) {
+
+        video.classList.add("visible");
+
+        fondoActual = tipo;
+
+        $("avisoVideo").style.display = "none";
+
+        return true;
+
+    }
+
+    video.classList.remove("visible");
+
+    video.pause();
+
+    fondoActual = null;
+
+    $("avisoVideo").textContent =
+        "No se pudo cargar el video " +
+        (tipo === "principal"
+            ? "principal."
+            : "de multiplicaciones y divisiones.") +
+        " Revisa el nombre y formato del archivo en GitHub.";
+
+    $("avisoVideo").style.display = "block";
+
+    return false;
+
+}
+
+/* ==========================================
+   CAMBIO DE PANTALLA CON NUBES
+========================================== */
+
+function mostrarDirecto(id) {
+
+    document.querySelectorAll(".pantalla")
+        .forEach(p => {
+
+            p.classList.remove("activa");
+
+        });
+
+    $(id).classList.add("activa");
+
+    pantallaActual = id;
+
+    window.scrollTo(0, 0);
+
+}
+
+async function mostrar(id) {
+
+    if (navegando) return false;
+
+    const nuevoFondo = tipoFondo(id);
+
+    const fondoAnterior = tipoFondo(pantallaActual);
+
+    if (nuevoFondo === fondoAnterior) {
+
+        mostrarDirecto(id);
+
+        if (
+            fondoActual !== nuevoFondo ||
+            obtenerVideo(nuevoFondo).paused
+        ) {
+
+            cambiarFondo(nuevoFondo);
+
+        }
+
+        return true;
+
+    }
+
+    navegando = true;
+
+    const nubes = $("transicionNubes");
+
+    const reducido = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const duracion = reducido ? 10 : 650;
+
+    $("textoViaje").textContent =
+        nuevoFondo === "principal"
+
+        ? "¡Regresando al puerto!"
+
+        : estado.isla === "mul"
+
+            ? "¡Rumbo a la isla de multiplicaciones!"
+
+            : "¡Rumbo a la isla de divisiones!";
+
+    nubes.classList.add("activa");
+
+    try {
+
+        await esperar(30);
+
+        nubes.classList.add("cerrada");
+
+        await esperar(duracion);
+
+        mostrarDirecto(id);
+
+        await cambiarFondo(nuevoFondo);
+
+        await esperar(reducido ? 10 : 350);
+
+        nubes.classList.remove("cerrada");
+
+        await esperar(duracion);
+
+        return true;
+
+    } finally {
+
+        nubes.classList.remove("cerrada");
+
+        nubes.classList.remove("activa");
+
+        navegando = false;
+
+    }
+
+}
+
+/* Recuperar reproducción mediante interacción */
+
+document.addEventListener("pointerdown", () => {
+
+    if (navegando) return;
+
+    const tipo = tipoFondo(pantallaActual);
+
+    const video = obtenerVideo(tipo);
+
+    if (video.paused) {
+
+        cambiarFondo(tipo);
+
+    }
+
+});
+
+document.addEventListener("visibilitychange", () => {
+
+    if (document.hidden) {
+
+        $("videoPrincipal").pause();
+
+        $("videoPartida").pause();
+
+    } else if (!navegando) {
+
+        cambiarFondo(
+            tipoFondo(pantallaActual)
+        );
+
+    }
+
+});
+
+/* ==========================================
+   TIENDA PIRATA
+========================================== */
 
 const CATALOGO = {
 
@@ -2082,7 +2680,7 @@ const CATALOGO = {
         {
             id: "sombrero1",
             nombre: "Explorador",
-            icono: "🧢",
+            icono: "",
             precio: 0
         },
 
@@ -2111,9 +2709,9 @@ const CATALOGO = {
 
 };
 
-/* ======================================
-   ALMACENAMIENTO DEL PROGRESO
-====================================== */
+/* ==========================================
+   GUARDAR PROGRESO
+========================================== */
 
 function cargarDatos() {
 
@@ -2152,28 +2750,26 @@ function cargarDatos() {
 
     try {
 
-        const guardado = JSON.parse(
+        const anterior = JSON.parse(
             localStorage.getItem("islaMatematicaV3")
         );
 
-        if (!guardado) {
-            return inicial;
-        }
+        if (!anterior) return inicial;
 
         return {
 
             ...inicial,
 
-            ...guardado,
+            ...anterior,
 
             desbloqueados: {
                 ...inicial.desbloqueados,
-                ...guardado.desbloqueados
+                ...anterior.desbloqueados
             },
 
             completados: {
                 ...inicial.completados,
-                ...guardado.completados
+                ...anterior.completados
             }
 
         };
@@ -2201,9 +2797,9 @@ function guardar() {
 
 }
 
-/* ======================================
-   ESTADO DE LA PARTIDA
-====================================== */
+/* ==========================================
+   ESTADO DEL JUEGO
+========================================== */
 
 const estado = {
 
@@ -2245,163 +2841,21 @@ const estado = {
 
     activa: false,
 
+    pausado: false,
+
     contrarreloj: true
 
 };
 
-let pantallaActual = "menu";
-
-/* ======================================
-   CONTROL DE LOS VIDEOS
-====================================== */
-
-let solicitudVideo = 0;
-
-async function activarVideo(tipo) {
-
-    const solicitud = ++solicitudVideo;
-
-    const principal = $("videoPrincipal");
-
-    const partida = $("videoPartida");
-
-    const elegido = tipo === "partida"
-        ? partida
-        : principal;
-
-    const anterior = elegido === principal
-        ? partida
-        : principal;
-
-    elegido.muted = true;
-
-    elegido.defaultMuted = true;
-
-    elegido.loop = true;
-
-    elegido.playsInline = true;
-
-    try {
-
-        await elegido.play();
-
-        if (solicitud !== solicitudVideo) {
-
-            const vigente = pantallaActual === "juego"
-                ? partida
-                : principal;
-
-            if (elegido !== vigente) {
-                elegido.pause();
-            }
-
-            return;
-
-        }
-
-        elegido.classList.add("visible");
-
-        anterior.classList.remove("visible");
-
-        anterior.pause();
-
-    } catch (error) {
-
-        console.warn(
-            "No se pudo reproducir el video:",
-            elegido.getAttribute("src"),
-            error
-        );
-
-    }
-
-}
-
-function actualizarVideo() {
-
-    activarVideo(
-        pantallaActual === "juego"
-            ? "partida"
-            : "principal"
-    );
-
-}
-
-document.querySelectorAll(".video-fondo")
-    .forEach(video => {
-
-        video.addEventListener("loadeddata", () => {
-
-            actualizarVideo();
-
-        });
-
-        video.addEventListener("error", () => {
-
-            console.warn(
-                "Revisa el nombre del archivo:",
-                video.getAttribute("src")
-            );
-
-        });
-
-    });
-
-document.addEventListener("pointerdown", () => {
-
-    const video = pantallaActual === "juego"
-        ? $("videoPartida")
-        : $("videoPrincipal");
-
-    if (video.paused) {
-        actualizarVideo();
-    }
-
-});
-
-document.addEventListener("visibilitychange", () => {
-
-    if (document.hidden) {
-
-        $("videoPrincipal").pause();
-
-        $("videoPartida").pause();
-
-    } else {
-
-        actualizarVideo();
-
-    }
-
-});
-
-/* ======================================
-   NAVEGACIÓN
-====================================== */
-
-function mostrar(id) {
-
-    document.querySelectorAll(".pantalla")
-        .forEach(p => {
-
-            p.classList.remove("activa");
-
-        });
-
-    $(id).classList.add("activa");
-
-    pantallaActual = id;
-
-    actualizarVideo();
-
-    window.scrollTo(0, 0);
-
-}
+/* ==========================================
+   MENÚ Y NAVEGACIÓN
+========================================== */
 
 function guardarPreferencias() {
 
     datos.nombre =
-        $("nombre").value.trim() || "Explorador";
+        $("nombre").value.trim() ||
+        "Explorador";
 
     datos.contrarreloj =
         $("contrarreloj").checked;
@@ -2430,6 +2884,8 @@ function detenerPartida() {
 
     estado.bloqueado = true;
 
+    estado.pausado = false;
+
     document.querySelectorAll(".modal")
         .forEach(modal => {
 
@@ -2440,6 +2896,8 @@ function detenerPartida() {
 }
 
 function irMenu() {
+
+    if (navegando) return;
 
     guardarPreferencias();
 
@@ -2456,45 +2914,56 @@ function actualizarMenu() {
     $("saldoMenu").textContent = datos.monedas;
 
     $("progresoMul").textContent =
-        datos.completados.mul.length + " de 3 niveles";
+        datos.completados.mul.length +
+        " de 3 niveles";
 
     $("progresoDiv").textContent =
-        datos.completados.div.length + " de 3 niveles";
-
-    const total =
-        datos.completados.mul.length +
-        datos.completados.div.length;
+        datos.completados.div.length +
+        " de 3 niveles";
 
     $("totalCompletados").textContent =
-        total + "/6";
+        (
+            datos.completados.mul.length +
+            datos.completados.div.length
+        ) + "/6";
 
     $("recordMenu").textContent = Math.max(
+
         0,
+
         ...datos.records.map(r => r.puntos)
+
     );
 
     $("sonidoBtn").textContent =
         datos.sonido
-            ? "🔊 SONIDO: SÍ"
-            : "🔇 SONIDO: NO";
+
+        ? "🔊 SONIDO: SÍ"
+
+        : "🔇 SONIDO: NO";
 
     actualizarEquipamiento();
 
 }
 
-/* ======================================
-   PERSONAJE JAKE
-====================================== */
+/* ==========================================
+   IMAGEN DE JAKE
+========================================== */
 
-function mostrarJakeAlternativo(imagen) {
+function errorImagen(imagen) {
 
-    const reemplazo = document.createElement("div");
+    imagen.style.display = "none";
 
-    reemplazo.className = "jake-alternativo";
+    const fallback =
+        imagen.parentElement.querySelector(
+            ".jake-fallback"
+        );
 
-    reemplazo.textContent = "🏴‍☠️";
+    if (fallback) {
 
-    imagen.replaceWith(reemplazo);
+        fallback.style.display = "block";
+
+    }
 
 }
 
@@ -2522,11 +2991,31 @@ function animarJake(tipo) {
 
 }
 
-/* ======================================
-   MAPA Y NIVELES
-====================================== */
+function actualizarEquipamiento() {
+
+    const sombrero =
+        CATALOGO.sombreros.find(
+            item => item.id === datos.sombrero
+        );
+
+    document.querySelectorAll(
+        ".sombrero-equipado"
+    ).forEach(elemento => {
+
+        elemento.textContent =
+            sombrero ? sombrero.icono : "";
+
+    });
+
+}
+
+/* ==========================================
+   MAPA
+========================================== */
 
 function abrirMapa() {
+
+    if (navegando) return;
 
     guardarPreferencias();
 
@@ -2540,64 +3029,76 @@ function abrirMapa() {
 
 }
 
-function dibujarRuta(isla, id) {
+function dibujarRuta(isla, contenedor) {
 
-    $(id).innerHTML = "";
+    $(contenedor).innerHTML = "";
 
-    for (let i = 1; i <= 3; i++) {
+    for (let nivel = 1; nivel <= 3; nivel++) {
 
-        const boton = document.createElement("button");
+        const boton =
+            document.createElement("button");
 
         boton.className = "casilla";
 
         const completado =
-            datos.completados[isla].includes(i);
+            datos.completados[isla].includes(nivel);
 
         const bloqueado =
-            datos.desbloqueados[isla] < i;
+            nivel > datos.desbloqueados[isla];
 
-        boton.textContent = completado
-            ? "✓"
-            : bloqueado
-                ? "🔒"
-                : i;
-
-        if (completado) {
-            boton.classList.add("superada");
-        }
+        boton.textContent =
+            completado ? "✓" :
+            bloqueado ? "🔒" :
+            nivel;
 
         boton.disabled = bloqueado;
 
+        if (completado) {
+
+            boton.classList.add("superada");
+
+        }
+
         boton.onclick = () => {
+
+            if (navegando) return;
 
             estado.isla = isla;
 
-            iniciarNivel(i);
+            iniciarNivel(nivel);
 
         };
 
-        $(id).appendChild(boton);
+        $(contenedor).appendChild(boton);
 
-        const flecha = document.createElement("span");
+        const flecha =
+            document.createElement("span");
 
         flecha.textContent = "➜";
 
-        $(id).appendChild(flecha);
+        $(contenedor).appendChild(flecha);
 
     }
 
-    const tesoro = document.createElement("span");
+    const tesoro =
+        document.createElement("span");
 
-    tesoro.style.fontSize = "40px";
+    tesoro.style.fontSize = "38px";
 
     tesoro.textContent =
         isla === "mul" ? "🏆" : "💎";
 
-    $(id).appendChild(tesoro);
+    $(contenedor).appendChild(tesoro);
 
 }
 
+/* ==========================================
+   ELEGIR MULTIPLICACIÓN O DIVISIÓN
+========================================== */
+
 function elegirIsla(isla) {
+
+    if (navegando) return;
 
     guardarPreferencias();
 
@@ -2607,8 +3108,10 @@ function elegirIsla(isla) {
 
     $("tituloNiveles").textContent =
         isla === "mul"
-            ? "× ISLA DE MULTIPLICACIONES"
-            : "÷ ISLA DE DIVISIONES";
+
+        ? "× ISLA DE MULTIPLICACIONES"
+
+        : "÷ ISLA DE DIVISIONES";
 
     const lista = $("listaNiveles");
 
@@ -2622,13 +3125,14 @@ function elegirIsla(isla) {
         const completado =
             datos.completados[isla].includes(nivel);
 
-        const card = document.createElement("article");
+        const tarjeta =
+            document.createElement("article");
 
-        card.className =
+        tarjeta.className =
             "nivel-card" +
             (bloqueado ? " bloqueado" : "");
 
-        card.innerHTML = `
+        tarjeta.innerHTML = `
 
             <div class="icono-nivel">
 
@@ -2639,53 +3143,60 @@ function elegirIsla(isla) {
             <h3>${NIVELES[nivel]}</h3>
 
             <span class="ejemplo">
-
                 ${EJEMPLOS[isla][nivel]}
-
             </span>
 
             <p>
-
                 ⏱️ ${TIEMPOS[nivel]} segundos por pregunta
-
             </p>
 
             <p>❤️ 3 vidas · 5 misiones</p>
 
             <p>
-
-                ${completado ? "⭐⭐ Nivel superado" : ""}
-
+                ${completado ? "⭐ Nivel superado" : ""}
             </p>
 
         `;
 
-        const boton = document.createElement("button");
+        const boton =
+            document.createElement("button");
 
         boton.className =
-            isla === "mul" ? "boton" : "boton azul";
+            isla === "mul"
+                ? "boton"
+                : "boton azul";
 
         boton.disabled = bloqueado;
 
-        boton.textContent = bloqueado
-            ? "🔒 BLOQUEADO"
-            : "⚔️ COMENZAR";
+        boton.textContent =
+            bloqueado
+                ? "🔒 BLOQUEADO"
+                : "⚔️ COMENZAR";
 
-        boton.onclick = () => iniciarNivel(nivel);
+        boton.onclick = () => {
 
-        card.appendChild(boton);
+            iniciarNivel(nivel);
 
-        lista.appendChild(card);
+        };
+
+        tarjeta.appendChild(boton);
+
+        lista.appendChild(tarjeta);
 
     }
+
+    /*
+       Aquí se activa el segundo video,
+       incluso antes de comenzar la partida.
+    */
 
     mostrar("niveles");
 
 }
 
-/* ======================================
-   GENERADOR MATEMÁTICO
-====================================== */
+/* ==========================================
+   GENERADOR DE PREGUNTAS
+========================================== */
 
 function aleatorio(min, max) {
 
@@ -2712,15 +3223,7 @@ function mezclar(lista) {
 
 function generarPregunta(isla, nivel) {
 
-    let a;
-
-    let b;
-
-    let resultado;
-
-    let simbolo;
-
-    let historia;
+    let a, b, resultado, simbolo, historia;
 
     if (isla === "mul") {
 
@@ -2750,14 +3253,14 @@ function generarPregunta(isla, nivel) {
 
         const historias = [
 
-            `Jake encontró ${a} cofres con ${b} monedas en cada uno.
-             ¿Cuántas monedas encontró en total?`,
+            `Jake encontró ${a} cofres con ${b} monedas
+             en cada uno. ¿Cuántas monedas hay en total?`,
 
-            `La tripulación tiene ${a} cajas con ${b} diamantes.
-             ¿Cuántos diamantes hay en total?`,
+            `Tenemos ${a} bolsas con ${b} diamantes
+             en cada una. ¿Cuántos diamantes tenemos?`,
 
-            `Hay ${a} barcos con ${b} frutas en cada barco.
-             ¿Cuántas frutas tenemos?`
+            `La tripulación encontró ${a} cajas con
+             ${b} frutas cada una. ¿Cuántas frutas hay?`
 
         ];
 
@@ -2790,27 +3293,28 @@ function generarPregunta(isla, nivel) {
             b = aleatorio(10, 99);
 
             resultado = aleatorio(
-                Math.ceil(100 / b),
+                Math.max(2, Math.ceil(100 / b)),
                 Math.floor(999 / b)
             );
 
         }
 
-        // Todas las divisiones son exactas.
+        // División exacta, sin decimales.
 
         a = b * resultado;
 
         const historias = [
 
-            `Jake debe repartir ${a} monedas entre ${b} piratas.
-             ¿Cuántas monedas recibe cada uno?`,
+            `Jake debe repartir ${a} monedas entre
+             ${b} piratas. ¿Cuántas recibe cada uno?`,
 
-            `La tripulación encontró ${a} diamantes y debe repartirlos
+            `Tenemos ${a} diamantes para repartir
              por igual en ${b} cofres.
-             ¿Cuántos diamantes van en cada cofre?`,
+             ¿Cuántos van en cada cofre?`,
 
-            `Tenemos ${a} frutas para repartir entre ${b} barcos.
-             ¿Cuántas frutas recibe cada barco?`
+            `La tripulación reparte ${a} frutas
+             entre ${b} barcos.
+             ¿Cuántas recibe cada barco?`
 
         ];
 
@@ -2822,7 +3326,7 @@ function generarPregunta(isla, nivel) {
 
     const diferencia = Math.max(
         3,
-        Math.round(resultado * .10)
+        Math.round(resultado * .12)
     );
 
     while (opciones.size < 3) {
@@ -2858,17 +3362,16 @@ function generarPregunta(isla, nivel) {
 
 }
 
-/* ======================================
-   INICIAR PARTIDA
-====================================== */
+/* ==========================================
+   INICIAR NIVEL
+========================================== */
 
-function iniciarNivel(nivel) {
+async function iniciarNivel(nivel) {
 
-    if (nivel > datos.desbloqueados[estado.isla]) {
-
-        return;
-
-    }
+    if (
+        navegando ||
+        nivel > datos.desbloqueados[estado.isla]
+    ) return;
 
     guardarPreferencias();
 
@@ -2896,32 +3399,45 @@ function iniciarNivel(nivel) {
 
     estado.usadas = new Set();
 
-    estado.activa = true;
-
-    estado.bloqueado = false;
-
     estado.contrarreloj = datos.contrarreloj;
 
     $("tituloJuego").textContent =
-        ISLAS[estado.isla] + " · " + NIVELES[nivel];
+        ISLAS[estado.isla] +
+        " · " +
+        NIVELES[nivel];
 
     $("capitan").textContent =
         "CAPITÁN/A: " + datos.nombre;
 
     $("dialogoJake").textContent =
-        "¡Vamos, pirata! Encuentra el tesoro.";
+        "¡Vamos, capitán! Encuentra el tesoro.";
 
-    mostrar("juego");
+    await mostrar("juego");
+
+    if (pantallaActual !== "juego") return;
+
+    estado.activa = true;
+
+    estado.bloqueado = false;
 
     siguientePregunta();
 
 }
 
+/* ==========================================
+   HUD Y CAMINO DEL BARCO
+========================================== */
+
 function actualizarHUD() {
 
+    const vidas = Math.max(
+        0,
+        Math.min(3, estado.vidas)
+    );
+
     $("vidas").textContent =
-        "❤️".repeat(Math.max(0, estado.vidas)) +
-        "🖤".repeat(3 - Math.max(0, estado.vidas));
+        "❤️".repeat(vidas) +
+        "🖤".repeat(3 - vidas);
 
     $("racha").textContent = estado.racha;
 
@@ -2937,7 +3453,7 @@ function actualizarHUD() {
         " DE " + TOTAL;
 
     $("barraAvance").style.width =
-        estado.preguntaNumero / TOTAL * 100 + "%";
+        estado.historial.length / TOTAL * 100 + "%";
 
     dibujarCamino();
 
@@ -2953,7 +3469,8 @@ function dibujarCamino() {
 
     for (let i = 0; i < TOTAL; i++) {
 
-        const paso = document.createElement("span");
+        const paso =
+            document.createElement("span");
 
         paso.className = "paso";
 
@@ -2985,9 +3502,10 @@ function dibujarCamino() {
 
     }
 
-    const tesoro = document.createElement("span");
+    const tesoro =
+        document.createElement("span");
 
-    tesoro.style.fontSize = "35px";
+    tesoro.style.fontSize = "33px";
 
     tesoro.textContent =
         estado.isla === "mul" ? "🏆" : "💎";
@@ -2996,11 +3514,13 @@ function dibujarCamino() {
 
 }
 
+/* ==========================================
+   SIGUIENTE PREGUNTA
+========================================== */
+
 function siguientePregunta() {
 
-    if (!estado.activa) {
-        return;
-    }
+    if (!estado.activa) return;
 
     if (estado.preguntaNumero >= TOTAL) {
 
@@ -3040,6 +3560,8 @@ function mostrarPregunta() {
 
     estado.bloqueado = false;
 
+    estado.pausado = false;
+
     const p = estado.pregunta;
 
     $("historia").textContent = p.historia;
@@ -3054,7 +3576,8 @@ function mostrarPregunta() {
 
     p.opciones.forEach(valor => {
 
-        const boton = document.createElement("button");
+        const boton =
+            document.createElement("button");
 
         boton.className = "respuesta";
 
@@ -3062,7 +3585,11 @@ function mostrarPregunta() {
 
         boton.dataset.valor = valor;
 
-        boton.onclick = () => responder(valor, boton);
+        boton.onclick = () => {
+
+            responder(valor, boton);
+
+        };
 
         $("respuestas").appendChild(boton);
 
@@ -3074,10 +3601,10 @@ function mostrarPregunta() {
 
 }
 
-/* ======================================
+/* ==========================================
    TEMPORIZADOR
-   IGUAL PARA LAS DOS ISLAS
-====================================== */
+   MULTIPLICACIONES Y DIVISIONES
+========================================== */
 
 function iniciarReloj(reiniciar = true) {
 
@@ -3107,11 +3634,11 @@ function iniciarReloj(reiniciar = true) {
 
     estado.intervalo = setInterval(() => {
 
-        if (!estado.activa || estado.bloqueado) {
-
-            return;
-
-        }
+        if (
+            !estado.activa ||
+            estado.bloqueado ||
+            estado.pausado
+        ) return;
 
         estado.tiempo--;
 
@@ -3150,36 +3677,38 @@ function actualizarReloj() {
         porcentaje + "%";
 
     $("barraTiempo").style.background =
-        porcentaje > 50
-            ? "#22c55e"
-            : porcentaje > 20
-                ? "#f59e0b"
-                : "#ef4444";
+        porcentaje > 50 ? "#22c55e" :
+
+        porcentaje > 20 ? "#f59e0b" :
+
+        "#ef4444";
 
 }
 
-/* ======================================
-   RESPUESTAS
-====================================== */
+/* ==========================================
+   RESPUESTAS Y PUNTOS
+========================================== */
 
 function bloquearRespuestas() {
 
-    document.querySelectorAll("#respuestas button")
-        .forEach(boton => {
+    document.querySelectorAll(
+        "#respuestas button"
+    ).forEach(boton => {
 
-            boton.disabled = true;
+        boton.disabled = true;
 
-        });
+    });
 
 }
 
 function responder(valor, boton) {
 
-    if (!estado.activa || estado.bloqueado) {
-
-        return;
-
-    }
+    if (
+        !estado.activa ||
+        estado.bloqueado ||
+        estado.pausado ||
+        navegando
+    ) return;
 
     estado.bloqueado = true;
 
@@ -3212,7 +3741,9 @@ function responder(valor, boton) {
         guardar();
 
         $("mensaje").textContent =
-            "¡CORRECTO! +" + monedas + " monedas 🪙";
+            "¡CORRECTO! +" +
+            monedas +
+            " monedas 🪙";
 
         $("dialogoJake").textContent =
             "¡Excelente trabajo, capitán!";
@@ -3244,9 +3775,15 @@ function responder(valor, boton) {
 
 }
 
+/* ==========================================
+   ERROR Y SEGUNDA OPORTUNIDAD
+========================================== */
+
 function gestionarError() {
 
     estado.racha = 0;
+
+    actualizarHUD();
 
     animarJake("triste");
 
@@ -3255,15 +3792,14 @@ function gestionarError() {
     $("dialogoJake").textContent =
         "¡No te rindas! Tú puedes.";
 
-    actualizarHUD();
-
     if (estado.bonus > 0) {
 
         estado.pendiente = setTimeout(() => {
 
             if (estado.activa) {
 
-                $("modalBonus").classList.add("abierto");
+                $("modalBonus")
+                    .classList.add("abierto");
 
             }
 
@@ -3277,17 +3813,13 @@ function gestionarError() {
 
 }
 
-/* ======================================
-   BONUS
-====================================== */
-
 function usarBonus() {
 
-    if (!estado.activa || estado.bonus <= 0) {
-
-        return;
-
-    }
+    if (
+        !estado.activa ||
+        estado.bonus <= 0 ||
+        !$("modalBonus").classList.contains("abierto")
+    ) return;
 
     estado.bonus--;
 
@@ -3303,6 +3835,10 @@ function usarBonus() {
 
 function rechazarBonus() {
 
+    if (
+        !$("modalBonus").classList.contains("abierto")
+    ) return;
+
     $("modalBonus").classList.remove("abierto");
 
     perderVida();
@@ -3317,29 +3853,28 @@ function perderVida() {
 
     actualizarHUD();
 
-    document.querySelectorAll("#respuestas button")
-        .forEach(boton => {
+    document.querySelectorAll(
+        "#respuestas button"
+    ).forEach(boton => {
 
-            if (
-                Number(boton.dataset.valor) ===
-                estado.pregunta.resultado
-            ) {
+        if (
+            Number(boton.dataset.valor) ===
+            estado.pregunta.resultado
+        ) {
 
-                boton.classList.add("acierto");
+            boton.classList.add("acierto");
 
-            }
+        }
 
-        });
+    });
 
     $("mensaje").textContent =
         "La respuesta correcta era " +
-        estado.pregunta.resultado;
+        estado.pregunta.resultado + ".";
 
     estado.pendiente = setTimeout(() => {
 
-        if (!estado.activa) {
-            return;
-        }
+        if (!estado.activa) return;
 
         if (estado.vidas <= 0) {
 
@@ -3361,13 +3896,13 @@ function perderVida() {
 
         }
 
-    }, 1400);
+    }, 1500);
 
 }
 
-/* ======================================
-   COFRE DE LA VIDA
-====================================== */
+/* ==========================================
+   COFRE PARA RECUPERAR UNA VIDA
+========================================== */
 
 function abrirCofre() {
 
@@ -3389,7 +3924,8 @@ function abrirCofre() {
 
     p.opciones.forEach(valor => {
 
-        const boton = document.createElement("button");
+        const boton =
+            document.createElement("button");
 
         boton.className = "respuesta";
 
@@ -3399,9 +3935,14 @@ function abrirCofre() {
 
             document.querySelectorAll(
                 "#respuestasCofre button"
-            ).forEach(b => b.disabled = true);
+            ).forEach(b => {
 
-            const correcto = valor === p.resultado;
+                b.disabled = true;
+
+            });
+
+            const correcto =
+                valor === p.resultado;
 
             boton.classList.add(
                 correcto ? "acierto" : "fallo"
@@ -3419,7 +3960,8 @@ function abrirCofre() {
             } else {
 
                 $("mensajeCofre").textContent =
-                    "Respuesta correcta: " + p.resultado;
+                    "Respuesta correcta: " +
+                    p.resultado;
 
                 reproducirSonido(false);
 
@@ -3427,7 +3969,8 @@ function abrirCofre() {
 
             estado.pendiente = setTimeout(() => {
 
-                $("modalCofre").classList.remove("abierto");
+                $("modalCofre")
+                    .classList.remove("abierto");
 
                 if (correcto) {
 
@@ -3451,9 +3994,9 @@ function abrirCofre() {
 
 }
 
-/* ======================================
-   RESULTADOS
-====================================== */
+/* ==========================================
+   RESULTADOS Y DESBLOQUEO
+========================================== */
 
 function finalizarNivel(terminado) {
 
@@ -3485,27 +4028,35 @@ function finalizarNivel(terminado) {
         }
 
         datos.desbloqueados[estado.isla] = Math.min(
+
             3,
+
             Math.max(
+
                 datos.desbloqueados[estado.isla],
+
                 estado.nivel + 1
+
             )
+
         );
 
         $("tituloResultado").textContent =
             estado.nivel === 3
-                ? "¡ISLA CONQUISTADA!"
-                : "¡NIVEL SUPERADO!";
+
+            ? "¡ISLA CONQUISTADA!"
+
+            : "¡NIVEL SUPERADO!";
 
         $("tesoroFinal").textContent =
             estado.isla === "mul" ? "🏆" : "💎";
 
         $("estrellas").textContent =
-            estado.aciertos === 5
-                ? "⭐⭐⭐"
-                : estado.aciertos === 4
-                    ? "⭐⭐"
-                    : "⭐";
+            estado.aciertos === 5 ? "⭐⭐⭐" :
+
+            estado.aciertos === 4 ? "⭐⭐" :
+
+            "⭐";
 
         $("textoResultado").textContent =
             "¡Excelente, capitán! Has superado la misión.";
@@ -3518,17 +4069,21 @@ function finalizarNivel(terminado) {
         }
 
         if (
+
             datos.completados.mul.length === 3 &&
+
             datos.completados.div.length === 3
+
         ) {
 
             $("tituloResultado").textContent =
-                "¡LEYENDA DE LOS DOS TESOROS!";
+                "¡LEYENDA DE LA ISLA MATEMÁGICA!";
 
-            $("tesoroFinal").textContent = "🏆💎";
+            $("tesoroFinal").textContent =
+                "🏆💎";
 
             $("textoResultado").textContent =
-                "¡Conquistaste las dos islas matemáticas!";
+                "¡Conquistaste las dos islas y sus seis desafíos!";
 
         }
 
@@ -3537,14 +4092,15 @@ function finalizarNivel(terminado) {
     } else {
 
         $("tituloResultado").textContent =
-            "¡INTÉNTALO NUEVAMENTE!";
+            "¡VUELVE A INTENTARLO!";
 
         $("tesoroFinal").textContent = "🧭";
 
-        $("estrellas").textContent = "⭐";
+        $("estrellas").textContent = "";
 
         $("textoResultado").textContent =
-            "Necesitas terminar el nivel y conseguir al menos tres aciertos.";
+            "Necesitas terminar el nivel " +
+            "y conseguir al menos tres aciertos.";
 
     }
 
@@ -3586,19 +4142,23 @@ function siguienteNivel() {
 
 }
 
-/* ======================================
+/* ==========================================
    PAUSAR Y SALIR
-====================================== */
+========================================== */
 
 function preguntarSalida() {
 
-    if (!estado.activa || estado.bloqueado) {
+    if (
+        !estado.activa ||
+        estado.bloqueado ||
+        navegando
+    ) return;
 
-        return;
-
-    }
+    estado.pausado = true;
 
     detenerReloj();
+
+    bloquearRespuestas();
 
     $("modalSalir").classList.add("abierto");
 
@@ -3608,26 +4168,38 @@ function cancelarSalida() {
 
     $("modalSalir").classList.remove("abierto");
 
+    estado.pausado = false;
+
+    document.querySelectorAll(
+        "#respuestas button"
+    ).forEach(boton => {
+
+        boton.disabled = false;
+
+    });
+
     iniciarReloj(false);
 
 }
 
-/* ======================================
+/* ==========================================
    TIENDA PIRATA
-====================================== */
+========================================== */
 
 function abrirTienda() {
+
+    if (navegando) return;
 
     guardarPreferencias();
 
     detenerPartida();
 
     $("mensajeTienda").textContent =
-        "Compra artículos con las monedas que has conseguido.";
-
-    mostrar("tienda");
+        "Canjea tus monedas por nuevos artículos.";
 
     cargarTienda("barcos");
+
+    mostrar("tienda");
 
 }
 
@@ -3643,18 +4215,23 @@ function cargarTienda(tipo) {
             datos.comprados.includes(item.id);
 
         const equipado = tipo === "barcos"
+
             ? datos.barco === item.id
+
             : datos.sombrero === item.id;
 
-        const card = document.createElement("article");
+        const tarjeta =
+            document.createElement("article");
 
-        card.className = "producto";
+        tarjeta.className =
+            "producto" +
+            (equipado ? " equipado" : "");
 
-        card.innerHTML = `
+        tarjeta.innerHTML = `
 
             <div class="producto-icono">
 
-                ${item.icono}
+                ${item.icono || "🧢"}
 
             </div>
 
@@ -3664,24 +4241,30 @@ function cargarTienda(tipo) {
 
         `;
 
-        const boton = document.createElement("button");
+        const boton =
+            document.createElement("button");
 
         boton.className =
             equipado ? "boton verde" : "boton";
 
         boton.disabled = equipado;
 
-        boton.textContent = equipado
-            ? "EQUIPADO"
-            : comprado
-                ? "EQUIPAR"
-                : "COMPRAR";
+        boton.textContent =
+            equipado ? "EQUIPADO" :
 
-        boton.onclick = () => comprar(item, tipo);
+            comprado ? "EQUIPAR" :
 
-        card.appendChild(boton);
+            "COMPRAR";
 
-        $("productos").appendChild(card);
+        boton.onclick = () => {
+
+            comprar(item, tipo);
+
+        };
+
+        tarjeta.appendChild(boton);
+
+        $("productos").appendChild(tarjeta);
 
     });
 
@@ -3731,36 +4314,19 @@ function comprar(item, tipo) {
 
 }
 
-function actualizarEquipamiento() {
-
-    const sombrero = CATALOGO.sombreros.find(
-        item => item.id === datos.sombrero
-    );
-
-    const etiqueta = document.querySelector(
-        ".cartel-jake"
-    );
-
-    if (etiqueta && sombrero) {
-
-        etiqueta.textContent =
-            sombrero.icono + " ¡AL ABORDAJE!";
-
-    }
-
-}
-
-/* ======================================
+/* ==========================================
    RÉCORDS
-====================================== */
+========================================== */
 
 function abrirRecords() {
+
+    if (navegando) return;
 
     const lista = $("listaRecords");
 
     lista.innerHTML = "";
 
-    if (datos.records.length === 0) {
+    if (!datos.records.length) {
 
         lista.textContent =
             "Todavía no hay récords. ¡Comienza la aventura!";
@@ -3769,7 +4335,8 @@ function abrirRecords() {
 
         datos.records.forEach((record, i) => {
 
-            const fila = document.createElement("div");
+            const fila =
+                document.createElement("div");
 
             fila.className = "record";
 
@@ -3788,9 +4355,9 @@ function abrirRecords() {
 
 }
 
-/* ======================================
-   SONIDOS DEL JUEGO
-====================================== */
+/* ==========================================
+   EFECTOS DE SONIDO
+========================================== */
 
 let audioContext;
 
@@ -3812,9 +4379,7 @@ function cambiarSonido() {
 
 function reproducirSonido(correcto) {
 
-    if (!datos.sonido) {
-        return;
-    }
+    if (!datos.sonido) return;
 
     try {
 
@@ -3822,11 +4387,10 @@ function reproducirSonido(correcto) {
             window.AudioContext ||
             window.webkitAudioContext;
 
-        if (!Audio) {
-            return;
-        }
+        if (!Audio) return;
 
-        audioContext = audioContext || new Audio();
+        audioContext =
+            audioContext || new Audio();
 
         audioContext.resume().catch(() => {});
 
@@ -3836,29 +4400,42 @@ function reproducirSonido(correcto) {
         const volumen =
             audioContext.createGain();
 
-        const ahora = audioContext.currentTime;
+        const ahora =
+            audioContext.currentTime;
 
         oscilador.type =
             correcto ? "sine" : "triangle";
 
         oscilador.frequency.setValueAtTime(
+
             correcto ? 650 : 180,
+
             ahora
+
         );
 
         oscilador.frequency.exponentialRampToValueAtTime(
+
             correcto ? 1150 : 90,
+
             ahora + .3
+
         );
 
         volumen.gain.setValueAtTime(
+
             .12,
+
             ahora
+
         );
 
         volumen.gain.exponentialRampToValueAtTime(
+
             .001,
+
             ahora + .4
+
         );
 
         oscilador.connect(volumen);
@@ -3873,9 +4450,9 @@ function reproducirSonido(correcto) {
 
 }
 
-/* ======================================
-   CONFETI DE VICTORIA
-====================================== */
+/* ==========================================
+   CELEBRACIÓN
+========================================== */
 
 function celebrar() {
 
@@ -3887,17 +4464,22 @@ function celebrar() {
 
     const colores = [
 
-        "#ffd45a",
+        "#ffd65a",
+
         "#22c55e",
+
         "#38bdf8",
+
         "#fb7185",
+
         "#a78bfa"
 
     ];
 
-    for (let i = 0; i < 75; i++) {
+    for (let i = 0; i < 70; i++) {
 
-        const papel = document.createElement("div");
+        const papel =
+            document.createElement("div");
 
         papel.className = "confeti";
 
@@ -3909,37 +4491,53 @@ function celebrar() {
         papel.style.height = "18px";
 
         papel.style.background =
-            colores[aleatorio(0, colores.length - 1)];
+            colores[
+                aleatorio(0, colores.length - 1)
+            ];
 
         papel.style.animationDelay =
             Math.random() * .8 + "s";
 
         document.body.appendChild(papel);
 
-        setTimeout(() => papel.remove(), 4200);
+        setTimeout(() => {
+
+            papel.remove();
+
+        }, 4200);
 
     }
 
 }
 
-/* ======================================
-   CONTROL MEDIANTE TECLADO
-====================================== */
+/* ==========================================
+   CONTROLES DE TECLADO
+========================================== */
 
 document.addEventListener("keydown", evento => {
 
     if (
+
         pantallaActual !== "juego" ||
+
         !estado.activa ||
+
         estado.bloqueado ||
+
+        estado.pausado ||
+
+        navegando ||
+
         document.querySelector(".modal.abierto")
+
     ) return;
 
     if (["1", "2", "3"].includes(evento.key)) {
 
-        const botones = document.querySelectorAll(
-            "#respuestas button"
-        );
+        const botones =
+            document.querySelectorAll(
+                "#respuestas button"
+            );
 
         const boton =
             botones[Number(evento.key) - 1];
@@ -3954,19 +4552,24 @@ document.addEventListener("keydown", evento => {
 
 });
 
-/* ======================================
-   INICIAR APLICACIÓN
-====================================== */
+/* ==========================================
+   INICIAR LA ISLA MATEMÁGICA
+========================================== */
 
 $("nombre").value = datos.nombre;
 
-$("contrarreloj").checked = datos.contrarreloj;
+$("contrarreloj").checked =
+    datos.contrarreloj;
+
+prepararVideos();
 
 actualizarMenu();
 
-actualizarVideo();
+cambiarFondo("principal");
 
 </script>
 
 </body>
 </html>
+
+
