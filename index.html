@@ -9,85 +9,82 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+*{box-sizing:border-box}
 
-* {
-    box-sizing: border-box;
+:root{
+    --oro:#ffdb77;
+    --madera:#75421f;
+    --crema:#fff3ce;
+    --azul:#08384e;
 }
 
-:root {
-    --oro: #ffdb77;
-    --madera: #75421f;
-    --crema: #fff3ce;
-    --azul: #08384e;
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
 }
 
-body {
-    margin: 0;
-    background: #087b9b;
-    color: white;
-    font-family: 'Nunito', Arial, sans-serif;
-    overflow-x: hidden;
+body{
+    background:#087b9b;
+    color:white;
+    font-family:'Nunito',Arial,sans-serif;
 }
 
-button, input {
-    font-family: inherit;
+button,input{font-family:inherit}
+
+button{
+    cursor:pointer;
+    transition:transform .25s,filter .25s;
 }
 
-button {
-    cursor: pointer;
-    transition: transform .25s, filter .25s;
+button:hover:not(:disabled){
+    transform:translateY(-3px);
+    filter:brightness(1.15);
 }
 
-button:hover:not(:disabled) {
-    transform: translateY(-4px);
-    filter: brightness(1.15);
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
 
-button:disabled {
-    opacity: .5;
-    cursor: not-allowed;
+button:focus-visible{
+    outline:3px solid white;
+    outline-offset:3px;
 }
 
-button:focus-visible {
-    outline: 3px solid white;
-    outline-offset: 3px;
+[hidden]{display:none!important}
+
+/* VIDEOS */
+
+#fondos{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    background:linear-gradient(#64c5df,#087b9b,#06405a);
 }
 
-[hidden] {
-    display: none !important;
+.video-fondo{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition:opacity .4s;
+    pointer-events:none;
 }
 
-/* VIDEOS DE FONDO */
+.video-fondo.visible{opacity:1}
 
-#fondos {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    background: linear-gradient(#64c5df, #087b9b, #06405a);
-}
-
-.video-fondo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity .4s;
-    pointer-events: none;
-}
-
-.video-fondo.visible {
-    opacity: 1;
-}
-
-.sombra {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: linear-gradient(
+.sombra{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:linear-gradient(
         rgba(0,20,35,.23),
         transparent 35%,
         transparent 60%,
@@ -95,1071 +92,962 @@ button:focus-visible {
     );
 }
 
-#app {
-    position: relative;
-    z-index: 2;
+#app{
+    position:relative;
+    z-index:2;
+    width:100%;
+    height:100dvh;
+    overflow:hidden;
 }
 
-/* INTRO DE NUBES */
+/* TRANSICIÓN DE NUBES */
 
-#transicion {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #e4f5ff;
-    z-index: 99999;
+#transicion{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#e4f5ff;
+    z-index:99999;
 }
 
-#transicion.activa {
-    display: block;
+#transicion.activa{display:block}
+
+#videoNubes{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-#videoNubes {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+#saltarIntro{
+    position:absolute;
+    bottom:22px;
+    right:22px;
+    background:#08384ecc;
+    color:white;
+    border:2px solid white;
+    border-radius:30px;
+    padding:11px 20px;
+    font-weight:900;
 }
 
-#saltarIntro {
-    position: absolute;
-    bottom: 22px;
-    right: 22px;
-    background: #08384ecc;
-    color: white;
-    border: 2px solid white;
-    border-radius: 30px;
-    padding: 11px 20px;
-    font-weight: 900;
-}
-
-#avisoVideo {
-    position: fixed;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 500;
-    background: #08384e;
-    border: 2px solid gold;
-    border-radius: 12px;
-    padding: 12px;
-    max-width: 90%;
-    font-size: 13px;
+#avisoVideo{
+    position:fixed;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:500;
+    background:#08384e;
+    border:2px solid gold;
+    border-radius:12px;
+    padding:12px;
+    max-width:90%;
+    font-size:13px;
 }
 
 /* PANTALLAS */
 
-.pantalla {
-    display: none;
-    min-height: 100svh;
-    width: min(1500px, 100%);
-    padding: 15px 25px;
-    margin: auto;
+.pantalla{
+    display:none;
+    width:100%;
+    max-width:1500px;
+    height:100dvh;
+    min-height:0;
+    padding:12px 24px;
+    margin:auto;
+    overflow:auto;
 }
 
-.pantalla.activa {
-    display: flex;
-    flex-direction: column;
+.pantalla.activa{
+    display:flex;
+    flex-direction:column;
+}
+
+#menu{
+    overflow:hidden;
 }
 
 /* ANIMACIONES */
 
-@keyframes flotar {
-    0%, 100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-16px);
-    }
+@keyframes flotar{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-9px)}
 }
 
-@keyframes aparecer {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes aparecer{
+    from{opacity:0;transform:translateY(12px)}
+    to{opacity:1;transform:translateY(0)}
 }
 
-@keyframes saltar {
-    50% {
-        transform: translateY(-30px);
-    }
+@keyframes temblar{
+    25%{transform:translateX(-7px)}
+    75%{transform:translateX(7px)}
 }
 
-@keyframes temblar {
-    25% {
-        transform: translateX(-7px);
-    }
-
-    75% {
-        transform: translateX(7px);
-    }
+@keyframes brillo{
+    50%{filter:brightness(1.22)}
 }
 
-@keyframes brillo {
-    50% {
-        filter: brightness(1.22);
-    }
-}
-
-@keyframes caer {
-    to {
-        transform: translateY(110vh) rotate(720deg);
-    }
+@keyframes caer{
+    to{transform:translateY(110vh) rotate(720deg)}
 }
 
 /* BARRA SUPERIOR */
 
-.barra-superior {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+.barra-superior{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    flex-shrink:0;
 }
 
-.controles {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
+.controles{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
 }
 
-.chip, .emblema {
-    background: #082d43e8;
-    border: 2px solid #ebbd68;
-    border-radius: 40px;
-    padding: 9px 15px;
-    color: #fff0bf;
-    font-size: 13px;
-    font-weight: 900;
+.chip,.emblema{
+    background:#082d43e8;
+    border:2px solid #ebbd68;
+    border-radius:40px;
+    padding:7px 13px;
+    color:#fff0bf;
+    font-size:13px;
+    font-weight:900;
 }
 
-.chip b {
-    color: #ffdb70;
-}
+.chip b{color:#ffdb70}
 
 /* BOTONES */
 
-.boton {
-    min-height: 43px;
-    padding: 10px 19px;
-    border: 3px solid #ffe4a0;
-    border-radius: 16px;
-    background: linear-gradient(#fff2ab, #f3bd49, #db9025);
-    color: #593412;
-    font-family: 'Fredoka', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    box-shadow: 0 5px #75421f, 0 9px 18px #0005;
+.boton{
+    min-height:40px;
+    padding:8px 17px;
+    border:3px solid #ffe4a0;
+    border-radius:16px;
+    background:linear-gradient(#fff2ab,#f3bd49,#db9025);
+    color:#593412;
+    font-family:'Fredoka',sans-serif;
+    font-size:16px;
+    font-weight:700;
+    box-shadow:0 5px #75421f,0 9px 18px #0005;
 }
 
-.boton.azul {
-    background: linear-gradient(#4be3e7, #148ca6, #07536d);
-    color: white;
-    border-color: #b3fff5;
-    box-shadow: 0 5px #07354b, 0 9px 18px #0005;
+.boton.azul{
+    background:linear-gradient(#4be3e7,#148ca6,#07536d);
+    color:white;
+    border-color:#b3fff5;
+    box-shadow:0 5px #07354b,0 9px 18px #0005;
 }
 
-.boton.rojo {
-    background: linear-gradient(#fa9175, #b8412c, #862719);
-    color: white;
+.boton.rojo{
+    background:linear-gradient(#fa9175,#b8412c,#862719);
+    color:white;
 }
 
-.boton.madera {
-    background: linear-gradient(#bd8550, #805024, #512b15);
-    color: #fff0ce;
+.boton.madera{
+    background:linear-gradient(#bd8550,#805024,#512b15);
+    color:#fff0ce;
 }
 
-.boton.verde {
-    background: linear-gradient(#4bdd83, #16864a);
-    color: white;
+.boton.verde{
+    background:linear-gradient(#4bdd83,#16864a);
+    color:white;
 }
 
-.botonera {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
+.botonera{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
 }
 
-/* PORTADA */
+/* PORTADA EN UNA SOLA PANTALLA */
 
-.portada {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+.portada{
+    flex:1;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    width:100%;
 }
 
-.encabezado {
-    text-align: center;
-    padding: 12px 0;
+.encabezado{
+    text-align:center;
+    padding:5px 0;
+    flex-shrink:0;
 }
 
-.etiqueta {
-    display: inline-block;
-    background: #08384e99;
-    color: #fff1bb;
-    border: 1px solid #ffdc82;
-    border-radius: 30px;
-    padding: 6px 17px;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 2px;
+.etiqueta{
+    display:inline-block;
+    background:#08384e99;
+    color:#fff1bb;
+    border:1px solid #ffdc82;
+    border-radius:30px;
+    padding:5px 17px;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
 }
 
-.titulo {
-    font-family: 'Fredoka', sans-serif;
-    font-size: clamp(36px, 6vw, 86px);
-    line-height: 1;
-    margin: 12px 0;
-    color: #ffe08a;
-    -webkit-text-stroke: 1.5px #75421f;
-    text-shadow: 0 4px #b67631, 0 8px #512b15, 0 12px 25px #0008;
+.titulo{
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(25px,min(5.8vw,8vh),82px);
+    line-height:1.05;
+    margin:8px 0;
+    color:#ffe08a;
+    -webkit-text-stroke:1.5px #75421f;
+    text-shadow:0 4px #b67631,0 8px #512b15,0 12px 25px #0008;
 }
 
-.subtitulo {
-    font-size: clamp(15px, 2vw, 23px);
-    color: #fff4d3;
-    font-weight: 900;
-    text-shadow: 0 3px 8px #000;
-    margin: 8px 0;
+.subtitulo{
+    font-size:clamp(12px,2.5vh,23px);
+    color:#fff4d3;
+    font-weight:900;
+    text-shadow:0 3px 8px #000;
+    margin:5px 0;
 }
 
-/* ISLAS FLOTANTES SIN CUADROS */
+/* IMÁGENES FLOTANTES SIN JAKE */
 
-.zona-islas {
-    flex: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 320px) 1fr minmax(0, 320px);
-    align-items: end;
-    gap: 25px;
-    min-height: 380px;
-    padding: 95px 20px 12px;
+.zona-islas{
+    flex:1;
+    min-height:0;
+    width:100%;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    align-items:end;
+    justify-items:center;
+    gap:clamp(15px,20vw,320px);
+    padding:10px 4% 8px;
 }
 
-.opcion-isla {
-    position: relative;
-    text-align: center;
-    background: transparent;
-    border: none;
-    box-shadow: none;
+.opcion-isla{
+    position:relative;
+    text-align:center;
+    background:transparent;
+    border:none;
+    box-shadow:none;
+    width:100%;
+    max-width:360px;
+    min-width:0;
 }
 
-.imagen-boton {
-    display: block;
-    width: 100%;
-    padding: 0;
-    background: none;
-    border: none;
-    box-shadow: none;
+.imagen-boton{
+    display:block;
+    width:100%;
+    padding:0;
+    background:none;
+    border:none;
+    box-shadow:none;
 }
 
-.imagen-flotante {
-    display: block;
-    width: 100%;
-    height: 240px;
-    object-fit: contain;
-    filter: drop-shadow(0 13px 10px #0007);
-    animation: flotar 3.5s ease-in-out infinite;
+.imagen-flotante{
+    display:block;
+    width:100%;
+    height:clamp(65px,25vh,245px);
+    object-fit:contain;
+    filter:drop-shadow(0 13px 10px #0007);
+    animation:flotar 3.5s ease-in-out infinite;
 }
 
-.division .imagen-flotante {
-    animation-delay: .6s;
+.division .imagen-flotante{
+    animation-delay:.6s;
 }
 
-.imagen-alternativa {
-    color: #ffdf7e;
-    font-family: 'Fredoka', sans-serif;
-    font-size: 120px;
-    text-shadow: 0 7px #75421f;
-    animation: flotar 3s infinite;
+.imagen-alternativa{
+    color:#ffdf7e;
+    font-family:'Fredoka',sans-serif;
+    font-size:90px;
+    text-shadow:0 7px #75421f;
+    animation:flotar 3s infinite;
 }
 
-.nombre-isla {
-    font-family: 'Fredoka', sans-serif;
-    font-size: clamp(19px, 2.5vw, 29px);
-    color: #fff0b5;
-    margin: 5px 0;
-    text-shadow: 0 3px #75421f, 0 5px 8px #000;
+.nombre-isla{
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(15px,min(2.5vw,3.8vh),30px);
+    color:#fff0b5;
+    margin:5px 0;
+    text-shadow:0 3px #75421f,0 5px 8px #000;
 }
 
-.division .nombre-isla {
-    color: #b9fff5;
-    text-shadow: 0 3px #07536d, 0 5px 8px #000;
+.division .nombre-isla{
+    color:#b9fff5;
+    text-shadow:0 3px #07536d,0 5px 8px #000;
 }
 
-.descripcion-isla {
-    font-size: 13px;
-    font-weight: 900;
-    color: #fff6dd;
-    margin: 5px 0 11px;
-    text-shadow: 0 2px 5px #000;
+.descripcion-isla{
+    font-size:13px;
+    font-weight:900;
+    color:#fff6dd;
+    margin:3px 0 8px;
+    text-shadow:0 2px 5px #000;
 }
 
-.boton-isla {
-    width: 95%;
-    max-width: 280px;
-    font-size: 17px;
-    animation: brillo 4s infinite;
+.boton-isla{
+    width:95%;
+    max-width:290px;
+    font-size:17px;
+    animation:brillo 4s infinite;
 }
 
-.progreso-isla {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 5px 13px;
-    background: #08384ecc;
-    color: #fff4ce;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 900;
-}
-
-/* PERSONAJE JAKE */
-
-.jake-centro {
-    align-self: end;
-    text-align: center;
-    padding-bottom: 10px;
-}
-
-.jake-contenedor {
-    position: relative;
-    width: min(210px, 100%);
-    margin: auto;
-}
-
-.jake-img {
-    display: block;
-    width: 100%;
-    max-height: 245px;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 8px #0007);
-    animation: flotar 3s infinite;
-}
-
-.jake-img.feliz {
-    animation: saltar .6s ease 2;
-}
-
-.jake-img.triste {
-    animation: temblar .4s ease 2;
-}
-
-.sombrero-equipado {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 28px;
-}
-
-.cartel-jake {
-    display: inline-block;
-    padding: 8px 14px;
-    margin-top: 8px;
-    border: 2px solid #ffe19a;
-    border-radius: 12px;
-    background: linear-gradient(#aa6b38, #633517);
-    color: #fff0b7;
-    font-size: 13px;
-    font-weight: 900;
-    box-shadow: 0 4px #492510;
+.progreso-isla{
+    display:inline-block;
+    margin-top:8px;
+    padding:4px 13px;
+    background:#08384ecc;
+    color:#fff4ce;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:900;
 }
 
 /* CONTROLES INFERIORES */
 
-.datos-menu {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 8px 0;
+.datos-menu{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:4px 0;
+    flex-shrink:0;
 }
 
-.caja-capitan {
-    background: #082d43e8;
-    border: 2px solid #e9be68;
-    border-radius: 15px;
-    padding: 8px 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
+.caja-capitan{
+    background:#082d43e8;
+    border:2px solid #e9be68;
+    border-radius:15px;
+    padding:6px 12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
 }
 
-.caja-capitan label {
-    color: #ffdfa0;
-    font-size: 13px;
-    font-weight: 900;
+.caja-capitan label{
+    color:#ffdfa0;
+    font-size:13px;
+    font-weight:900;
 }
 
-#nombre {
-    width: 170px;
-    max-width: 100%;
-    padding: 8px 10px;
-    border: 2px solid #c68c45;
-    border-radius: 9px;
-    color: #56341d;
-    background: #fff8e2;
-    font-size: 14px;
-    font-weight: 900;
+#nombre{
+    width:150px;
+    max-width:100%;
+    padding:6px 10px;
+    border:2px solid #c68c45;
+    border-radius:9px;
+    color:#56341d;
+    background:#fff8e2;
+    font-size:14px;
+    font-weight:900;
 }
 
-#contrarreloj {
-    accent-color: #ffd05b;
-    width: 17px;
-    height: 17px;
-    vertical-align: middle;
+#contrarreloj{
+    accent-color:#ffd05b;
+    width:17px;
+    height:17px;
+    vertical-align:middle;
 }
 
-.menu-inferior {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 11px;
-    padding: 6px 0;
+.menu-inferior{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:5px 0;
+    flex-shrink:0;
 }
 
-.menu-inferior .boton {
-    font-size: 14px;
+.menu-inferior .boton{
+    font-size:14px;
+    min-height:36px;
+    padding:7px 14px;
 }
 
-.pie {
-    text-align: center;
-    color: #fff5d3;
-    font-size: 10px;
-    letter-spacing: 2px;
-    font-weight: 900;
-    padding: 8px 0;
-    text-shadow: 0 2px 5px #000;
+.pie{
+    text-align:center;
+    color:#fff5d3;
+    font-size:9px;
+    letter-spacing:2px;
+    font-weight:900;
+    padding:5px 0;
+    text-shadow:0 2px 5px #000;
+    flex-shrink:0;
 }
 
 /* NIVELES */
 
-.titulo-seccion {
-    text-align: center;
-    font-family: 'Fredoka', sans-serif;
-    color: #ffe18a;
-    font-size: clamp(28px, 4.5vw, 54px);
-    margin: 25px 0 10px;
-    text-shadow: 0 4px #75421f, 0 8px 15px #0009;
+.titulo-seccion{
+    text-align:center;
+    font-family:'Fredoka',sans-serif;
+    color:#ffe18a;
+    font-size:clamp(28px,4.5vw,54px);
+    margin:18px 0 10px;
+    text-shadow:0 4px #75421f,0 8px 15px #0009;
 }
 
-.descripcion {
-    text-align: center;
-    font-weight: 900;
-    font-size: 17px;
-    text-shadow: 0 3px 6px #000;
+.descripcion{
+    text-align:center;
+    font-weight:900;
+    font-size:17px;
+    text-shadow:0 3px 6px #000;
 }
 
-.niveles-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    width: 100%;
-    max-width: 950px;
-    margin: auto auto 40px;
-    padding-top: 30px;
+.niveles-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+    width:100%;
+    max-width:950px;
+    margin:auto;
+    padding:20px 0;
 }
 
-.nivel-card {
-    background: linear-gradient(#fff8e0f2, #eacb93f2);
-    color: #5c391f;
-    border: 4px solid #ffe4a1;
-    border-bottom: 8px solid #75421f;
-    border-radius: 23px;
-    padding: 18px 13px;
-    text-align: center;
-    box-shadow: 0 12px 25px #0006;
-    animation: aparecer .5s;
+.nivel-card{
+    background:linear-gradient(#fff8e0f2,#eacb93f2);
+    color:#5c391f;
+    border:4px solid #ffe4a1;
+    border-bottom:8px solid #75421f;
+    border-radius:23px;
+    padding:18px 13px;
+    text-align:center;
+    box-shadow:0 12px 25px #0006;
+    animation:aparecer .5s;
 }
 
-.nivel-card.bloqueado {
-    filter: saturate(.5);
+.nivel-card.bloqueado{filter:saturate(.5)}
+
+.nivel-card h3{
+    font-family:'Fredoka',sans-serif;
+    font-size:27px;
+    margin:8px 0;
 }
 
-.nivel-card h3 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 27px;
-    margin: 8px 0;
+.icono-nivel{
+    font-size:55px;
+    animation:flotar 3s infinite;
 }
 
-.icono-nivel {
-    font-size: 55px;
-    animation: flotar 3s infinite;
+.ejemplo{
+    display:block;
+    background:#fffdf3;
+    border:2px dashed #c08c42;
+    border-radius:13px;
+    padding:10px;
+    font-family:'Fredoka',sans-serif;
+    font-size:25px;
+    color:#075c74;
 }
 
-.ejemplo {
-    display: block;
-    background: #fffdf3;
-    border: 2px dashed #c08c42;
-    border-radius: 13px;
-    padding: 10px;
-    font-family: 'Fredoka', sans-serif;
-    font-size: 25px;
-    color: #075c74;
+.nivel-card p{
+    font-size:14px;
+    font-weight:800;
 }
 
-.nivel-card p {
-    font-size: 14px;
-    font-weight: 800;
-}
-
-.nivel-card .boton {
-    width: 100%;
-}
+.nivel-card .boton{width:100%}
 
 /* MAPA */
 
-.mapa-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    width: 100%;
-    max-width: 1000px;
-    margin: auto;
+.mapa-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+    width:100%;
+    max-width:1000px;
+    margin:auto;
 }
 
-.mapa-isla {
-    text-align: center;
-    padding: 18px;
+.mapa-isla{
+    text-align:center;
+    padding:18px;
 }
 
-.mapa-isla img {
-    width: 100%;
-    height: 210px;
-    object-fit: contain;
-    animation: flotar 3s infinite;
-    filter: drop-shadow(0 10px 8px #0006);
+.mapa-isla img{
+    width:100%;
+    height:clamp(100px,27vh,210px);
+    object-fit:contain;
+    animation:flotar 3s infinite;
+    filter:drop-shadow(0 10px 8px #0006);
 }
 
-.mapa-isla h3 {
-    color: #ffe18a;
-    font-family: 'Fredoka', sans-serif;
-    font-size: 28px;
-    text-shadow: 0 3px #75421f;
+.mapa-isla h3{
+    color:#ffe18a;
+    font-family:'Fredoka',sans-serif;
+    font-size:28px;
+    text-shadow:0 3px #75421f;
 }
 
-.ruta {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin: 20px 0;
+.ruta{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:20px 0;
 }
 
-.casilla {
-    width: 50px;
-    height: 50px;
-    display: grid;
-    place-items: center;
-    background: #fff0bd;
-    color: #67401f;
-    border: 3px solid #d6a049;
-    border-radius: 50%;
-    font-size: 22px;
-    font-weight: 900;
-    box-shadow: 0 4px #75421f;
+.casilla{
+    width:50px;
+    height:50px;
+    display:grid;
+    place-items:center;
+    background:#fff0bd;
+    color:#67401f;
+    border:3px solid #d6a049;
+    border-radius:50%;
+    font-size:22px;
+    font-weight:900;
+    box-shadow:0 4px #75421f;
 }
 
-.casilla.superada {
-    background: #239b55;
-    color: white;
+.casilla.superada{
+    background:#239b55;
+    color:white;
 }
 
 /* JUEGO */
 
-.hud {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 9px;
-    flex-wrap: wrap;
-    margin: 15px 0;
+.hud{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+    margin:12px 0;
 }
 
-.zona-juego {
-    display: grid;
-    grid-template-columns: 1fr 180px;
-    gap: 22px;
-    align-items: center;
-    max-width: 1000px;
-    width: 100%;
-    margin: auto;
-    padding-bottom: 20px;
+.zona-juego{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    max-width:850px;
+    width:100%;
+    margin:auto;
+    padding-bottom:15px;
 }
 
-.panel-juego {
-    min-width: 0;
+.panel-juego{min-width:0;width:100%}
+
+.info-mision{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    color:#fff1b8;
+    font-size:17px;
+    font-weight:900;
+    text-shadow:0 3px 6px #000;
 }
 
-.info-mision {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    color: #fff1b8;
-    font-size: 17px;
-    font-weight: 900;
-    text-shadow: 0 3px 6px #000;
+.progreso{
+    width:100%;
+    height:19px;
+    background:#082d43;
+    border:3px solid #ffe19a;
+    border-radius:30px;
+    overflow:hidden;
+    margin:9px 0;
 }
 
-.progreso {
-    width: 100%;
-    height: 19px;
-    background: #082d43;
-    border: 3px solid #ffe19a;
-    border-radius: 30px;
-    overflow: hidden;
-    margin: 9px 0;
-}
-
-#barraAvance {
-    width: 0;
-    height: 100%;
-    background: repeating-linear-gradient(
-        120deg,
-        #ffe178 0 12px,
-        #e8a12c 12px 24px
+#barraAvance{
+    width:0;
+    height:100%;
+    background:repeating-linear-gradient(
+        120deg,#ffe178 0 12px,#e8a12c 12px 24px
     );
-    transition: width .4s;
+    transition:width .4s;
 }
 
-#barraTiempo {
-    width: 100%;
-    height: 100%;
-    background: #32d56b;
-    transition: width .3s;
+#barraTiempo{
+    width:100%;
+    height:100%;
+    background:#32d56b;
+    transition:width .3s;
 }
 
-.camino {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 9px;
-    flex-wrap: wrap;
-    margin: 12px 0;
+.camino{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+    margin:12px 0;
 }
 
-.paso {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    background: #fff0bd;
-    color: #67401f;
-    border: 3px solid #ca9440;
-    border-radius: 50%;
-    font-size: 19px;
-    font-weight: 900;
+.paso{
+    display:grid;
+    place-items:center;
+    width:44px;
+    height:44px;
+    background:#fff0bd;
+    color:#67401f;
+    border:3px solid #ca9440;
+    border-radius:50%;
+    font-size:19px;
+    font-weight:900;
 }
 
-.paso.actual {
-    background: #ffd04d;
-    animation: flotar 1.5s infinite;
+.paso.actual{
+    background:#ffd04d;
+    animation:flotar 1.5s infinite;
 }
 
-.paso.correcto {
-    background: #239b55;
-    color: white;
+.paso.correcto{background:#239b55;color:white}
+.paso.fallado{background:#c0553b;color:white}
+
+.tablero{
+    background:linear-gradient(#fff9e2,#efd198);
+    color:#56351d;
+    border:8px solid #75421f;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 0 0 3px #ffde8c,0 8px #492512,0 15px 28px #0006;
 }
 
-.paso.fallado {
-    background: #c0553b;
-    color: white;
+.cabecera-tablero{
+    background:linear-gradient(#a36a37,#5d351a);
+    color:#fff0bd;
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    flex-wrap:wrap;
+    padding:11px 15px;
+    font-size:13px;
+    font-weight:900;
 }
 
-.tablero {
-    background: linear-gradient(#fff9e2, #efd198);
-    color: #56351d;
-    border: 8px solid #75421f;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 0 0 3px #ffde8c, 0 8px #492512, 0 15px 28px #0006;
+.contenido-tablero{
+    padding:18px;
+    text-align:center;
 }
 
-.cabecera-tablero {
-    background: linear-gradient(#a36a37, #5d351a);
-    color: #fff0bd;
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding: 11px 15px;
-    font-size: 13px;
-    font-weight: 900;
+#historia{
+    font-size:17px;
+    line-height:1.4;
+    font-weight:800;
 }
 
-.contenido-tablero {
-    padding: 18px;
-    text-align: center;
+#ecuacion{
+    display:inline-block;
+    background:#fffdf3;
+    color:#075c74;
+    border:3px dashed #c79445;
+    border-radius:18px;
+    padding:10px 24px;
+    margin:5px 0 20px;
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(30px,6vw,65px);
+    font-weight:700;
 }
 
-#historia {
-    font-size: 17px;
-    line-height: 1.4;
-    font-weight: 800;
+.respuestas{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:13px;
 }
 
-#ecuacion {
-    display: inline-block;
-    background: #fffdf3;
-    color: #075c74;
-    border: 3px dashed #c79445;
-    border-radius: 18px;
-    padding: 10px 24px;
-    margin: 5px 0 20px;
-    font-family: 'Fredoka', sans-serif;
-    font-size: clamp(33px, 6vw, 65px);
-    font-weight: 700;
+.respuesta{
+    min-height:75px;
+    padding:5px;
+    border:4px solid white;
+    border-radius:18px;
+    color:white;
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(20px,3.5vw,40px);
+    font-weight:700;
+    box-shadow:0 6px #69421f;
 }
 
-.respuestas {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 13px;
+.respuesta:nth-child(1){
+    background:linear-gradient(#ff9969,#d94d2c);
 }
 
-.respuesta {
-    min-height: 82px;
-    padding: 5px;
-    border: 4px solid white;
-    border-radius: 18px;
-    color: white;
-    font-family: 'Fredoka', sans-serif;
-    font-size: clamp(20px, 3.5vw, 40px);
-    font-weight: 700;
-    box-shadow: 0 6px #69421f;
+.respuesta:nth-child(2){
+    background:linear-gradient(#45dda4,#087c59);
 }
 
-.respuesta:nth-child(1) {
-    background: linear-gradient(#ff9969, #d94d2c);
+.respuesta:nth-child(3){
+    background:linear-gradient(#b39cff,#6939bb);
 }
 
-.respuesta:nth-child(2) {
-    background: linear-gradient(#45dda4, #087c59);
+.respuesta.acierto{
+    background:#189d48!important;
+    outline:4px solid #ffdc65;
+    opacity:1;
 }
 
-.respuesta:nth-child(3) {
-    background: linear-gradient(#b39cff, #6939bb);
+.respuesta.fallo{
+    background:#c42d2a!important;
+    opacity:1;
+    animation:temblar .4s;
 }
 
-.respuesta.acierto {
-    background: #189d48 !important;
-    outline: 4px solid #ffdc65;
-    opacity: 1;
-}
-
-.respuesta.fallo {
-    background: #c42d2a !important;
-    opacity: 1;
-    animation: temblar .4s;
-}
-
-#mensaje {
-    min-height: 25px;
-    margin-bottom: 0;
-    font-size: 16px;
-    font-weight: 900;
-}
-
-.guia-jake {
-    text-align: center;
-}
-
-.dialogo-jake {
-    padding: 12px;
-    background: #fff2c9;
-    color: #57351d;
-    border: 3px solid #b8813c;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 900;
-    box-shadow: 0 4px #67401f;
+#mensaje{
+    min-height:25px;
+    margin-bottom:0;
+    font-size:16px;
+    font-weight:900;
 }
 
 /* PANELES */
 
-.panel {
-    width: min(950px, 100%);
-    margin: 20px auto;
-    padding: 23px;
-    background: linear-gradient(#fff8df, #eccd93);
-    color: #59371e;
-    border: 7px solid #75421f;
-    border-radius: 24px;
-    box-shadow: 0 8px #472510, 0 15px 25px #0006;
+.panel{
+    width:min(950px,100%);
+    margin:20px auto;
+    padding:23px;
+    background:linear-gradient(#fff8df,#eccd93);
+    color:#59371e;
+    border:7px solid #75421f;
+    border-radius:24px;
+    box-shadow:0 8px #472510,0 15px 25px #0006;
 }
 
-.panel h2, .panel h3 {
-    font-family: 'Fredoka', sans-serif;
+.panel h2,.panel h3{
+    font-family:'Fredoka',sans-serif;
 }
 
-.resultado-panel {
-    max-width: 720px;
-    margin: auto;
-    text-align: center;
-    animation: aparecer .5s;
+.resultado-panel{
+    max-width:720px;
+    margin:auto;
+    text-align:center;
+    animation:aparecer .5s;
 }
 
-.tesoro-final {
-    font-size: 95px;
-    animation: flotar 3s infinite;
+.tesoro-final{
+    font-size:85px;
+    animation:flotar 3s infinite;
 }
 
-#estrellas {
-    font-size: 45px;
+#estrellas{font-size:45px}
+
+.resultado-datos{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:20px 0;
 }
 
-.resultado-datos {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 20px 0;
-}
-
-.resultado-datos span {
-    background: #fff9e8;
-    border: 2px solid #d6a550;
-    border-radius: 13px;
-    padding: 12px;
-    font-weight: 900;
+.resultado-datos span{
+    background:#fff9e8;
+    border:2px solid #d6a550;
+    border-radius:13px;
+    padding:12px;
+    font-weight:900;
 }
 
 /* TIENDA */
 
-.tienda-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 13px;
-    margin-top: 20px;
+.tienda-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:13px;
+    margin-top:20px;
 }
 
-.producto {
-    background: #fff9e8;
-    border: 3px solid #d6a653;
-    border-radius: 18px;
-    padding: 15px 10px;
-    text-align: center;
+.producto{
+    background:#fff9e8;
+    border:3px solid #d6a653;
+    border-radius:18px;
+    padding:15px 10px;
+    text-align:center;
 }
 
-.producto.equipado {
-    background: #effff2;
-    border-color: #249c56;
+.producto.equipado{
+    background:#effff2;
+    border-color:#249c56;
 }
 
-.producto-icono {
-    font-size: 60px;
+.producto-icono{font-size:60px}
+
+.producto .boton{
+    width:100%;
+    font-size:13px;
 }
 
-.producto .boton {
-    width: 100%;
-    font-size: 13px;
+.record{
+    background:#fff9e9;
+    border-left:5px solid #d7a240;
+    border-radius:10px;
+    padding:13px;
+    margin:8px 0;
+    font-weight:800;
 }
 
-.record {
-    background: #fff9e9;
-    border-left: 5px solid #d7a240;
-    border-radius: 10px;
-    padding: 13px;
-    margin: 8px 0;
-    font-weight: 800;
+.manual-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px;
 }
 
-.manual-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 13px;
-}
-
-.instruccion {
-    background: #fffaf0;
-    border: 2px solid #d6ab60;
-    border-radius: 15px;
-    padding: 14px;
+.instruccion{
+    background:#fffaf0;
+    border:2px solid #d6ab60;
+    border-radius:15px;
+    padding:14px;
 }
 
 /* VENTANAS EMERGENTES */
 
-.modal {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    background: #001c30df;
-    backdrop-filter: blur(5px);
-    padding: 15px;
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:#001c30df;
+    backdrop-filter:blur(5px);
+    padding:15px;
 }
 
-.modal.abierto {
-    display: flex;
+.modal.abierto{display:flex}
+
+.modal .panel{
+    max-width:580px;
+    max-height:90vh;
+    overflow:auto;
+    text-align:center;
+    animation:aparecer .3s;
 }
 
-.modal .panel {
-    max-width: 580px;
-    max-height: 90vh;
-    overflow: auto;
-    text-align: center;
-    animation: aparecer .3s;
+#ecuacionCofre{
+    color:#075c74;
+    font-size:38px;
 }
 
-#ecuacionCofre {
-    color: #075c74;
-    font-size: 38px;
+.confeti{
+    position:fixed;
+    top:-30px;
+    z-index:500;
+    pointer-events:none;
+    animation:caer 3s linear forwards;
 }
 
-.confeti {
-    position: fixed;
-    top: -30px;
-    z-index: 500;
-    pointer-events: none;
-    animation: caer 3s linear forwards;
+/* ADAPTACIÓN DE PANTALLA */
+
+@media(max-height:800px){
+    #menu{padding:8px 18px}
+
+    .titulo{
+        font-size:clamp(24px,min(5.5vw,7vh),65px);
+        margin:6px 0;
+    }
+
+    .zona-islas{padding:8px 4% 5px}
+
+    .imagen-flotante{height:22vh}
+
+    .datos-menu{margin:3px 0}
+
+    .menu-inferior .boton{
+        min-height:32px;
+        padding:5px 12px;
+        font-size:12px;
+    }
+
+    .chip,.emblema{
+        padding:5px 10px;
+        font-size:12px;
+    }
+
+    .boton-isla{
+        min-height:35px;
+        padding:6px 10px;
+    }
+
+    .pie{font-size:8px}
 }
 
-/* ADAPTACIÓN A PANTALLAS */
+@media(max-height:600px){
+    #menu{padding:5px 12px}
 
-@media(max-height: 850px) and (min-width: 761px) {
-
-    .zona-islas {
-        min-height: 300px;
-        padding-top: 55px;
-    }
-
-    .imagen-flotante {
-        height: 195px;
-    }
-
-    .titulo {
-        font-size: clamp(35px, 5.5vw, 72px);
-    }
-
-    .jake-img {
-        max-height: 200px;
-    }
+    .titulo{font-size:clamp(20px,6vh,45px)}
+    .etiqueta{font-size:8px;padding:3px 10px}
+    .subtitulo{font-size:11px}
+    .imagen-flotante{height:18vh}
+    .nombre-isla{font-size:18px}
+    .descripcion-isla{font-size:10px;margin:2px}
+    .progreso-isla{font-size:9px;margin-top:4px}
+    .caja-capitan{padding:3px 8px}
+    .boton-isla{font-size:12px;min-height:30px}
+    .pie{display:none}
 }
 
-@media(max-width: 1000px) {
+@media(max-width:760px){
+    .pantalla{padding:8px}
+    .barra-superior{justify-content:center}
 
-    .zona-islas {
-        grid-template-columns: minmax(0, 235px) 1fr minmax(0, 235px);
-        gap: 12px;
+    .titulo{
+        font-size:clamp(23px,6vw,48px);
     }
 
-    .imagen-flotante {
-        height: 190px;
+    .zona-islas{
+        grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+        gap:12px;
+        padding:8px 2px;
     }
 
-    .zona-juego {
-        grid-template-columns: 1fr 140px;
+    .imagen-flotante{
+        height:clamp(60px,20vh,170px);
     }
+
+    .nombre-isla{
+        font-size:clamp(12px,3.5vw,23px);
+    }
+
+    .descripcion-isla{font-size:10px}
+
+    .boton-isla{
+        width:100%;
+        font-size:12px;
+        padding:7px 4px;
+    }
+
+    .menu-inferior{gap:6px}
+
+    .menu-inferior .boton{
+        font-size:10px;
+        padding:6px 8px;
+    }
+
+    .chip,.emblema{
+        font-size:10px;
+        padding:5px 8px;
+    }
+
+    .niveles-grid,.manual-grid{
+        grid-template-columns:1fr;
+    }
+
+    .mapa-grid{gap:10px}
+
+    .mapa-isla{padding:5px}
+
+    .mapa-isla h3{font-size:15px}
+
+    .tienda-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .respuesta{min-height:60px}
+
+    .respuestas{gap:7px}
+
+    .contenido-tablero{padding:12px}
+
+    .boton{font-size:13px}
 }
 
-@media(max-width: 760px) {
-
-    .pantalla {
-        padding: 12px;
-    }
-
-    .barra-superior {
-        justify-content: center;
-    }
-
-    .titulo {
-        font-size: clamp(31px, 8vw, 48px);
-    }
-
-    .zona-islas {
-        grid-template-columns: 1fr 1fr;
-        min-height: 280px;
-        gap: 12px;
-        padding: 45px 0 15px;
-    }
-
-    .jake-centro {
-        grid-column: 1 / -1;
-        grid-row: 1;
-    }
-
-    .jake-centro.sin-imagen {
-        display: none;
-    }
-
-    .jake-contenedor {
-        max-width: 125px;
-    }
-
-    .jake-img {
-        max-height: 140px;
-    }
-
-    .imagen-flotante {
-        height: 155px;
-    }
-
-    .nombre-isla {
-        font-size: clamp(14px, 3.6vw, 22px);
-    }
-
-    .boton-isla {
-        width: 100%;
-        font-size: 12px;
-        padding: 10px 5px;
-    }
-
-    .descripcion-isla {
-        font-size: 11px;
-    }
-
-    .niveles-grid,
-    .mapa-grid,
-    .zona-juego,
-    .manual-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .guia-jake {
-        display: none;
-    }
-
-    .tienda-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .respuesta {
-        min-height: 65px;
-    }
-
-    .respuestas {
-        gap: 7px;
-    }
-
-    .contenido-tablero {
-        padding: 12px;
-    }
-
-    .boton {
-        font-size: 13px;
-    }
-}
-
-@media(prefers-reduced-motion: reduce) {
-
-    * {
-        animation: none !important;
-        transition-duration: .01ms !important;
+@media(prefers-reduced-motion:reduce){
+    *{
+        animation:none!important;
+        transition-duration:.01ms!important;
     }
 }
 
@@ -1168,35 +1056,24 @@ button:focus-visible {
 
 <body>
 
-<!-- VIDEOS DEL REPOSITORIO -->
+<!-- VIDEOS DE FONDO -->
 
 <div id="fondos">
 
-    <video
-        id="videoPrincipal"
+    <video id="videoPrincipal"
         class="video-fondo visible"
         src="./videoprincipal.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto">
+        autoplay muted loop playsinline preload="auto">
     </video>
 
-    <video
-        id="videoPartida"
+    <video id="videoPartida"
         class="video-fondo"
-        muted
-        loop
-        playsinline
-        preload="auto">
+        muted loop playsinline preload="auto">
 
-        <source
-            src="./divisi%C3%B3n%20multiplicacion.mp4"
+        <source src="./divisi%C3%B3n%20multiplicacion.mp4"
             type="video/mp4">
 
-        <source
-            src="./division%20multiplicacion.mp4"
+        <source src="./division%20multiplicacion.mp4"
             type="video/mp4">
 
     </video>
@@ -1205,16 +1082,13 @@ button:focus-visible {
 
 <div class="sombra"></div>
 
-<!-- INTRO REAL DE NUBES -->
+<!-- TRANSICIÓN -->
 
 <div id="transicion">
 
-    <video
-        id="videoNubes"
+    <video id="videoNubes"
         src="./nuves.mp4"
-        muted
-        playsinline
-        preload="auto">
+        muted playsinline preload="auto">
     </video>
 
     <button id="saltarIntro">
@@ -1240,8 +1114,7 @@ button:focus-visible {
         <div class="controles">
 
             <span class="chip">
-                🪙 BOTÍN:
-                <b id="saldoMenu">0</b>
+                🪙 BOTÍN: <b id="saldoMenu">0</b>
             </span>
 
             <button class="chip" onclick="abrirRecords()">
@@ -1249,7 +1122,7 @@ button:focus-visible {
             </button>
 
             <button class="chip" id="sonidoBtn"
-                    onclick="cambiarSonido()">
+                onclick="cambiarSonido()">
                 🔊 SONIDO: SÍ
             </button>
 
@@ -1281,13 +1154,11 @@ button:focus-visible {
 
             <article class="opcion-isla">
 
-                <button
-                    class="imagen-boton"
+                <button class="imagen-boton"
                     onclick="elegirIsla('mul')"
                     aria-label="Explorar multiplicaciones">
 
-                    <img
-                        src="./multiplicaciones.png"
+                    <img src="./multiplicaciones.png"
                         alt="Isla de multiplicaciones"
                         class="imagen-flotante"
                         onerror="errorIsla(this)">
@@ -1306,12 +1177,9 @@ button:focus-visible {
                     Isla del Tesoro Dorado
                 </p>
 
-                <button
-                    class="boton boton-isla"
+                <button class="boton boton-isla"
                     onclick="elegirIsla('mul')">
-
                     ⚔️ ¡A MULTIPLICAR!
-
                 </button>
 
                 <br>
@@ -1322,40 +1190,15 @@ button:focus-visible {
 
             </article>
 
-            <!-- JAKE -->
-
-            <div class="jake-centro">
-
-                <div class="jake-contenedor">
-
-                    <img
-                        src="./jake.png"
-                        alt="Jake"
-                        class="jake-img"
-                        onerror="ocultarJake(this)"
-                        onclick="animarJake('feliz')">
-
-                    <span class="sombrero-equipado"></span>
-
-                </div>
-
-                <div class="cartel-jake">
-                    ¡AL ABORDAJE, CAPITÁN!
-                </div>
-
-            </div>
-
             <!-- DIVISIONES -->
 
             <article class="opcion-isla division">
 
-                <button
-                    class="imagen-boton"
+                <button class="imagen-boton"
                     onclick="elegirIsla('div')"
                     aria-label="Explorar divisiones">
 
-                    <img
-                        src="./divisiones.png"
+                    <img src="./divisiones.png"
                         alt="Isla de divisiones"
                         class="imagen-flotante"
                         onerror="errorIsla(this)">
@@ -1374,12 +1217,9 @@ button:focus-visible {
                     Isla de los Diamantes
                 </p>
 
-                <button
-                    class="boton azul boton-isla"
+                <button class="boton azul boton-isla"
                     onclick="elegirIsla('div')">
-
                     💎 ¡A DIVIDIR!
-
                 </button>
 
                 <br>
@@ -1396,25 +1236,17 @@ button:focus-visible {
 
             <div class="caja-capitan">
 
-                <label for="nombre">
-                    CAPITÁN/A:
-                </label>
+                <label for="nombre">CAPITÁN/A:</label>
 
-                <input
-                    id="nombre"
+                <input id="nombre"
                     type="text"
                     maxlength="20"
                     value="Explorador">
 
                 <label>
-
-                    <input
-                        id="contrarreloj"
-                        type="checkbox"
-                        checked>
-
+                    <input id="contrarreloj"
+                        type="checkbox" checked>
                     ⏱️ Contrarreloj
-
                 </label>
 
             </div>
@@ -1445,8 +1277,7 @@ button:focus-visible {
             </span>
 
             <span class="chip">
-                RÉCORD:
-                <b id="recordMenu">0</b> PTS
+                RÉCORD: <b id="recordMenu">0</b> PTS
             </span>
 
         </div>
@@ -1459,7 +1290,7 @@ button:focus-visible {
 
 </section>
 
-<!-- SELECCIÓN DE NIVELES -->
+<!-- NIVELES -->
 
 <section id="niveles" class="pantalla">
 
@@ -1513,8 +1344,7 @@ button:focus-visible {
 
         <article class="mapa-isla">
 
-            <img
-                src="./multiplicaciones.png"
+            <img src="./multiplicaciones.png"
                 alt="Multiplicaciones"
                 onerror="this.hidden=true">
 
@@ -1530,8 +1360,7 @@ button:focus-visible {
 
         <article class="mapa-isla">
 
-            <img
-                src="./divisiones.png"
+            <img src="./divisiones.png"
                 alt="Divisiones"
                 onerror="this.hidden=true">
 
@@ -1592,15 +1421,8 @@ button:focus-visible {
         <div class="panel-juego">
 
             <div class="info-mision">
-
-                <span id="mision">
-                    MISIÓN 1 DE 5
-                </span>
-
-                <span id="tiempo">
-                    ⏱️ 30s
-                </span>
-
+                <span id="mision">MISIÓN 1 DE 5</span>
+                <span id="tiempo">⏱️ 30s</span>
             </div>
 
             <div class="progreso">
@@ -1612,11 +1434,8 @@ button:focus-visible {
             <article class="tablero">
 
                 <div class="cabecera-tablero">
-
                     <span>DESAFÍO MATEMÁTICO</span>
-
                     <span id="capitan"></span>
-
                 </div>
 
                 <div class="contenido-tablero">
@@ -1640,26 +1459,6 @@ button:focus-visible {
             </article>
 
         </div>
-
-        <aside class="guia-jake">
-
-            <div class="jake-contenedor">
-
-                <img
-                    src="./jake.png"
-                    alt="Jake"
-                    class="jake-img"
-                    onerror="ocultarJake(this)">
-
-                <span class="sombrero-equipado"></span>
-
-            </div>
-
-            <div class="dialogo-jake" id="dialogoJake">
-                ¡Vamos, capitán! El tesoro está cerca.
-            </div>
-
-        </aside>
 
     </div>
 
@@ -1694,39 +1493,29 @@ button:focus-visible {
         <div class="resultado-datos">
 
             <span>
-                ⭐ PUNTOS:
-                <b id="puntosFinal">0</b>
+                ⭐ PUNTOS: <b id="puntosFinal">0</b>
             </span>
 
             <span>
-                🪙 MONEDAS:
-                <b id="monedasFinal">0</b>
+                🪙 MONEDAS: <b id="monedasFinal">0</b>
             </span>
 
             <span>
-                ✅ ACIERTOS:
-                <b id="aciertosFinal">0</b>/5
+                ✅ ACIERTOS: <b id="aciertosFinal">0</b>/5
             </span>
 
         </div>
 
         <div class="botonera">
 
-            <button
-                class="boton"
-                id="siguienteBtn"
+            <button class="boton" id="siguienteBtn"
                 onclick="siguienteNivel()">
-
                 SIGUIENTE NIVEL ➜
-
             </button>
 
-            <button
-                class="boton verde"
+            <button class="boton verde"
                 onclick="iniciarNivel(estado.nivel)">
-
                 🔄 REPETIR
-
             </button>
 
             <button class="boton azul" onclick="abrirMapa()">
@@ -1750,8 +1539,7 @@ button:focus-visible {
     <header class="barra-superior">
 
         <span class="emblema">
-            🪙 MONEDAS:
-            <b id="saldoTienda">0</b>
+            🪙 MONEDAS: <b id="saldoTienda">0</b>
         </span>
 
         <button class="boton madera" onclick="irMenu()">
@@ -1760,9 +1548,7 @@ button:focus-visible {
 
     </header>
 
-    <h2 class="titulo-seccion">
-        TIENDA PIRATA
-    </h2>
+    <h2 class="titulo-seccion">TIENDA PIRATA</h2>
 
     <div class="panel">
 
@@ -1772,13 +1558,15 @@ button:focus-visible {
                 ⛵ BARCOS
             </button>
 
-            <button class="boton azul" onclick="cargarTienda('sombreros')">
+            <button class="boton azul"
+                onclick="cargarTienda('sombreros')">
                 🎩 SOMBREROS
             </button>
 
         </div>
 
-        <p id="mensajeTienda" style="text-align:center;font-weight:900"></p>
+        <p id="mensajeTienda"
+            style="text-align:center;font-weight:900"></p>
 
         <div id="productos" class="tienda-grid"></div>
 
@@ -1802,9 +1590,7 @@ button:focus-visible {
 
     </header>
 
-    <h2 class="titulo-seccion">
-        MEJORES CAPITANES
-    </h2>
+    <h2 class="titulo-seccion">MEJORES CAPITANES</h2>
 
     <div class="panel" id="listaRecords"></div>
 
@@ -1835,96 +1621,55 @@ button:focus-visible {
         <div class="manual-grid">
 
             <article class="instruccion">
-
                 <h3>🏝️ Elige tu isla</h3>
-
-                <p>
-                    Selecciona multiplicaciones o divisiones.
-                    Cada isla tiene tres niveles independientes.
-                </p>
-
+                <p>Selecciona multiplicaciones o divisiones.
+                Cada isla tiene tres niveles independientes.</p>
             </article>
 
             <article class="instruccion">
-
                 <h3>🧮 Resuelve las operaciones</h3>
-
-                <p>
-                    Cada nivel contiene cinco preguntas aleatorias.
-                    Selecciona la respuesta correcta.
-                </p>
-
+                <p>Cada nivel contiene cinco preguntas aleatorias.
+                Selecciona la respuesta correcta.</p>
             </article>
 
             <article class="instruccion">
-
                 <h3>⏱️ Controla el tiempo</h3>
-
                 <p>
                     Fácil: 30 segundos.<br>
                     Medio: 50 segundos.<br>
                     Difícil: 60 segundos.
                 </p>
-
-                <p>
-                    Los tiempos son iguales para ambas operaciones.
-                </p>
-
+                <p>Los tiempos son iguales para ambas operaciones.</p>
             </article>
 
             <article class="instruccion">
-
                 <h3>❤️ Protege tus vidas</h3>
-
-                <p>
-                    Cada nivel comienza con tres corazones.
-                    Las respuestas incorrectas pueden hacerte perder una vida.
-                </p>
-
+                <p>Cada nivel comienza con tres corazones.
+                Las respuestas incorrectas pueden hacerte perder una vida.</p>
             </article>
 
             <article class="instruccion">
-
                 <h3>🧭 Segunda oportunidad</h3>
-
-                <p>
-                    Puedes repetir una pregunta por nivel
-                    sin perder un corazón.
-                </p>
-
+                <p>Puedes repetir una pregunta por nivel
+                sin perder un corazón.</p>
             </article>
 
             <article class="instruccion">
-
                 <h3>🎁 Cofre de la vida</h3>
-
-                <p>
-                    Si pierdes tus tres corazones,
-                    resuelve una operación especial
-                    para recuperar una vida.
-                </p>
-
+                <p>Si pierdes tus tres corazones,
+                resuelve una operación especial
+                para recuperar una vida.</p>
             </article>
 
             <article class="instruccion">
-
                 <h3>🪙 Tienda pirata</h3>
-
-                <p>
-                    Consigue monedas y compra barcos y sombreros.
-                </p>
-
+                <p>Consigue monedas y compra barcos y sombreros.</p>
             </article>
 
             <article class="instruccion">
-
                 <h3>🏆 Conquista los tesoros</h3>
-
-                <p>
-                    Termina cada nivel con al menos tres aciertos
-                    para desbloquear el siguiente.
-                </p>
-
+                <p>Termina cada nivel con al menos tres aciertos
+                para desbloquear el siguiente.</p>
             </article>
 
         </div>
@@ -1949,7 +1694,7 @@ button:focus-visible {
 
 </main>
 
-<!-- BONUS -->
+<!-- SEGUNDA OPORTUNIDAD -->
 
 <div class="modal" id="modalBonus">
 
@@ -1959,9 +1704,7 @@ button:focus-visible {
 
         <h2>¡SEGUNDA OPORTUNIDAD!</h2>
 
-        <p>
-            Repite la misma operación sin perder una vida.
-        </p>
+        <p>Repite la misma operación sin perder una vida.</p>
 
         <div class="botonera">
 
@@ -1979,7 +1722,7 @@ button:focus-visible {
 
 </div>
 
-<!-- COFRE -->
+<!-- COFRE DE LA VIDA -->
 
 <div class="modal" id="modalCofre">
 
@@ -1989,9 +1732,7 @@ button:focus-visible {
 
         <h2>¡COFRE DE LA VIDA!</h2>
 
-        <p>
-            Resuelve esta operación para recuperar un corazón.
-        </p>
+        <p>Resuelve esta operación para recuperar un corazón.</p>
 
         <h2 id="ecuacionCofre"></h2>
 
@@ -2003,7 +1744,7 @@ button:focus-visible {
 
 </div>
 
-<!-- CONFIRMACIÓN DE SALIDA -->
+<!-- SALIR -->
 
 <div class="modal" id="modalSalir">
 
@@ -2011,9 +1752,7 @@ button:focus-visible {
 
         <h2>⚓ ¿ABANDONAR LA EXPEDICIÓN?</h2>
 
-        <p>
-            Las monedas que ganaste permanecerán guardadas.
-        </p>
+        <p>Las monedas que ganaste permanecerán guardadas.</p>
 
         <div class="botonera">
 
@@ -2037,45 +1776,41 @@ button:focus-visible {
 
 const $ = id => document.getElementById(id);
 
-/* CONFIGURACIÓN */
+/* CONFIGURACIÓN ORIGINAL */
 
-const TIEMPOS = {
-    1: 30,
-    2: 50,
-    3: 60
-};
+const TIEMPOS = {1:30,2:50,3:60};
 
 const TOTAL = 5;
 
 const NIVELES = {
-    1: "FÁCIL",
-    2: "MEDIO",
-    3: "DIFÍCIL"
+    1:"FÁCIL",
+    2:"MEDIO",
+    3:"DIFÍCIL"
 };
 
 const ISLAS = {
-    mul: "MULTIPLICACIONES",
-    div: "DIVISIONES"
+    mul:"MULTIPLICACIONES",
+    div:"DIVISIONES"
 };
 
 const EJEMPLOS = {
-    mul: {
-        1: "24 × 3",
-        2: "35 × 12",
-        3: "245 × 32"
+    mul:{
+        1:"24 × 3",
+        2:"35 × 12",
+        3:"245 × 32"
     },
-    div: {
-        1: "48 ÷ 4",
-        2: "648 ÷ 8",
-        3: "864 ÷ 24"
+    div:{
+        1:"48 ÷ 4",
+        2:"648 ÷ 8",
+        3:"864 ÷ 24"
     }
 };
 
 const ARCHIVOS = {
-    principal: [
+    principal:[
         "./videoprincipal.mp4"
     ],
-    partida: [
+    partida:[
         "./divisi%C3%B3n%20multiplicacion.mp4",
         "./division%20multiplicacion.mp4"
     ]
@@ -2092,190 +1827,141 @@ const pantallasIsla = [
     "resultados"
 ];
 
-/* TIENDA */
+/* CATÁLOGO */
 
 const CATALOGO = {
 
-    barcos: [
-        {
-            id: "barco1",
-            nombre: "Balandra",
-            icono: "⛵",
-            precio: 0
-        },
-        {
-            id: "barco2",
-            nombre: "Carabela Real",
-            icono: "🚢",
-            precio: 60
-        },
-        {
-            id: "barco3",
-            nombre: "Galeón Pirata",
-            icono: "🚤",
-            precio: 110
-        },
-        {
-            id: "barco4",
-            nombre: "Navío Dorado",
-            icono: "🛳️",
-            precio: 200
-        }
+    barcos:[
+        {id:"barco1",nombre:"Balandra",icono:"⛵",precio:0},
+        {id:"barco2",nombre:"Carabela Real",icono:"🚢",precio:60},
+        {id:"barco3",nombre:"Galeón Pirata",icono:"🚤",precio:110},
+        {id:"barco4",nombre:"Navío Dorado",icono:"🛳️",precio:200}
     ],
 
-    sombreros: [
-        {
-            id: "sombrero1",
-            nombre: "Explorador",
-            icono: "",
-            precio: 0
-        },
-        {
-            id: "sombrero2",
-            nombre: "Capitán",
-            icono: "🎩",
-            precio: 40
-        },
-        {
-            id: "sombrero3",
-            nombre: "Aventurero",
-            icono: "🤠",
-            precio: 75
-        },
-        {
-            id: "sombrero4",
-            nombre: "Rey Pirata",
-            icono: "👑",
-            precio: 150
-        }
+    sombreros:[
+        {id:"sombrero1",nombre:"Explorador",icono:"",precio:0},
+        {id:"sombrero2",nombre:"Capitán",icono:"🎩",precio:40},
+        {id:"sombrero3",nombre:"Aventurero",icono:"🤠",precio:75},
+        {id:"sombrero4",nombre:"Rey Pirata",icono:"👑",precio:150}
     ]
+
 };
 
 /* GUARDADO DEL PROGRESO */
 
-function cargarDatos() {
+function cargarDatos(){
 
     const inicial = {
 
-        monedas: 0,
+        monedas:0,
 
-        desbloqueados: {
-            mul: 1,
-            div: 1
-        },
+        desbloqueados:{mul:1,div:1},
 
-        completados: {
-            mul: [],
-            div: []
-        },
+        completados:{mul:[],div:[]},
 
-        comprados: ["barco1", "sombrero1"],
+        comprados:["barco1","sombrero1"],
 
-        barco: "barco1",
+        barco:"barco1",
 
-        sombrero: "sombrero1",
+        sombrero:"sombrero1",
 
-        records: [],
+        records:[],
 
-        nombre: "Explorador",
+        nombre:"Explorador",
 
-        sonido: true,
+        sonido:true,
 
-        contrarreloj: true
+        contrarreloj:true
     };
 
-    try {
+    try{
 
         const anterior = JSON.parse(
             localStorage.getItem("islaMatematicaV3")
         );
 
-        if (!anterior) return inicial;
+        if(!anterior)return inicial;
 
         return {
-
             ...inicial,
-
             ...anterior,
 
-            desbloqueados: {
+            desbloqueados:{
                 ...inicial.desbloqueados,
                 ...anterior.desbloqueados
             },
 
-            completados: {
+            completados:{
                 ...inicial.completados,
                 ...anterior.completados
             }
         };
 
-    } catch {
-
+    }catch{
         return inicial;
     }
 }
 
 let datos = cargarDatos();
 
-function guardar() {
+function guardar(){
 
-    try {
-
+    try{
         localStorage.setItem(
             "islaMatematicaV3",
             JSON.stringify(datos)
         );
+    }catch{}
 
-    } catch {}
 }
 
-/* ESTADO DE LA PARTIDA */
+/* ESTADO DE PARTIDA */
 
 const estado = {
 
-    isla: "mul",
-    nivel: 1,
-    vidas: 3,
-    puntos: 0,
-    monedas: 0,
-    racha: 0,
-    bonus: 1,
-    cofreUsado: false,
-    preguntaNumero: 0,
-    aciertos: 0,
-    historial: [],
-    pregunta: null,
-    usadas: new Set(),
-    tiempo: 0,
-    limite: 30,
-    intervalo: null,
-    pendiente: null,
-    bloqueado: false,
-    activa: false,
-    pausado: false,
-    contrarreloj: true
+    isla:"mul",
+    nivel:1,
+    vidas:3,
+    puntos:0,
+    monedas:0,
+    racha:0,
+    bonus:1,
+    cofreUsado:false,
+    preguntaNumero:0,
+    aciertos:0,
+    historial:[],
+    pregunta:null,
+    usadas:new Set(),
+    tiempo:0,
+    limite:30,
+    intervalo:null,
+    pendiente:null,
+    bloqueado:false,
+    activa:false,
+    pausado:false,
+    contrarreloj:true
 
 };
 
 /* CONTROL DE VIDEOS */
 
-function tipoFondo(pantalla) {
+function tipoFondo(pantalla){
 
     return pantallasIsla.includes(pantalla)
         ? "partida"
         : "principal";
 }
 
-function obtenerVideo(tipo) {
+function obtenerVideo(tipo){
 
     return tipo === "partida"
         ? $("videoPartida")
         : $("videoPrincipal");
 }
 
-function prepararVideos() {
+function prepararVideos(){
 
-    document.querySelectorAll("video").forEach(video => {
+    document.querySelectorAll("video").forEach(video=>{
 
         video.muted = true;
         video.defaultMuted = true;
@@ -2288,23 +1974,21 @@ function prepararVideos() {
     $("videoNubes").loop = false;
 }
 
-async function reproducirSeguro(video) {
+async function reproducirSeguro(video){
 
     let temporizador;
 
-    try {
+    try{
 
         await Promise.race([
 
             video.play(),
 
-            new Promise((resolve, reject) => {
+            new Promise((resolve,reject)=>{
 
-                temporizador = setTimeout(() => {
-
+                temporizador = setTimeout(()=>{
                     reject(new Error("Tiempo de carga agotado"));
-
-                }, 5000);
+                },5000);
 
             })
 
@@ -2312,18 +1996,18 @@ async function reproducirSeguro(video) {
 
         return true;
 
-    } catch {
+    }catch{
 
         return false;
 
-    } finally {
+    }finally{
 
         clearTimeout(temporizador);
 
     }
 }
 
-async function cambiarFondo(tipo) {
+async function cambiarFondo(tipo){
 
     const version = ++versionVideo;
 
@@ -2333,59 +2017,50 @@ async function cambiarFondo(tipo) {
         tipo === "principal" ? "partida" : "principal"
     );
 
-    if (
+    if(
         fondoActual === tipo &&
         !video.paused &&
         !video.error
-    ) {
-
+    ){
         return true;
-
     }
 
     let correcto = false;
 
-    if (!video.error) {
-
+    if(!video.error){
         correcto = await reproducirSeguro(video);
-
     }
 
-    if (!correcto) {
+    if(!correcto){
 
-        for (const ruta of ARCHIVOS[tipo]) {
+        for(const ruta of ARCHIVOS[tipo]){
 
-            if (version !== versionVideo) return false;
+            if(version !== versionVideo)return false;
 
             video.src = ruta;
             video.load();
 
             correcto = await reproducirSeguro(video);
 
-            if (correcto) break;
-
+            if(correcto)break;
         }
     }
 
-    if (version !== versionVideo) return false;
+    if(version !== versionVideo)return false;
 
     otro.pause();
     otro.classList.remove("visible");
 
-    if (correcto) {
+    if(correcto){
 
         video.classList.add("visible");
-
         fondoActual = tipo;
-
         $("avisoVideo").hidden = true;
 
         return true;
-
     }
 
     video.pause();
-
     video.classList.remove("visible");
 
     fondoActual = null;
@@ -2398,104 +2073,87 @@ async function cambiarFondo(tipo) {
     return false;
 }
 
-/* INTRO CON EL VIDEO NUVES.MP4 */
+/* INTRO DE NUBES */
 
-function reproducirIntro(cambiarEscenario) {
+function reproducirIntro(cambiarEscenario){
 
-    return new Promise(resolve => {
+    return new Promise(resolve=>{
 
         const capa = $("transicion");
-
         const video = $("videoNubes");
-
         const saltar = $("saltarIntro");
 
         let terminado = false;
-
         let cambioPendiente = null;
-
         let seguridad;
 
-        function cambiarUnaVez() {
+        function cambiarUnaVez(){
 
-            if (!cambioPendiente) {
+            if(!cambioPendiente){
 
                 cambioPendiente = Promise.resolve()
                     .then(cambiarEscenario)
                     .catch(console.error);
-
             }
 
             return cambioPendiente;
         }
 
-        async function terminar() {
+        async function terminar(){
 
-            if (terminado) return;
+            if(terminado)return;
 
             terminado = true;
 
             clearTimeout(seguridad);
 
-            video.removeEventListener("timeupdate", revisarTiempo);
-            video.removeEventListener("ended", terminar);
-            video.removeEventListener("error", terminar);
-            saltar.removeEventListener("click", terminar);
+            video.removeEventListener("timeupdate",revisarTiempo);
+            video.removeEventListener("ended",terminar);
+            video.removeEventListener("error",terminar);
+            saltar.removeEventListener("click",terminar);
 
             video.pause();
 
-            try {
+            try{
 
                 await cambiarUnaVez();
 
-            } finally {
+            }finally{
 
                 capa.classList.remove("activa");
-
                 resolve();
-
             }
         }
 
-        function revisarTiempo() {
+        function revisarTiempo(){
 
-            if (
+            if(
                 Number.isFinite(video.duration) &&
                 video.currentTime >= video.duration * .5
-            ) {
-
+            ){
                 cambiarUnaVez();
-
             }
         }
 
         capa.classList.add("activa");
 
         video.muted = true;
-
         video.loop = false;
 
-        try {
-
+        try{
             video.currentTime = 0;
+        }catch{}
 
-        } catch {}
-
-        video.addEventListener("timeupdate", revisarTiempo);
-        video.addEventListener("ended", terminar);
-        video.addEventListener("error", terminar);
-        saltar.addEventListener("click", terminar);
+        video.addEventListener("timeupdate",revisarTiempo);
+        video.addEventListener("ended",terminar);
+        video.addEventListener("error",terminar);
+        saltar.addEventListener("click",terminar);
 
         seguridad = setTimeout(
-
             terminar,
-
             Number.isFinite(video.duration)
-
                 ? video.duration * 1000 + 15000
-
                 : 45000
-
         );
 
         video.play().catch(terminar);
@@ -2505,37 +2163,36 @@ function reproducirIntro(cambiarEscenario) {
 
 /* NAVEGACIÓN */
 
-function mostrarDirecto(id) {
+function mostrarDirecto(id){
 
     document.querySelectorAll(".pantalla")
-        .forEach(p => p.classList.remove("activa"));
+        .forEach(p=>p.classList.remove("activa"));
 
     $(id).classList.add("activa");
 
     pantallaActual = id;
 
-    window.scrollTo(0, 0);
+    $(id).scrollTop = 0;
+
+    window.scrollTo(0,0);
 }
 
-async function mostrar(id) {
+async function mostrar(id){
 
-    if (navegando) return false;
+    if(navegando)return false;
 
     const nuevoFondo = tipoFondo(id);
-
     const anteriorFondo = tipoFondo(pantallaActual);
 
-    if (nuevoFondo === anteriorFondo) {
+    if(nuevoFondo === anteriorFondo){
 
         mostrarDirecto(id);
 
-        if (
+        if(
             fondoActual !== nuevoFondo ||
             obtenerVideo(nuevoFondo).paused
-        ) {
-
+        ){
             cambiarFondo(nuevoFondo);
-
         }
 
         return true;
@@ -2547,24 +2204,20 @@ async function mostrar(id) {
 
     detenerReloj();
 
-    try {
+    try{
 
-        if (
-            window.matchMedia(
-                "(prefers-reduced-motion: reduce)"
-            ).matches
-        ) {
+        if(window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches){
 
             mostrarDirecto(id);
-
             await cambiarFondo(nuevoFondo);
 
-        } else {
+        }else{
 
-            await reproducirIntro(async () => {
+            await reproducirIntro(async()=>{
 
                 mostrarDirecto(id);
-
                 await cambiarFondo(nuevoFondo);
 
             });
@@ -2572,39 +2225,35 @@ async function mostrar(id) {
 
         return true;
 
-    } finally {
+    }finally{
 
         navegando = false;
-
         $("app").inert = false;
 
     }
 }
 
-document.addEventListener("pointerdown", () => {
+document.addEventListener("pointerdown",()=>{
 
-    if (navegando) return;
+    if(navegando)return;
 
     const tipo = tipoFondo(pantallaActual);
-
     const video = obtenerVideo(tipo);
 
-    if (video.paused && !video.error) {
-
+    if(video.paused && !video.error){
         cambiarFondo(tipo);
-
     }
+
 });
 
-document.addEventListener("visibilitychange", () => {
+document.addEventListener("visibilitychange",()=>{
 
-    if (document.hidden) {
+    if(document.hidden){
 
         $("videoPrincipal").pause();
-
         $("videoPartida").pause();
 
-    } else if (!navegando) {
+    }else if(!navegando){
 
         cambiarFondo(tipoFondo(pantallaActual));
 
@@ -2613,7 +2262,7 @@ document.addEventListener("visibilitychange", () => {
 
 /* MENÚ */
 
-function guardarPreferencias() {
+function guardarPreferencias(){
 
     datos.nombre = $("nombre").value.trim() || "Explorador";
 
@@ -2622,45 +2271,39 @@ function guardarPreferencias() {
     guardar();
 }
 
-function detenerReloj() {
+function detenerReloj(){
 
     clearInterval(estado.intervalo);
 
     estado.intervalo = null;
 }
 
-function detenerPartida() {
+function detenerPartida(){
 
     detenerReloj();
 
     clearTimeout(estado.pendiente);
 
     estado.pendiente = null;
-
     estado.activa = false;
-
     estado.bloqueado = true;
-
     estado.pausado = false;
 
     document.querySelectorAll(".modal")
-        .forEach(modal => modal.classList.remove("abierto"));
+        .forEach(modal=>modal.classList.remove("abierto"));
 }
 
-function irMenu() {
+function irMenu(){
 
-    if (navegando) return;
+    if(navegando)return;
 
     guardarPreferencias();
-
     detenerPartida();
-
     actualizarMenu();
-
     mostrar("menu");
 }
 
-function actualizarMenu() {
+function actualizarMenu(){
 
     $("saldoMenu").textContent = datos.monedas;
 
@@ -2678,101 +2321,43 @@ function actualizarMenu() {
 
     $("recordMenu").textContent = Math.max(
         0,
-        ...datos.records.map(record => record.puntos)
+        ...datos.records.map(record=>record.puntos)
     );
 
     $("sonidoBtn").textContent = datos.sonido
         ? "🔊 SONIDO: SÍ"
         : "🔇 SONIDO: NO";
-
-    actualizarEquipamiento();
 }
 
-/* IMÁGENES */
-
-function errorIsla(imagen) {
+function errorIsla(imagen){
 
     imagen.hidden = true;
 
-    if (imagen.nextElementSibling) {
-
+    if(imagen.nextElementSibling){
         imagen.nextElementSibling.hidden = false;
-
     }
-}
-
-function ocultarJake(imagen) {
-
-    imagen.parentElement.hidden = true;
-
-    const centro = imagen.closest(".jake-centro");
-
-    if (centro) {
-
-        centro.classList.add("sin-imagen");
-
-        centro.style.visibility = "hidden";
-
-    }
-}
-
-function animarJake(tipo) {
-
-    document.querySelectorAll(".jake-img").forEach(imagen => {
-
-        imagen.classList.remove("feliz", "triste");
-
-        void imagen.offsetWidth;
-
-        imagen.classList.add(tipo);
-
-        setTimeout(() => {
-
-            imagen.classList.remove(tipo);
-
-        }, 1300);
-
-    });
-}
-
-function actualizarEquipamiento() {
-
-    const sombrero = CATALOGO.sombreros.find(
-        item => item.id === datos.sombrero
-    );
-
-    document.querySelectorAll(".sombrero-equipado")
-        .forEach(elemento => {
-
-            elemento.textContent = sombrero
-                ? sombrero.icono
-                : "";
-
-        });
 }
 
 /* MAPA */
 
-function abrirMapa() {
+function abrirMapa(){
 
-    if (navegando) return;
+    if(navegando)return;
 
     guardarPreferencias();
-
     detenerPartida();
 
-    dibujarRuta("mul", "rutaMul");
-
-    dibujarRuta("div", "rutaDiv");
+    dibujarRuta("mul","rutaMul");
+    dibujarRuta("div","rutaDiv");
 
     mostrar("mapa");
 }
 
-function dibujarRuta(isla, contenedor) {
+function dibujarRuta(isla,contenedor){
 
     $(contenedor).innerHTML = "";
 
-    for (let nivel = 1; nivel <= 3; nivel++) {
+    for(let nivel=1;nivel<=3;nivel++){
 
         const boton = document.createElement("button");
 
@@ -2786,25 +2371,21 @@ function dibujarRuta(isla, contenedor) {
 
         boton.textContent =
             completado ? "✓" :
-            bloqueado ? "🔒" :
-            nivel;
+            bloqueado ? "🔒" : nivel;
 
         boton.disabled = bloqueado;
 
-        if (completado) {
-
+        if(completado){
             boton.classList.add("superada");
-
         }
 
-        boton.onclick = () => {
+        boton.onclick = ()=>{
 
-            if (navegando) return;
+            if(navegando)return;
 
             estado.isla = isla;
 
             iniciarNivel(nivel);
-
         };
 
         $(contenedor).appendChild(boton);
@@ -2827,27 +2408,24 @@ function dibujarRuta(isla, contenedor) {
 
 /* SELECCIÓN DE ISLA */
 
-function elegirIsla(isla) {
+function elegirIsla(isla){
 
-    if (navegando) return;
+    if(navegando)return;
 
     guardarPreferencias();
-
     detenerPartida();
 
     estado.isla = isla;
 
     $("tituloNiveles").textContent = isla === "mul"
-
         ? "× ISLA DE MULTIPLICACIONES"
-
         : "÷ ISLA DE DIVISIONES";
 
     const lista = $("listaNiveles");
 
     lista.innerHTML = "";
 
-    for (let nivel = 1; nivel <= 3; nivel++) {
+    for(let nivel=1;nivel<=3;nivel++){
 
         const bloqueado =
             nivel > datos.desbloqueados[isla];
@@ -2863,7 +2441,7 @@ function elegirIsla(isla) {
         tarjeta.innerHTML = `
 
             <div class="icono-nivel">
-                ${["", "🌴", "🧭", "🏆"][nivel]}
+                ${["","🌴","🧭","🏆"][nivel]}
             </div>
 
             <h3>${NIVELES[nivel]}</h3>
@@ -2880,9 +2458,7 @@ function elegirIsla(isla) {
 
             <p>❤️ 3 vidas · 5 misiones</p>
 
-            <p>
-                ${completado ? "⭐ Nivel superado" : ""}
-            </p>
+            <p>${completado ? "⭐ Nivel superado" : ""}</p>
 
         `;
 
@@ -2895,203 +2471,187 @@ function elegirIsla(isla) {
         boton.disabled = bloqueado;
 
         boton.textContent = bloqueado
-
             ? "🔒 BLOQUEADO"
-
             : "⚔️ COMENZAR";
 
-        boton.onclick = () => iniciarNivel(nivel);
+        boton.onclick = ()=>iniciarNivel(nivel);
 
         tarjeta.appendChild(boton);
 
         lista.appendChild(tarjeta);
-
     }
 
     mostrar("niveles");
 }
 
-/* GENERADOR MATEMÁTICO */
+/* GENERADOR MATEMÁTICO ORIGINAL */
 
-function aleatorio(min, max) {
+function aleatorio(min,max){
 
     return Math.floor(
-        Math.random() * (max - min + 1)
+        Math.random() * (max-min+1)
     ) + min;
 }
 
-function mezclar(lista) {
+function mezclar(lista){
 
-    for (let i = lista.length - 1; i > 0; i--) {
+    for(let i=lista.length-1;i>0;i--){
 
-        const j = aleatorio(0, i);
+        const j = aleatorio(0,i);
 
-        [lista[i], lista[j]] = [lista[j], lista[i]];
-
+        [lista[i],lista[j]] = [lista[j],lista[i]];
     }
 
     return lista;
 }
 
-function generarPregunta(isla, nivel) {
+function generarPregunta(isla,nivel){
 
-    let a, b, resultado, simbolo, historia;
+    let a,b,resultado,simbolo,historia;
 
-    if (isla === "mul") {
+    if(isla === "mul"){
 
         simbolo = "×";
 
-        if (nivel === 1) {
+        if(nivel === 1){
 
-            a = aleatorio(10, 99);
+            a = aleatorio(10,99);
+            b = aleatorio(2,9);
 
-            b = aleatorio(2, 9);
+        }else if(nivel === 2){
 
-        } else if (nivel === 2) {
+            a = aleatorio(10,99);
+            b = aleatorio(10,99);
 
-            a = aleatorio(10, 99);
+        }else{
 
-            b = aleatorio(10, 99);
-
-        } else {
-
-            a = aleatorio(100, 999);
-
-            b = aleatorio(10, 99);
-
+            a = aleatorio(100,999);
+            b = aleatorio(10,99);
         }
 
-        resultado = a * b;
+        resultado = a*b;
 
         const historias = [
 
             `Jake encontró ${a} cofres con ${b} monedas
-             en cada uno. ¿Cuántas monedas hay en total?`,
+            en cada uno. ¿Cuántas monedas hay en total?`,
 
             `Tenemos ${a} cajas con ${b} diamantes
-             en cada una. ¿Cuántos diamantes tenemos?`,
+            en cada una. ¿Cuántos diamantes tenemos?`,
 
             `La tripulación encontró ${a} bolsas con
-             ${b} gemas cada una. ¿Cuántas gemas hay?`
+            ${b} gemas cada una. ¿Cuántas gemas hay?`
 
         ];
 
-        historia = historias[aleatorio(0, 2)];
+        historia = historias[aleatorio(0,2)];
 
-    } else {
+    }else{
 
         simbolo = "÷";
 
-        if (nivel === 1) {
+        if(nivel === 1){
 
-            b = aleatorio(2, 9);
-
-            resultado = aleatorio(
-                Math.ceil(10 / b),
-                Math.floor(99 / b)
-            );
-
-        } else if (nivel === 2) {
-
-            b = aleatorio(2, 9);
+            b = aleatorio(2,9);
 
             resultado = aleatorio(
-                Math.ceil(100 / b),
-                Math.floor(999 / b)
+                Math.ceil(10/b),
+                Math.floor(99/b)
             );
 
-        } else {
+        }else if(nivel === 2){
 
-            b = aleatorio(10, 99);
+            b = aleatorio(2,9);
 
             resultado = aleatorio(
-                Math.max(2, Math.ceil(100 / b)),
-                Math.floor(999 / b)
+                Math.ceil(100/b),
+                Math.floor(999/b)
             );
 
+        }else{
+
+            b = aleatorio(10,99);
+
+            resultado = aleatorio(
+                Math.max(2,Math.ceil(100/b)),
+                Math.floor(999/b)
+            );
         }
 
-        a = b * resultado;
+        a = b*resultado;
 
         const historias = [
 
             `Jake debe repartir ${a} monedas entre
-             ${b} piratas. ¿Cuántas recibe cada uno?`,
+            ${b} piratas. ¿Cuántas recibe cada uno?`,
 
             `Tenemos ${a} diamantes para repartir
-             por igual en ${b} cofres.
-             ¿Cuántos van en cada cofre?`,
+            por igual en ${b} cofres.
+            ¿Cuántos van en cada cofre?`,
 
             `La tripulación reparte ${a} frutas
-             entre ${b} barcos.
-             ¿Cuántas recibe cada barco?`
+            entre ${b} barcos.
+            ¿Cuántas recibe cada barco?`
 
         ];
 
-        historia = historias[aleatorio(0, 2)];
-
+        historia = historias[aleatorio(0,2)];
     }
 
     const opciones = new Set([resultado]);
 
     const diferencia = Math.max(
         3,
-        Math.round(resultado * .12)
+        Math.round(resultado*.12)
     );
 
-    while (opciones.size < 3) {
+    while(opciones.size<3){
 
         const falsa = resultado + aleatorio(
-            -diferencia,
-            diferencia
+            -diferencia,diferencia
         );
 
-        if (falsa >= 0 && falsa !== resultado) {
-
+        if(falsa>=0 && falsa!==resultado){
             opciones.add(falsa);
-
         }
     }
 
     return {
-
         a,
         b,
         resultado,
         simbolo,
         historia,
-        opciones: mezclar([...opciones])
-
+        opciones:mezclar([...opciones])
     };
 }
 
 /* INICIAR NIVEL */
 
-async function iniciarNivel(nivel) {
+async function iniciarNivel(nivel){
 
-    if (
+    if(
         navegando ||
         nivel > datos.desbloqueados[estado.isla]
-    ) return;
+    )return;
 
     guardarPreferencias();
-
     detenerPartida();
 
-    Object.assign(estado, {
+    Object.assign(estado,{
 
         nivel,
-        vidas: 3,
-        puntos: 0,
-        monedas: 0,
-        racha: 0,
-        bonus: 1,
-        cofreUsado: false,
-        preguntaNumero: 0,
-        aciertos: 0,
-        historial: [],
-        usadas: new Set(),
-        contrarreloj: datos.contrarreloj
+        vidas:3,
+        puntos:0,
+        monedas:0,
+        racha:0,
+        bonus:1,
+        cofreUsado:false,
+        preguntaNumero:0,
+        aciertos:0,
+        historial:[],
+        usadas:new Set(),
+        contrarreloj:datos.contrarreloj
 
     });
 
@@ -3101,15 +2661,11 @@ async function iniciarNivel(nivel) {
     $("capitan").textContent =
         "CAPITÁN/A: " + datos.nombre;
 
-    $("dialogoJake").textContent =
-        "¡Vamos, capitán! Encuentra el tesoro.";
-
     const abierto = await mostrar("juego");
 
-    if (!abierto || pantallaActual !== "juego") return;
+    if(!abierto || pantallaActual!=="juego")return;
 
     estado.activa = true;
-
     estado.bloqueado = false;
 
     siguientePregunta();
@@ -3117,13 +2673,13 @@ async function iniciarNivel(nivel) {
 
 /* INDICADORES */
 
-function actualizarHUD() {
+function actualizarHUD(){
 
-    const vidas = Math.max(0, Math.min(3, estado.vidas));
+    const vidas = Math.max(0,Math.min(3,estado.vidas));
 
     $("vidas").textContent =
         "❤️".repeat(vidas) +
-        "🖤".repeat(3 - vidas);
+        "🖤".repeat(3-vidas);
 
     $("racha").textContent = estado.racha;
 
@@ -3135,30 +2691,30 @@ function actualizarHUD() {
 
     $("mision").textContent =
         "MISIÓN " +
-        Math.min(estado.preguntaNumero + 1, TOTAL) +
+        Math.min(estado.preguntaNumero+1,TOTAL) +
         " DE " + TOTAL;
 
     $("barraAvance").style.width =
-        estado.historial.length / TOTAL * 100 + "%";
+        estado.historial.length/TOTAL*100 + "%";
 
     dibujarCamino();
 }
 
-function dibujarCamino() {
+function dibujarCamino(){
 
     $("camino").innerHTML = "";
 
     const barco = CATALOGO.barcos.find(
-        item => item.id === datos.barco
+        item=>item.id===datos.barco
     );
 
-    for (let i = 0; i < TOTAL; i++) {
+    for(let i=0;i<TOTAL;i++){
 
         const paso = document.createElement("span");
 
         paso.className = "paso";
 
-        if (i < estado.historial.length) {
+        if(i<estado.historial.length){
 
             const correcto = estado.historial[i];
 
@@ -3168,20 +2724,19 @@ function dibujarCamino() {
 
             paso.textContent = correcto ? "✓" : "✖";
 
-        } else if (i === estado.preguntaNumero) {
+        }else if(i===estado.preguntaNumero){
 
             paso.classList.add("actual");
 
             paso.textContent = barco ? barco.icono : "⛵";
 
-        } else {
+        }else{
 
-            paso.textContent = i + 1;
+            paso.textContent = i+1;
 
         }
 
         $("camino").appendChild(paso);
-
     }
 
     const tesoro = document.createElement("span");
@@ -3189,28 +2744,26 @@ function dibujarCamino() {
     tesoro.style.fontSize = "35px";
 
     tesoro.textContent =
-        estado.isla === "mul" ? "🏆" : "💎";
+        estado.isla==="mul" ? "🏆" : "💎";
 
     $("camino").appendChild(tesoro);
 }
 
 /* PREGUNTAS */
 
-function siguientePregunta() {
+function siguientePregunta(){
 
-    if (!estado.activa) return;
+    if(!estado.activa)return;
 
-    if (estado.preguntaNumero >= TOTAL) {
+    if(estado.preguntaNumero>=TOTAL){
 
         finalizarNivel(true);
-
         return;
-
     }
 
-    let pregunta, clave;
+    let pregunta,clave;
 
-    do {
+    do{
 
         pregunta = generarPregunta(
             estado.isla,
@@ -3222,7 +2775,7 @@ function siguientePregunta() {
             pregunta.simbolo +
             pregunta.b;
 
-    } while (estado.usadas.has(clave));
+    }while(estado.usadas.has(clave));
 
     estado.usadas.add(clave);
 
@@ -3231,10 +2784,9 @@ function siguientePregunta() {
     mostrarPregunta();
 }
 
-function mostrarPregunta() {
+function mostrarPregunta(){
 
     estado.bloqueado = false;
-
     estado.pausado = false;
 
     const p = estado.pregunta;
@@ -3249,7 +2801,7 @@ function mostrarPregunta() {
 
     $("respuestas").innerHTML = "";
 
-    p.opciones.forEach(valor => {
+    p.opciones.forEach(valor=>{
 
         const boton = document.createElement("button");
 
@@ -3259,7 +2811,7 @@ function mostrarPregunta() {
 
         boton.dataset.valor = valor;
 
-        boton.onclick = () => responder(valor, boton);
+        boton.onclick = ()=>responder(valor,boton);
 
         $("respuestas").appendChild(boton);
 
@@ -3270,48 +2822,45 @@ function mostrarPregunta() {
     iniciarReloj(true);
 }
 
-/* TEMPORIZADOR IGUAL PARA AMBAS OPERACIONES */
+/* TEMPORIZADOR */
 
-function iniciarReloj(reiniciar = true) {
+function iniciarReloj(reiniciar=true){
 
     detenerReloj();
 
-    if (!estado.contrarreloj) {
+    if(!estado.contrarreloj){
 
         $("tiempo").textContent = "⏱️ SIN LÍMITE";
 
         $("contenedorTiempo").hidden = true;
 
         return;
-
     }
 
     $("contenedorTiempo").hidden = false;
 
     estado.limite = TIEMPOS[estado.nivel];
 
-    if (reiniciar) {
-
+    if(reiniciar){
         estado.tiempo = estado.limite;
-
     }
 
     actualizarReloj();
 
-    estado.intervalo = setInterval(() => {
+    estado.intervalo = setInterval(()=>{
 
-        if (
+        if(
             !estado.activa ||
             estado.bloqueado ||
             estado.pausado ||
             navegando
-        ) return;
+        )return;
 
         estado.tiempo--;
 
         actualizarReloj();
 
-        if (estado.tiempo <= 0) {
+        if(estado.tiempo<=0){
 
             detenerReloj();
 
@@ -3322,46 +2871,45 @@ function iniciarReloj(reiniciar = true) {
             $("mensaje").textContent = "⌛ ¡Tiempo agotado!";
 
             gestionarError();
-
         }
 
-    }, 1000);
+    },1000);
 }
 
-function actualizarReloj() {
+function actualizarReloj(){
 
     $("tiempo").textContent =
         "⏱️ " + estado.tiempo + "s";
 
     const porcentaje = Math.max(
         0,
-        estado.tiempo / estado.limite * 100
+        estado.tiempo/estado.limite*100
     );
 
-    $("barraTiempo").style.width = porcentaje + "%";
+    $("barraTiempo").style.width = porcentaje+"%";
 
     $("barraTiempo").style.background =
-        porcentaje > 50 ? "#22c55e" :
-        porcentaje > 20 ? "#f59e0b" :
+        porcentaje>50 ? "#22c55e" :
+        porcentaje>20 ? "#f59e0b" :
         "#ef4444";
 }
 
 /* RESPUESTAS */
 
-function bloquearRespuestas() {
+function bloquearRespuestas(){
 
     document.querySelectorAll("#respuestas button")
-        .forEach(boton => boton.disabled = true);
+        .forEach(boton=>boton.disabled=true);
 }
 
-function responder(valor, boton) {
+function responder(valor,boton){
 
-    if (
+    if(
         !estado.activa ||
         estado.bloqueado ||
         estado.pausado ||
         navegando
-    ) return;
+    )return;
 
     estado.bloqueado = true;
 
@@ -3369,26 +2917,23 @@ function responder(valor, boton) {
 
     bloquearRespuestas();
 
-    if (valor === estado.pregunta.resultado) {
+    if(valor===estado.pregunta.resultado){
 
         boton.classList.add("acierto");
 
         estado.aciertos++;
-
         estado.racha++;
 
         estado.historial.push(true);
 
-        const monedas = 10 * estado.nivel;
+        const monedas = 10*estado.nivel;
 
         const puntos =
-            100 * estado.nivel +
-            (estado.racha - 1) * 20;
+            100*estado.nivel +
+            (estado.racha-1)*20;
 
         estado.puntos += puntos;
-
         estado.monedas += monedas;
-
         datos.monedas += monedas;
 
         guardar();
@@ -3396,24 +2941,19 @@ function responder(valor, boton) {
         $("mensaje").textContent =
             "¡CORRECTO! +" + monedas + " monedas 🪙";
 
-        $("dialogoJake").textContent =
-            "¡Excelente trabajo, capitán!";
-
-        animarJake("feliz");
-
         reproducirSonido(true);
 
         actualizarHUD();
 
-        estado.pendiente = setTimeout(() => {
+        estado.pendiente = setTimeout(()=>{
 
             estado.preguntaNumero++;
 
             siguientePregunta();
 
-        }, 1200);
+        },1200);
 
-    } else {
+    }else{
 
         boton.classList.add("fallo");
 
@@ -3421,51 +2961,42 @@ function responder(valor, boton) {
             "¡Casi lo consigues!";
 
         gestionarError();
-
     }
 }
 
 /* BONUS Y ERRORES */
 
-function gestionarError() {
+function gestionarError(){
 
     estado.racha = 0;
 
     actualizarHUD();
 
-    animarJake("triste");
-
     reproducirSonido(false);
 
-    $("dialogoJake").textContent =
-        "¡No te rindas! Tú puedes.";
+    if(estado.bonus>0){
 
-    if (estado.bonus > 0) {
+        estado.pendiente = setTimeout(()=>{
 
-        estado.pendiente = setTimeout(() => {
-
-            if (estado.activa) {
-
+            if(estado.activa){
                 $("modalBonus").classList.add("abierto");
-
             }
 
-        }, 500);
+        },500);
 
-    } else {
+    }else{
 
         perderVida();
-
     }
 }
 
-function usarBonus() {
+function usarBonus(){
 
-    if (
+    if(
         !estado.activa ||
-        estado.bonus <= 0 ||
+        estado.bonus<=0 ||
         !$("modalBonus").classList.contains("abierto")
-    ) return;
+    )return;
 
     estado.bonus--;
 
@@ -3478,18 +3009,16 @@ function usarBonus() {
     mostrarPregunta();
 }
 
-function rechazarBonus() {
+function rechazarBonus(){
 
-    if (
-        !$("modalBonus").classList.contains("abierto")
-    ) return;
+    if(!$("modalBonus").classList.contains("abierto"))return;
 
     $("modalBonus").classList.remove("abierto");
 
     perderVida();
 }
 
-function perderVida() {
+function perderVida(){
 
     estado.vidas--;
 
@@ -3498,52 +3027,50 @@ function perderVida() {
     actualizarHUD();
 
     document.querySelectorAll("#respuestas button")
-        .forEach(boton => {
+        .forEach(boton=>{
 
-            if (
-                Number(boton.dataset.valor) ===
+            if(
+                Number(boton.dataset.valor)===
                 estado.pregunta.resultado
-            ) {
-
+            ){
                 boton.classList.add("acierto");
-
             }
+
         });
 
     $("mensaje").textContent =
         "La respuesta correcta era " +
         estado.pregunta.resultado + ".";
 
-    estado.pendiente = setTimeout(() => {
+    estado.pendiente = setTimeout(()=>{
 
-        if (!estado.activa) return;
+        if(!estado.activa)return;
 
-        if (estado.vidas <= 0) {
+        if(estado.vidas<=0){
 
-            if (!estado.cofreUsado) {
+            if(!estado.cofreUsado){
 
                 abrirCofre();
 
-            } else {
+            }else{
 
                 finalizarNivel(false);
 
             }
 
-        } else {
+        }else{
 
             estado.preguntaNumero++;
 
             siguientePregunta();
-
         }
 
-    }, 1500);
+    },1500);
 }
 
 /* COFRE DE LA VIDA */
 
-function abrirCofre() {
+function abrirCofre(){
 
     estado.cofreUsado = true;
 
@@ -3563,7 +3090,7 @@ function abrirCofre() {
 
     let respondido = false;
 
-    p.opciones.forEach(valor => {
+    p.opciones.forEach(valor=>{
 
         const boton = document.createElement("button");
 
@@ -3571,22 +3098,22 @@ function abrirCofre() {
 
         boton.textContent = valor;
 
-        boton.onclick = () => {
+        boton.onclick = ()=>{
 
-            if (respondido || !estado.activa) return;
+            if(respondido || !estado.activa)return;
 
             respondido = true;
 
             document.querySelectorAll("#respuestasCofre button")
-                .forEach(b => b.disabled = true);
+                .forEach(b=>b.disabled=true);
 
-            const correcto = valor === p.resultado;
+            const correcto = valor===p.resultado;
 
             boton.classList.add(
                 correcto ? "acierto" : "fallo"
             );
 
-            if (correcto) {
+            if(correcto){
 
                 estado.vidas = 1;
 
@@ -3597,32 +3124,31 @@ function abrirCofre() {
 
                 actualizarHUD();
 
-            } else {
+            }else{
 
                 $("mensajeCofre").textContent =
                     "Respuesta correcta: " + p.resultado;
 
                 reproducirSonido(false);
-
             }
 
-            estado.pendiente = setTimeout(() => {
+            estado.pendiente = setTimeout(()=>{
 
                 $("modalCofre").classList.remove("abierto");
 
-                if (correcto) {
+                if(correcto){
 
                     estado.preguntaNumero++;
 
                     siguientePregunta();
 
-                } else {
+                }else{
 
                     finalizarNivel(false);
 
                 }
 
-            }, 1500);
+            },1500);
         };
 
         $("respuestasCofre").appendChild(boton);
@@ -3632,12 +3158,12 @@ function abrirCofre() {
 
 /* RESULTADOS */
 
-function finalizarNivel(terminado) {
+function finalizarNivel(terminado){
 
     detenerPartida();
 
     const victoria =
-        terminado && estado.aciertos >= 3;
+        terminado && estado.aciertos>=3;
 
     $("puntosFinal").textContent = estado.puntos;
 
@@ -3647,53 +3173,46 @@ function finalizarNivel(terminado) {
 
     $("siguienteBtn").hidden = true;
 
-    if (victoria) {
+    if(victoria){
 
         const completados =
             datos.completados[estado.isla];
 
-        if (!completados.includes(estado.nivel)) {
-
+        if(!completados.includes(estado.nivel)){
             completados.push(estado.nivel);
-
         }
 
         datos.desbloqueados[estado.isla] = Math.min(
             3,
             Math.max(
                 datos.desbloqueados[estado.isla],
-                estado.nivel + 1
+                estado.nivel+1
             )
         );
 
         $("tituloResultado").textContent =
-            estado.nivel === 3
-
+            estado.nivel===3
                 ? "¡ISLA CONQUISTADA!"
-
                 : "¡NIVEL SUPERADO!";
 
         $("tesoroFinal").textContent =
-            estado.isla === "mul" ? "🏆" : "💎";
+            estado.isla==="mul" ? "🏆" : "💎";
 
         $("estrellas").textContent =
-            estado.aciertos === 5 ? "⭐⭐⭐" :
-            estado.aciertos === 4 ? "⭐⭐" :
-            "⭐";
+            estado.aciertos===5 ? "⭐⭐⭐" :
+            estado.aciertos===4 ? "⭐⭐" : "⭐";
 
         $("textoResultado").textContent =
             "¡Excelente, capitán! Has superado la misión.";
 
-        if (estado.nivel < 3) {
-
+        if(estado.nivel<3){
             $("siguienteBtn").hidden = false;
-
         }
 
-        if (
-            datos.completados.mul.length === 3 &&
-            datos.completados.div.length === 3
-        ) {
+        if(
+            datos.completados.mul.length===3 &&
+            datos.completados.div.length===3
+        ){
 
             $("tituloResultado").textContent =
                 "¡LEYENDA DE LA ISLA MATEMÁGICA!";
@@ -3702,12 +3221,11 @@ function finalizarNivel(terminado) {
 
             $("textoResultado").textContent =
                 "¡Conquistaste las dos islas y sus seis desafíos!";
-
         }
 
         celebrar();
 
-    } else {
+    }else{
 
         $("tituloResultado").textContent =
             "¡VUELVE A INTENTARLO!";
@@ -3718,39 +3236,38 @@ function finalizarNivel(terminado) {
 
         $("textoResultado").textContent =
             "Necesitas terminar el nivel y conseguir al menos tres aciertos.";
-
     }
 
     datos.records.push({
 
-        nombre: datos.nombre,
+        nombre:datos.nombre,
 
-        isla: ISLAS[estado.isla],
+        isla:ISLAS[estado.isla],
 
-        nivel: NIVELES[estado.nivel],
+        nivel:NIVELES[estado.nivel],
 
-        puntos: estado.puntos
+        puntos:estado.puntos
 
     });
 
     datos.records.sort(
-        (a, b) => b.puntos - a.puntos
+        (a,b)=>b.puntos-a.puntos
     );
 
-    datos.records = datos.records.slice(0, 10);
+    datos.records = datos.records.slice(0,10);
 
     guardar();
 
     mostrar("resultados");
 }
 
-function siguienteNivel() {
+function siguienteNivel(){
 
-    if (estado.nivel < 3) {
+    if(estado.nivel<3){
 
-        iniciarNivel(estado.nivel + 1);
+        iniciarNivel(estado.nivel+1);
 
-    } else {
+    }else{
 
         abrirMapa();
 
@@ -3759,13 +3276,13 @@ function siguienteNivel() {
 
 /* PAUSAR Y SALIR */
 
-function preguntarSalida() {
+function preguntarSalida(){
 
-    if (
+    if(
         !estado.activa ||
         estado.bloqueado ||
         navegando
-    ) return;
+    )return;
 
     estado.pausado = true;
 
@@ -3776,26 +3293,25 @@ function preguntarSalida() {
     $("modalSalir").classList.add("abierto");
 }
 
-function cancelarSalida() {
+function cancelarSalida(){
 
     $("modalSalir").classList.remove("abierto");
 
     estado.pausado = false;
 
     document.querySelectorAll("#respuestas button")
-        .forEach(boton => boton.disabled = false);
+        .forEach(boton=>boton.disabled=false);
 
     iniciarReloj(false);
 }
 
 /* TIENDA PIRATA */
 
-function abrirTienda() {
+function abrirTienda(){
 
-    if (navegando) return;
+    if(navegando)return;
 
     guardarPreferencias();
-
     detenerPartida();
 
     $("mensajeTienda").textContent =
@@ -3806,20 +3322,20 @@ function abrirTienda() {
     mostrar("tienda");
 }
 
-function cargarTienda(tipo) {
+function cargarTienda(tipo){
 
     $("saldoTienda").textContent = datos.monedas;
 
     $("productos").innerHTML = "";
 
-    CATALOGO[tipo].forEach(item => {
+    CATALOGO[tipo].forEach(item=>{
 
         const comprado =
             datos.comprados.includes(item.id);
 
-        const equipado = tipo === "barcos"
-            ? datos.barco === item.id
-            : datos.sombrero === item.id;
+        const equipado = tipo==="barcos"
+            ? datos.barco===item.id
+            : datos.sombrero===item.id;
 
         const tarjeta = document.createElement("article");
 
@@ -3851,7 +3367,7 @@ function cargarTienda(tipo) {
             comprado ? "EQUIPAR" :
             "COMPRAR";
 
-        boton.onclick = () => comprar(item, tipo);
+        boton.onclick = ()=>comprar(item,tipo);
 
         tarjeta.appendChild(boton);
 
@@ -3860,11 +3376,11 @@ function cargarTienda(tipo) {
     });
 }
 
-function comprar(item, tipo) {
+function comprar(item,tipo){
 
-    if (!datos.comprados.includes(item.id)) {
+    if(!datos.comprados.includes(item.id)){
 
-        if (datos.monedas < item.precio) {
+        if(datos.monedas<item.precio){
 
             $("mensajeTienda").textContent =
                 "No tienes suficientes monedas.";
@@ -3872,20 +3388,18 @@ function comprar(item, tipo) {
             reproducirSonido(false);
 
             return;
-
         }
 
         datos.monedas -= item.precio;
 
         datos.comprados.push(item.id);
-
     }
 
-    if (tipo === "barcos") {
+    if(tipo==="barcos"){
 
         datos.barco = item.id;
 
-    } else {
+    }else{
 
         datos.sombrero = item.id;
 
@@ -3894,47 +3408,44 @@ function comprar(item, tipo) {
     guardar();
 
     $("mensajeTienda").textContent =
-        "¡" + item.nombre + " equipado!";
+        "¡"+item.nombre+" equipado!";
 
     reproducirSonido(true);
-
-    actualizarEquipamiento();
 
     cargarTienda(tipo);
 }
 
 /* RÉCORDS */
 
-function abrirRecords() {
+function abrirRecords(){
 
-    if (navegando) return;
+    if(navegando)return;
 
     const lista = $("listaRecords");
 
     lista.innerHTML = "";
 
-    if (!datos.records.length) {
+    if(!datos.records.length){
 
         lista.textContent =
             "Todavía no hay récords. ¡Comienza la aventura!";
 
-    } else {
+    }else{
 
-        datos.records.forEach((record, i) => {
+        datos.records.forEach((record,i)=>{
 
             const fila = document.createElement("div");
 
             fila.className = "record";
 
             fila.textContent =
-                `${i + 1}. ${record.nombre} · ` +
+                `${i+1}. ${record.nombre} · ` +
                 `${record.isla} · ${record.nivel} · ` +
                 `${record.puntos} puntos`;
 
             lista.appendChild(fila);
 
         });
-
     }
 
     mostrar("records");
@@ -3944,7 +3455,7 @@ function abrirRecords() {
 
 let audioContext;
 
-function cambiarSonido() {
+function cambiarSonido(){
 
     datos.sonido = !datos.sonido;
 
@@ -3952,28 +3463,26 @@ function cambiarSonido() {
 
     actualizarMenu();
 
-    if (datos.sonido) {
-
+    if(datos.sonido){
         reproducirSonido(true);
-
     }
 }
 
-function reproducirSonido(correcto) {
+function reproducirSonido(correcto){
 
-    if (!datos.sonido) return;
+    if(!datos.sonido)return;
 
-    try {
+    try{
 
         const Audio =
             window.AudioContext ||
             window.webkitAudioContext;
 
-        if (!Audio) return;
+        if(!Audio)return;
 
         audioContext = audioContext || new Audio();
 
-        audioContext.resume().catch(() => {});
+        audioContext.resume().catch(()=>{});
 
         const oscilador = audioContext.createOscillator();
 
@@ -3991,14 +3500,14 @@ function reproducirSonido(correcto) {
 
         oscilador.frequency.exponentialRampToValueAtTime(
             correcto ? 1150 : 90,
-            ahora + .3
+            ahora+.3
         );
 
-        volumen.gain.setValueAtTime(.12, ahora);
+        volumen.gain.setValueAtTime(.12,ahora);
 
         volumen.gain.exponentialRampToValueAtTime(
             .001,
-            ahora + .4
+            ahora+.4
         );
 
         oscilador.connect(volumen);
@@ -4007,20 +3516,18 @@ function reproducirSonido(correcto) {
 
         oscilador.start();
 
-        oscilador.stop(ahora + .4);
+        oscilador.stop(ahora+.4);
 
-    } catch {}
+    }catch{}
 }
 
 /* CONFETI */
 
-function celebrar() {
+function celebrar(){
 
-    if (
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches
-    ) return;
+    if(window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches)return;
 
     const colores = [
 
@@ -4032,60 +3539,125 @@ function celebrar() {
 
     ];
 
-    for (let i = 0; i < 70; i++) {
+    for(let i=0;i<70;i++){
 
         const papel = document.createElement("div");
 
         papel.className = "confeti";
 
-        papel.style.left =
-            aleatorio(0, 100) + "vw";
+        papel.style.left = aleatorio(0,100)+"vw";
 
         papel.style.width = "11px";
 
         papel.style.height = "18px";
 
         papel.style.background =
-            colores[aleatorio(0, colores.length - 1)];
+            colores[aleatorio(0,colores.length-1)];
 
         papel.style.animationDelay =
-            Math.random() * .8 + "s";
+            Math.random()*.8+"s";
 
         document.body.appendChild(papel);
 
-        setTimeout(() => papel.remove(), 4200);
-
+        setTimeout(()=>papel.remove(),4200);
     }
 }
 
-/* CONTROL MEDIANTE TECLADO */
+/* CONTROL CON TECLADO */
 
-document.addEventListener("keydown", evento => {
+document.addEventListener("keydown",evento=>{
 
-    if (
-        pantallaActual !== "juego" ||
+    if(
+        pantallaActual!=="juego" ||
         !estado.activa ||
         estado.bloqueado ||
         estado.pausado ||
         navegando ||
         document.querySelector(".modal.abierto")
-    ) return;
+    )return;
 
-    if (["1", "2", "3"].includes(evento.key)) {
+    if(["1","2","3"].includes(evento.key)){
 
         const botones =
             document.querySelectorAll("#respuestas button");
 
         const boton =
-            botones[Number(evento.key) - 1];
+            botones[Number(evento.key)-1];
 
-        if (boton && !boton.disabled) {
-
+        if(boton && !boton.disabled){
             boton.click();
+        }
+    }
+});
 
+/* AJUSTE AUTOMÁTICO DE LA PORTADA */
+
+function ajustarPortada(){
+
+    const menu = $("menu");
+
+    if(pantallaActual!=="menu")return;
+
+    const imagenes = menu.querySelectorAll(".imagen-flotante");
+
+    const zona = menu.querySelector(".zona-islas");
+
+    const opciones = menu.querySelectorAll(".opcion-isla");
+
+    const espacio = zona.clientHeight;
+
+    const estilos = getComputedStyle(zona);
+
+    const relleno =
+        parseFloat(estilos.paddingTop) +
+        parseFloat(estilos.paddingBottom);
+
+    let disponible = Infinity;
+
+    opciones.forEach(opcion=>{
+
+        const imagen = opcion.querySelector(".imagen-flotante");
+
+        if(imagen && !imagen.hidden){
+
+            imagen.style.height = "";
+
+            const otros = opcion.offsetHeight - imagen.offsetHeight;
+
+            disponible = Math.min(
+                disponible,
+                espacio-relleno-otros-10
+            );
         }
 
+    });
+
+    if(Number.isFinite(disponible)){
+
+        imagenes.forEach(imagen=>{
+
+            imagen.style.height = Math.max(
+                20,
+                Math.min(disponible,window.innerHeight*.25,245)
+            )+"px";
+
+        });
     }
+}
+
+window.addEventListener("resize",ajustarPortada);
+
+const observador = new MutationObserver(()=>{
+
+    if(pantallaActual==="menu"){
+        requestAnimationFrame(ajustarPortada);
+    }
+
+});
+
+observador.observe($("menu"),{
+    attributes:true,
+    attributeFilter:["class"]
 });
 
 /* INICIAR LA ISLA MATEMÁGICA */
@@ -4100,26 +3672,11 @@ actualizarMenu();
 
 cambiarFondo("principal");
 
-/*
-    ARCHIVOS NECESARIOS EN GITHUB:
+requestAnimationFrame(ajustarPortada);
 
-    index.html
-    videoprincipal.mp4
-    división multiplicacion.mp4
-    nuves.mp4
-    multiplicaciones.png
-    divisiones.png
-
-    jake.png es opcional hasta que se suba
-    la imagen original del personaje.
-
-    Los videos utilizan reproducción automática
-    sin sonido y la introducción termina según
-    la duración real del archivo nuves.mp4.
-
-    Pendiente: comprobar la reproducción real
-    de los archivos multimedia en GitHub Pages.
-*/
+if(document.fonts){
+    document.fonts.ready.then(ajustarPortada);
+}
 
 </script>
 
